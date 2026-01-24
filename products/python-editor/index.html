@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TesterChip | Python Live Editor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .nav-header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .nav-header a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.2);
+      transition: all 0.3s;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .nav-header a:hover {
+      background: rgba(0,0,0,0.35);
+      transform: translateY(-2px);
+    }
+    .nav-header-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .nav-header {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .nav-header-links {
+        width: 100%;
+        justify-content: center;
+      }
+      .nav-header a {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-800 text-white flex flex-col h-screen">
+
+  <nav class="nav-header">
+    <div class="nav-header-links">
+      <a href="../../index.html">Home</a>
+      <a href="../index.html">Products</a>
+      <a href="../html-editor/index.html">HTML Editor</a>
+      <a href="../python-editor/index.html" style="background: rgba(0,0,0,0.35);">Python Editor</a>
+      <a href="../flood-detector/index.html">Flood Detector</a>
+      <a href="../pcb-generator/index.html">PCB Generator</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-gray-900 border-b border-gray-700 px-4 py-3">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div class="flex items-center gap-3">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <defs>
+            <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3776ab" />
+              <stop offset="50%" stop-color="#4b8bbe" />
+              <stop offset="100%" stop-color="#ffd43b" />
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="8" height="8" rx="2" fill="url(#chipGradient)" />
+          <rect x="20" y="4" width="8" height="8" rx="2" fill="url(#chipGradient)" />
+          <rect x="4" y="20" width="8" height="8" rx="2" fill="url(#chipGradient)" />
+          <rect x="20" y="20" width="8" height="8" rx="2" fill="url(#chipGradient)" />
+          <circle cx="16" cy="16" r="4" fill="url(#chipGradient)" />
+        </svg>
+        <div>
+          <h1 class="text-xl font-bold">TesterChip</h1>
+          <p class="text-xs text-gray-400">Python Live Editor</p>
+        </div>
+      </div>
+
+      <div class="flex gap-2 flex-wrap">
+        <input id="fileInput" type="file" accept=".py,.json" class="hidden">
+        <button id="uploadBtn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-sm flex items-center gap-1.5">
+          <i data-lucide="upload"></i> Upload
+        </button>
+        <button id="downloadBtn" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm flex items-center gap-1.5">
+          <i data-lucide="download"></i> Download
+        </button>
+        <button id="copyBtn" class="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 rounded text-sm flex items-center gap-1.5">
+          <i data-lucide="copy"></i> Copy
+        </button>
+        <button id="resetBtn" class="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 rounded text-sm flex items-center gap-1.5">
+          <i data-lucide="rotate-ccw"></i> Reset
+        </button>
+        <button id="runBtn" class="px-4 py-1.5 bg-green-600 hover:bg-green-700 rounded text-sm flex items-center gap-1.5 font-semibold">
+          <i data-lucide="play"></i> Run
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
+    <!-- Editor -->
+    <div class="flex-1 flex flex-col border-r border-gray-700">
+      <div class="bg-gray-900 px-4 py-2 border-b border-gray-700 flex justify-between">
+        <span class="text-sm font-semibold text-blue-400">Python Code Editor</span>
+        <span id="stats" class="text-xs text-gray-400"></span>
+      </div>
+      <textarea id="editor" spellcheck="false" class="flex-1 bg-gray-700 text-white p-4 font-mono text-sm resize-none focus:outline-none">
+# Welcome to TesterChip Python Editor!
+# Write your Python code here and click "Run" to execute
+
+def greet(name):
+    """Simple greeting function"""
+    return f"Hello, {name}! 👋"
+
+message = greet("Developer")
+print(message)
+print("\\n✨ Ready to code in Python!")
+
+import math
+print(f"π ≈ {math.pi:.4f}")
+</textarea>
+    </div>
+
+    <!-- Output -->
+    <div class="flex-1 flex flex-col">
+      <div class="bg-gray-900 px-4 py-2 border-b border-gray-700 flex justify-between items-center">
+        <div class="flex gap-3 items-center">
+          <span class="text-sm font-semibold text-yellow-400">Output</span>
+          <span id="execTime" class="text-xs text-gray-400"></span>
+        </div>
+        <button id="clearOutputBtn" class="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-xs flex items-center gap-1">
+          <i data-lucide="trash-2"></i> Clear
+        </button>
+      </div>
+      <div id="output" class="flex-1 bg-gray-800 p-4 font-mono text-sm overflow-auto"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  <script>
+    lucide.createIcons();
+
+    const editor = document.getElementById("editor");
+    const output = document.getElementById("output");
+    const stats = document.getElementById("stats");
+    const execTime = document.getElementById("execTime");
+    const fileInput = document.getElementById("fileInput");
+
+    let pyodideReady = false;
+    let pyodide;
+
+    function logOutput(text, type="info") {
+      const color = {
+        info: "text-white",
+        success: "text-green-400",
+        error: "text-red-400",
+        warning: "text-yellow-400"
+      }[type] || "text-white";
+
+      const div = document.createElement("div");
+      div.className = `${color} mb-1`;
+      div.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function updateStats() {
+      stats.textContent = `${editor.value.split("\\n").length} lines • ${editor.value.length} chars`;
+    }
+
+    async function loadPyodideRuntime() {
+      logOutput("⏳ Loading Python runtime...");
+      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
+      pyodideReady = true;
+      logOutput("✅ Python runtime loaded successfully!", "success");
+    }
+
+    loadPyodideRuntime();
+
+    async function runPython() {
+      if (!pyodideReady) return logOutput("⚠️ Python runtime still loading...", "warning");
+
+      output.innerHTML = "";
+      const code = editor.value;
+      const start = performance.now();
+      try {
+        let stdout = "";
+        pyodide.setStdout({ batched: (text) => { stdout += text; } });
+        pyodide.setStderr({ batched: (text) => { stdout += text; } });
+
+        const timeout = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Execution timed out after 5 seconds")), 5000)
+        );
+        const exec = pyodide.runPythonAsync(code);
+        await Promise.race([exec, timeout]);
+
+        const end = performance.now();
+        execTime.textContent = `Last run: ${((end - start) / 1000).toFixed(3)}s`;
+
+        logOutput(stdout.trim() || "(No output)");
+        logOutput("✓ Execution completed", "success");
+      } catch (err) {
+        logOutput("Error: " + err.message, "error");
+      }
+    }
+
+    document.getElementById("runBtn").onclick = runPython;
+    document.getElementById("clearOutputBtn").onclick = () => (output.innerHTML = "");
+    document.getElementById("copyBtn").onclick = async () => {
+      await navigator.clipboard.writeText(editor.value);
+      logOutput("✅ Code copied to clipboard!", "success");
+    };
+
+    document.getElementById("resetBtn").onclick = () => {
+      if (confirm("Reset code to default template?")) location.reload();
+    };
+
+    document.getElementById("uploadBtn").onclick = () => fileInput.click();
+    fileInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const content = ev.target.result;
+          if (file.name.endsWith(".json")) {
+            const data = JSON.parse(content);
+            if (data.code) editor.value = data.code;
+          } else editor.value = content;
+          updateStats();
+          logOutput(`✅ Loaded ${file.name}`, "success");
+        } catch (err) {
+          logOutput("❌ " + err.message, "error");
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    document.getElementById("downloadBtn").onclick = () => {
+      const data = { code: editor.value, timestamp: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `testerchip-python-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      logOutput("✅ Project downloaded successfully!", "success");
+    };
+
+    editor.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = e.target.selectionStart;
+        const end = e.target.selectionEnd;
+        editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
+        e.target.selectionStart = e.target.selectionEnd = start + 4;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runPython();
+      updateStats();
+    });
+
+    updateStats();
+  </script>
+</body>
+</html>

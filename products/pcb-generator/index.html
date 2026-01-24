@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TesterChip - PCB Layout Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #22d3ee, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        /* Navigation Styles */
+        .nav-header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .nav-header a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .nav-header a:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        .nav-header-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .nav-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .nav-header-links {
+                width: 100%;
+                justify-content: center;
+            }
+            .nav-header a {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg text-white">
+    <div class="p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-6 text-center">
+                <div class="flex items-center justify-center gap-3 mb-2">
+                    <svg class="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                    </svg>
+                    <h1 class="text-4xl font-bold gradient-text">Your PCB Assistant</h1>
+                </div>
+                <p class="text-slate-300">Professional PCB Design Generator by TesterChip</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Control Panel -->
+                <div class="lg:col-span-1 space-y-4">
+                    <!-- Board Dimensions -->
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
+                        <h3 class="font-semibold mb-4">Board Size</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-1">Width (mm)</label>
+                                <input type="number" id="boardWidth" value="900" min="400" max="1200" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-1">Height (mm)</label>
+                                <input type="number" id="boardHeight" value="600" min="300" max="900" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Component Selection -->
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700 max-h-96 overflow-y-auto">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-semibold">Components</h3>
+                            <button onclick="resetComponents()" class="text-xs text-slate-400 hover:text-white">Reset</button>
+                        </div>
+                        <div id="componentList" class="space-y-3"></div>
+                        <div class="mt-4 pt-4 border-t border-slate-700">
+                            <div class="text-sm text-slate-400">
+                                Total: <span id="totalComponents" class="text-white font-semibold">0</span> components
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings -->
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
+                        <h3 class="font-semibold mb-4">Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-2">Grid Size: <span id="gridSizeValue">20</span>px</label>
+                                <input type="range" id="gridSize" min="10" max="40" step="5" value="20" class="w-full">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-slate-300 mb-2">Min Spacing: <span id="minSpacingValue">40</span>px</label>
+                                <input type="range" id="minSpacing" min="20" max="80" step="10" value="40" class="w-full">
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-slate-300">Auto-Route</span>
+                                <button id="autoRouteBtn" onclick="toggleAutoRoute()" class="px-3 py-1 rounded text-xs font-medium bg-green-600">ON</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layer Control -->
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
+                        <h3 class="font-semibold mb-4">Layer View</h3>
+                        <div class="space-y-2">
+                            <button onclick="setLayer('all')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-cyan-600 text-white">All Layers</button>
+                            <button onclick="setLayer('top')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600">Top Layer</button>
+                            <button onclick="setLayer('bottom')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600">Bottom Layer</button>
+                        </div>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
+                        <h3 class="font-semibold mb-4">Design Stats</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Components:</span>
+                                <span id="statsComponents" class="font-mono">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Traces:</span>
+                                <span id="statsTraces" class="font-mono">0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-400">Board Area:</span>
+                                <span id="statsArea" class="font-mono">0.00 cm²</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="space-y-2">
+                        <button onclick="generateDesign()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 px-4 py-3 rounded-lg font-semibold transition shadow-lg">
+                            Generate Design
+                        </button>
+                        <button onclick="exportDesign()" id="exportBtn" class="w-full bg-green-600 hover:bg-green-500 px-4 py-3 rounded-lg font-semibold transition">
+                            Export Design
+                        </button>
+                        <button onclick="clearCanvas()" class="w-full bg-red-600 hover:bg-red-500 px-4 py-3 rounded-lg font-semibold transition">
+                            Clear Canvas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Canvas Area -->
+                <div class="lg:col-span-3">
+                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-semibold">PCB Layout View</h3>
+                                <span id="boardDimensions" class="text-xs text-slate-400">(900 × 600 mm)</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <div class="flex items-center gap-2 text-xs bg-slate-700 px-3 py-1 rounded">
+                                    <div class="w-3 h-3 bg-cyan-400 rounded"></div>
+                                    <span>Traces</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-xs bg-slate-700 px-3 py-1 rounded">
+                                    <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                                    <span>Vias/Pins</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900 rounded-lg p-4 border-2 border-slate-700 overflow-auto">
+                            <canvas id="pcbCanvas" width="900" height="600" class="border border-slate-600 rounded"></canvas>
+                        </div>
+                        <div class="mt-4 p-3 bg-slate-700/50 border border-slate-600 rounded-lg">
+                            <div class="text-sm text-slate-300">
+                                <strong class="text-white">Features:</strong> Custom board dimensions, component selection, 90° Manhattan routing, multi-layer support, and exportable design files.
+                                <br>
+                                <strong class="text-white">Note:</strong> Our project is still in its early phase. We're laying the groundwork and shaping core ideas—more updates soon!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let components = [];
+        let traces = [];
+        let selectedLayer = 'all';
+        let autoRoute = true;
+        let selectedComponents = {
+            IC: 0,
+            Resistor: 0,
+            Capacitor: 0,
+            LED: 0,
+            Transistor: 0,
+            Diode: 0,
+            Inductor: 0,
+            Crystal: 0
+        };
+
+        const componentTypes = {
+            IC: { symbol: '□', color: '#3b82f6', width: 60, height: 60, pins: 8 },
+            Resistor: { symbol: 'R', color: '#10b981', width: 40, height: 20, pins: 2 },
+            Capacitor: { symbol: 'C', color: '#f59e0b', width: 30, height: 30, pins: 2 },
+            LED: { symbol: 'D', color: '#ef4444', width: 25, height: 25, pins: 2 },
+            Transistor: { symbol: 'Q', color: '#8b5cf6', width: 35, height: 35, pins: 3 },
+            Diode: { symbol: 'D', color: '#ec4899', width: 35, height: 20, pins: 2 },
+            Inductor: { symbol: 'L', color: '#14b8a6', width: 40, height: 25, pins: 2 },
+            Crystal: { symbol: 'Y', color: '#a855f7', width: 30, height: 40, pins: 2 }
+        };
+
+        // Initialize
+        function init() {
+            renderComponentList();
+            setupEventListeners();
+            drawPCB();
+        }
+
+        function renderComponentList() {
+            const list = document.getElementById('componentList');
+            list.innerHTML = '';
+
+            Object.entries(componentTypes).forEach(([type, data]) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between';
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-bold" style="background-color: ${data.color}">
+                            ${data.symbol}
+                        </div>
+                        <span class="text-sm">${type}</span>
+                    </div>
+                    <input type="number" id="comp-${type}" value="0" min="0" max="20" 
+                           class="w-16 bg-slate-700 border border-slate-600 rounded px-2 py-1 text-sm text-center"
+                           onchange="updateComponentCount('${type}', this.value)">
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('gridSize').addEventListener('input', (e) => {
+                document.getElementById('gridSizeValue').textContent = e.target.value;
+                drawPCB();
+            });
+
+            document.getElementById('minSpacing').addEventListener('input', (e) => {
+                document.getElementById('minSpacingValue').textContent = e.target.value;
+            });
+
+            document.getElementById('boardWidth').addEventListener('change', (e) => {
+                const canvas = document.getElementById('pcbCanvas');
+                canvas.width = Math.max(400, Math.min(1200, parseInt(e.target.value) || 900));
+                updateBoardDimensions();
+                drawPCB();
+            });
+
+            document.getElementById('boardHeight').addEventListener('change', (e) => {
+                const canvas = document.getElementById('pcbCanvas');
+                canvas.height = Math.max(300, Math.min(900, parseInt(e.target.value) || 600));
+                updateBoardDimensions();
+                drawPCB();
+            });
+        }
+
+        function updateBoardDimensions() {
+            const canvas = document.getElementById('pcbCanvas');
+            document.getElementById('boardDimensions').textContent = `(${canvas.width} × ${canvas.height} mm)`;
+        }
+
+        function updateComponentCount(type, value) {
+            selectedComponents[type] = Math.max(0, parseInt(value) || 0);
+            updateTotalComponents();
+        }
+
+        function updateTotalComponents() {
+            const total = Object.values(selectedComponents).reduce((a, b) => a + b, 0);
+            document.getElementById('totalComponents').textContent = total;
+        }
+
+        function resetComponents() {
+            Object.keys(selectedComponents).forEach(type => {
+                selectedComponents[type] = 0;
+                document.getElementById(`comp-${type}`).value = 0;
+            });
+            updateTotalComponents();
+        }
+
+        function toggleAutoRoute() {
+            autoRoute = !autoRoute;
+            const btn = document.getElementById('autoRouteBtn');
+            btn.textContent = autoRoute ? 'ON' : 'OFF';
+            btn.className = autoRoute ? 'px-3 py-1 rounded text-xs font-medium bg-green-600' : 'px-3 py-1 rounded text-xs font-medium bg-slate-600';
+        }
+
+        function setLayer(layer) {
+            selectedLayer = layer;
+            document.querySelectorAll('.layer-btn').forEach(btn => {
+                btn.className = 'layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600';
+            });
+            event.target.className = 'layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-cyan-600 text-white';
+            drawPCB();
+        }
+
+        function generatePins(x, y, width, height, count) {
+            const pins = [];
+
+            for (let i = 0; i < count; i++) {
+                if (count === 2) {
+                    pins.push({ x: x - width / 2, y: y });
+                    pins.push({ x: x + width / 2, y: y });
+                    break;
+                } else if (count === 3) {
+                    pins.push({ x: x, y: y - height / 2 });
+                    pins.push({ x: x - width / 2, y: y + height / 2 });
+                    pins.push({ x: x + width / 2, y: y + height / 2 });
+                } else if (count <= 4) {
+                    const side = i % 4;
+                    if (side === 0) pins.push({ x: x, y: y - height / 2 });
+                    else if (side === 1) pins.push({ x: x + width / 2, y: y });
+                    else if (side === 2) pins.push({ x: x, y: y + height / 2 });
+                    else pins.push({ x: x - width / 2, y: y });
+                } else {
+                    const perimeter = 2 * (width + height);
+                    const pos = (perimeter / count) * i;
+                    if (pos < width) pins.push({ x: x - width / 2 + pos, y: y - height / 2 });
+                    else if (pos < width + height) pins.push({ x: x + width / 2, y: y - height / 2 + (pos - width) });
+                    else if (pos < 2 * width + height) pins.push({ x: x + width / 2 - (pos - width - height), y: y + height / 2 });
+                    else pins.push({ x: x - width / 2, y: y + height / 2 - (pos - 2 * width - height) });
+                }
+            }
+            return pins;
+        }
+
+        function placeComponents() {
+            const placed = [];
+            const canvas = document.getElementById('pcbCanvas');
+            const boardWidth = canvas.width;
+            const boardHeight = canvas.height;
+            const gridSize = parseInt(document.getElementById('gridSize').value);
+
+            const padding = 100;
+            const usableWidth = boardWidth - 2 * padding;
+            const usableHeight = boardHeight - 2 * padding;
+
+            const totalCount = Object.values(selectedComponents).reduce((sum, count) => sum + count, 0);
+            if (totalCount === 0) return placed;
+
+            const cols = Math.ceil(Math.sqrt(totalCount * (usableWidth / usableHeight)));
+            const rows = Math.ceil(totalCount / cols);
+            const cellWidth = usableWidth / cols;
+            const cellHeight = usableHeight / rows;
+
+            let idx = 0;
+            let globalId = 0;
+
+            Object.entries(selectedComponents).forEach(([type, count]) => {
+                for (let i = 0; i < count; i++) {
+                    const row = Math.floor(idx / cols);
+                    const col = idx % cols;
+
+                    const compType = componentTypes[type];
+
+                    const x = Math.round((padding + col * cellWidth + cellWidth / 2) / gridSize) * gridSize;
+                    const y = Math.round((padding + row * cellHeight + cellHeight / 2) / gridSize) * gridSize;
+
+                    placed.push({
+                        id: globalId,
+                        type: type,
+                        symbol: compType.symbol,
+                        color: compType.color,
+                        x: x,
+                        y: y,
+                        width: compType.width,
+                        height: compType.height,
+                        pins: generatePins(x, y, compType.width, compType.height, compType.pins),
+                        rotation: 0
+                    });
+
+                    globalId++;
+                    idx++;
+                }
+            });
+
+            return placed;
+        }
+
+        function manhattanRoute(start, end) {
+            const gridSize = parseInt(document.getElementById('gridSize').value);
+            const path = [{ x: start.x, y: start.y }];
+
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+
+            if (Math.abs(dx) > Math.abs(dy)) {
+                const midX = start.x + dx / 2;
+                path.push({ x: Math.round(midX / gridSize) * gridSize, y: start.y });
+                path.push({ x: Math.round(midX / gridSize) * gridSize, y: end.y });
+            } else {
+                const midY = start.y + dy / 2;
+                path.push({ x: start.x, y: Math.round(midY / gridSize) * gridSize });
+                path.push({ x: end.x, y: Math.round(midY / gridSize) * gridSize });
+            }
+
+            path.push({ x: end.x, y: end.y });
+            return path;
+        }
+
+        function routeTraces(comps) {
+            const newTraces = [];
+            const routed = new Set();
+
+            for (let i = 0; i < comps.length; i++) {
+                for (let j = i + 1; j < comps.length && j < i + 3; j++) {
+                    const comp1 = comps[i];
+                    const comp2 = comps[j];
+
+                    const pin1 = comp1.pins[0];
+                    const pin2 = comp2.pins[comp2.pins.length - 1];
+
+                    const routeKey = `${i}-${j}`;
+                    if (!routed.has(routeKey)) {
+                        const path = manhattanRoute(pin1, pin2);
+                        newTraces.push({
+                            from: { x: pin1.x, y: pin1.y },
+                            to: { x: pin2.x, y: pin2.y },
+                            path: path,
+                            layer: Math.random() > 0.5 ? 'top' : 'bottom',
+                            width: 2
+                        });
+                        routed.add(routeKey);
+                    }
+                }
+            }
+
+            return newTraces;
+        }
+
+        function drawPCB() {
+            const canvas = document.getElementById('pcbCanvas');
+            const ctx = canvas.getContext('2d');
+            const gridSize = parseInt(document.getElementById('gridSize').value);
+            const boardWidth = canvas.width;
+            const boardHeight = canvas.height;
+
+            // Clear canvas
+            ctx.fillStyle = '#1e293b';
+            ctx.fillRect(0, 0, boardWidth, boardHeight);
+
+            // Draw grid
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 0.5;
+            for (let x = 0; x < boardWidth; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, boardHeight);
+                ctx.stroke();
+            }
+            for (let y = 0; y < boardHeight; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(boardWidth, y);
+                ctx.stroke();
+            }
+
+            // Draw traces
+            traces.forEach(trace => {
+                ctx.strokeStyle = trace.layer === selectedLayer || selectedLayer === 'all' 
+                    ? '#22d3ee' : '#164e63';
+                ctx.lineWidth = trace.width;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'miter';
+
+                if (trace.path && trace.path.length > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(trace.path[0].x, trace.path[0].y);
+                    for (let i = 1; i < trace.path.length; i++) {
+                        ctx.lineTo(trace.path[i].x, trace.path[i].y);
+                    }
+                    ctx.stroke();
+
+                    // Draw vias
+                    trace.path.forEach((point, idx) => {
+                        if (idx > 0 && idx < trace.path.length - 1) {
+                            ctx.fillStyle = '#fbbf24';
+                            ctx.beginPath();
+                            ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    });
+                }
+            });
+
+            // Draw components
+            components.forEach(comp => {
+                ctx.save();
+                ctx.translate(comp.x, comp.y);
+                ctx.rotate((comp.rotation * Math.PI) / 180);
+
+                ctx.fillStyle = comp.color;
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.fillRect(-comp.width / 2, -comp.height / 2, comp.width, comp.height);
+                ctx.strokeRect(-comp.width / 2, -comp.height / 2, comp.width, comp.height);
+
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 12px monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(comp.symbol, 0, 0);
+
+                ctx.restore();
+
+                comp.pins.forEach((pin) => {
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.strokeStyle = '#92400e';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(pin.x, pin.y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                });
+
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${comp.type}${comp.id}`, comp.x, comp.y + comp.height / 2 + 15);
+            });
+
+            // Update stats
+            const area = ((boardWidth * boardHeight) / (1000 * 1000)).toFixed(2);
+            document.getElementById('statsComponents').textContent = components.length;
+            document.getElementById('statsTraces').textContent = traces.length;
+            document.getElementById('statsArea').textContent = area + ' cm²';
+        }
+
+        function generateDesign() {
+            components = placeComponents();
+
+            if (autoRoute && components.length > 0) {
+                traces = routeTraces(components);
+            } else {
+                traces = [];
+            }
+
+            drawPCB();
+        }
+
+        function exportDesign() {
+            if (components.length === 0) return;
+
+            const canvas = document.getElementById('pcbCanvas');
+            const design = {
+                metadata: {
+                    name: 'PCB Design',
+                    timestamp: new Date().toISOString(),
+                    boardSize: { width: canvas.width, height: canvas.height },
+                    gridSize: parseInt(document.getElementById('gridSize').value),
+                    minSpacing: parseInt(document.getElementById('minSpacing').value)
+                },
+                components: components,
+                traces: traces,
+                stats: {
+                    components: components.length,
+                    traces: traces.length,
+                    area: ((canvas.width * canvas.height) / (1000 * 1000)).toFixed(2)
+                }
+            };
+
+            const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pcb-design.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearCanvas() {
+            components = [];
+            traces = [];
+            drawPCB();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

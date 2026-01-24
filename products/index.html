@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-start: #4f46e5;
+            --gradient-middle: #7c3aed;
+            --gradient-end: #06b6d4;
+            --accent-gold: #f59e0b;
+            --accent-orange: #f97316;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body.dark {
+            --gradient-start: #1e1b4b;
+            --gradient-middle: #312e81;
+            --gradient-end: #1e40af;
+            --glass-bg: rgba(0, 0, 0, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            transition: background 0.3s;
+            overflow-x: hidden;
+        }
+        .glass-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            box-sizing: border-box;
+            height: 64px;
+            background: var(--glass-bg);
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            max-width: none;
+            margin: 0;
+        }
+        body.day .glass-header {
+            background: rgba(255,255,255,0.55);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+        }
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .company-logo {
+            font-size: 2.2rem;
+            color: var(--accent-gold);
+            background: rgba(255,255,255,0.18);
+            border-radius: 10px;
+            padding: 6px;
+            transition: box-shadow 0.18s, transform 0.18s, background 0.18s;
+        }
+        .company-logo:hover {
+            box-shadow: 0 2px 12px rgba(245,158,11,0.18);
+            background: rgba(255,255,255,0.28);
+            transform: scale(1.08) rotate(-8deg);
+        }
+        .company-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .toggle-btn {
+            background: rgba(255,255,255,0.18);
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+        }
+        .toggle-btn:hover {
+            background: rgba(255,255,255,0.32);
+            box-shadow: 0 2px 12px rgba(76,110,245,0.13);
+            transform: scale(1.08) rotate(8deg);
+        }
+        .toggle-icon {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        body.day {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+        }
+        body.day .company-name {
+            color: #222;
+        }
+        body.day .glass-header {
+            background: rgba(255,255,255,0.55); /* more transparent for day */
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        body.day .company-logo {
+            color: #f59e0b;
+            background: rgba(0,0,0,0.08);
+        }
+        body.day .toggle-icon {
+            color: #222;
+        }
+        .glass-box {
+            background: rgba(20,22,34,0.45); /* more transparent glass for night */
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.18);
+            max-width: 500px;
+            width: 100%;
+            padding: 32px;
+            text-align: center;
+            margin: 0 auto;
+            color: #f3f6fa; /* light text for readability */
+        }
+        body.day .glass-box {
+            background: rgba(255,255,255,0.65); /* more transparent for glossy effect */
+            color: #222;
+        }
+        .product-list {
+            list-style: none;
+            padding: 0;
+            margin: 90px auto 0 auto; /* adjust for new header height */
+            max-width: 520px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-item {
+            background: rgba(20,22,34,0.13);
+            border-radius: 18px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.10);
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+            text-align: center;
+            color: #f3f6fa;
+            transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+            margin: 0 auto;
+        }
+        .product-item:hover {
+            box-shadow: 0 6px 28px rgba(0,0,0,0.16), 0 1px 4px rgba(0,123,255,0.06);
+            background: rgba(20,22,34,0.22);
+            transform: translateY(-1px) scale(1.012);
+        }
+        body.day .product-item {
+            background: rgba(255,255,255,0.22);
+            color: #222;
+            transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+        }
+        body.day .product-item:hover {
+            background: rgba(255,255,255,0.32);
+            box-shadow: 0 6px 28px rgba(76,110,245,0.10), 0 1px 4px rgba(6,182,212,0.06);
+            transform: translateY(-1px) scale(1.012);
+        }
+        .product-title {
+            margin-bottom: 18px;
+            color: inherit;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        .editor-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 28px;
+            background: rgba(0,123,255,0.18);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
+        }
+        .editor-link:hover, .editor-link:focus {
+            background: rgba(0,123,255,0.32);
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.18);
+            transform: scale(1.04);
+            text-decoration: none;
+        }
+        @media (max-width: 700px) {
+            .glass-header {
+                height: 54px;
+                padding: 0 10px;
+                border-radius: 0 0 16px 16px;
+                width: 100%;
+            }
+            .product-list {
+                margin-top: 70px;
+            }
+        }
+        @media (max-width: 480px) {
+            .glass-header {
+                height: 44px;
+                padding: 0 4vw;
+                border-radius: 0 0 10px 10px;
+                width: 100%;
+            }
+            .company-name {
+                font-size: 1.1rem;
+            }
+            .company-logo {
+                font-size: 1.5rem;
+                padding: 4px;
+            }
+            .toggle-btn {
+                width: 36px;
+                height: 36px;
+            }
+            .product-list {
+                margin-top: 56px;
+            }
+        }
+    </style>
+</head>
+<body class="day">
+    <div class="glass-header">
+        <div class="company-info">
+            <i class="fas fa-microchip company-logo"></i>
+            <span class="company-name">Tester Chip</span>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <a href="../index.html" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">Home</a>
+            <a href="../About/index.html" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">About Us</a>
+            <a href="https://github.com/TesterChip" target="_blank" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">GitHub</a>
+            <button class="toggle-btn" id="toggleMode" title="Toggle Day/Night" style="display: flex;">
+                <span class="toggle-icon" id="toggleIcon">&#x1F319;</span>
+            </button>
+        </div>
+    </div>
+    <ul class="product-list">
+        <li class="product-item">
+            <h2 class="product-title">⚙️ Flood Detector</h2>
+            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Arduino-based water level detection system with LCD display and alerts</p>
+            <a class="editor-link" href="./flood-detector/index.html">
+                View Project Details
+            </a>
+        </li>
+        <li class="product-item">
+            <h2 class="product-title">📝 HTML Live Editor</h2>
+            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Write, edit, and preview HTML code in real-time</p>
+            <a class="editor-link" href="./html-editor/index.html">
+                Open HTML Editor
+            </a>
+        </li>
+        <li class="product-item">
+            <h2 class="product-title">🐍 Python Live Editor</h2>
+            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Execute Python code directly in your browser</p>
+            <a class="editor-link" href="./python-editor/index.html">
+                Open Python Editor
+            </a>
+        </li>
+        <li class="product-item">
+            <h2 class="product-title">🎨 PCB Layout Generator</h2>
+            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">AI-powered PCB design and layout generation tool</p>
+            <a class="editor-link" href="./pcb-generator/index.html">
+                Open PCB Generator
+            </a>
+        </li>
+    </ul>
+    <script>
+        // Day-Night mode toggle
+        const toggleBtn = document.getElementById('toggleMode');
+        const toggleIcon = document.getElementById('toggleIcon');
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('night');
+            document.body.classList.toggle('day');
+            if(document.body.classList.contains('night')) {
+                toggleIcon.textContent = '🌙';
+            } else {
+                toggleIcon.textContent = '☀️';
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+

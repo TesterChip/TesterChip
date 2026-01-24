@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TesterChip Live Editor Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Navigation Styles */
+        .nav-header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .nav-header a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.15);
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .nav-header a:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        .nav-header-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .nav-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .nav-header-links {
+                width: 100%;
+                justify-content: center;
+            }
+            .nav-header a {
+                font-size: 0.9rem;
+                padding: 6px 12px;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #1f2937;
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            background: #111827;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4, #14b8a6);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-upload { background: #2563eb; color: white; }
+        .btn-upload:hover { background: #1d4ed8; }
+        
+        .btn-download { background: #7c3aed; color: white; }
+        .btn-download:hover { background: #6d28d9; }
+        
+        .btn-copy { background: #374151; color: white; }
+        .btn-copy:hover { background: #4b5563; }
+        
+        .btn-reset { background: #374151; color: white; }
+        .btn-reset:hover { background: #4b5563; }
+        
+        .btn-run { background: #16a34a; color: white; }
+        .btn-run:hover { background: #15803d; }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Editor Section */
+        .editor-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #374151;
+        }
+
+        .tabs {
+            display: flex;
+            background: #111827;
+            border-bottom: 1px solid #374151;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            color: white;
+        }
+
+        .tab.active {
+            background: #1f2937;
+            color: white;
+        }
+
+        .tab.active.html { color: #fb923c; border-bottom-color: #fb923c; }
+        .tab.active.css { color: #60a5fa; border-bottom-color: #60a5fa; }
+        .tab.active.js { color: #fbbf24; border-bottom-color: #fbbf24; }
+
+        .editor-area {
+            flex: 1;
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            background: #1f2937;
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: none;
+            outline: none;
+        }
+
+        .editor-pane {
+            display: none;
+            height: 100%;
+        }
+
+        .editor-pane.active {
+            display: block;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .preview-header {
+            background: #111827;
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-header h2 {
+            color: #d1d5db;
+            font-size: 1rem;
+        }
+
+        .preview-header span {
+            color: #6b7280;
+            font-size: 0.75rem;
+        }
+
+        iframe {
+            flex: 1;
+            border: none;
+            background: white;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .editor-section, .preview-section {
+                width: 100%;
+                height: 50%;
+            }
+            .buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            button {
+                font-size: 0.875rem;
+                padding: 0.5rem 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-header">
+        <div class="nav-header-links">
+            <a href="../../index.html">Home</a>
+            <a href="../index.html">Products</a>
+            <a href="../html-editor/index.html" style="background: rgba(255,255,255,0.3);">HTML Editor</a>
+            <a href="../python-editor/index.html">Python Editor</a>
+            <a href="../flood-detector/index.html">Flood Detector</a>
+            <a href="../pcb-generator/index.html">PCB Generator</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <rect x="6" y="6" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+                        <rect x="18" y="6" width="8" height="8" rx="2" fill="white" opacity="0.7"/>
+                        <rect x="6" y="18" width="8" height="8" rx="2" fill="white" opacity="0.7"/>
+                        <rect x="18" y="18" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+                        <circle cx="16" cy="16" r="2" fill="white"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>TesterChip</h1>
+                    <p>Live Editor Tool</p>
+                </div>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn-upload" onclick="uploadProject()">
+                    ↑ Upload
+                </button>
+                <button class="btn-download" onclick="downloadProject()">
+                    ↓ Download
+                </button>
+                <button class="btn-copy" onclick="copyCode()">
+                    📋 Copy
+                </button>
+                <button class="btn-reset" onclick="resetCode()">
+                    ↻ Reset
+                </button>
+                <button class="btn-run" onclick="runCode()">
+                    ▶ Run
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <div class="tabs">
+                    <button class="tab active html" onclick="switchTab('html')">HTML</button>
+                    <button class="tab css" onclick="switchTab('css')">CSS</button>
+                    <button class="tab js" onclick="switchTab('js')">JavaScript</button>
+                </div>
+                
+                <div class="editor-area">
+                    <div class="editor-pane active" id="html-pane">
+                        <textarea id="html-code" oninput="updatePreview()" placeholder="Write your HTML here..."><h1>Hello World!</h1>
+<p>Start coding your project here...</p><p>Note: This is still in its early phase. So there might be problems in JavaScript.</p></textarea>
+                    </div>
+                    
+                    <div class="editor-pane" id="css-pane">
+                        <textarea id="css-code" oninput="updatePreview()" placeholder="Write your CSS here...">body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+h1 {
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}</textarea>
+                    </div>
+                    
+                    <div class="editor-pane" id="js-pane">
+                        <textarea id="js-code" oninput="updatePreview()" placeholder="Write your JavaScript here...">// Write your JavaScript here
+console.log("Ready to code!");
+
+// Example: Add click event
+// document.querySelector("h1")?.addEventListener("click", () => {
+//   alert("Hello from TesterChip!");
+// });</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h2>Live Preview</h2>
+                    <span>Auto-refresh enabled</span>
+                </div>
+                <iframe id="preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" accept=".json" onchange="handleFileUpload(event)">
+
+    <script>
+        let updateTimeout;
+
+        // Switch between tabs
+        function switchTab(tab) {
+            // Remove active class from all tabs and panes
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.editor-pane').forEach(p => p.classList.remove('active'));
+            
+            // Add active class to selected tab and pane
+            document.querySelector('.tab.' + tab).classList.add('active');
+            document.getElementById(tab + '-pane').classList.add('active');
+        }
+
+        // Update preview with debounce
+        function updatePreview() {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                const html = document.getElementById('html-code').value;
+                const css = document.getElementById('css-code').value;
+                const js = document.getElementById('js-code').value;
+                
+                const iframe = document.getElementById('preview');
+                const content = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>${css}</style>
+                    </head>
+                    <body>
+                        ${html}
+                        <script>
+                            try {
+                                ${js}
+                            } catch(err) {
+                                console.error('JavaScript Error:', err);
+                            }
+                        <\/script>
+                    </body>
+                    </html>
+                `;
+                
+                iframe.srcdoc = content;
+            }, 500);
+        }
+
+        // Run code immediately
+        function runCode() {
+            clearTimeout(updateTimeout);
+            updatePreview();
+        }
+
+        // Reset code to default
+        function resetCode() {
+            if (confirm('Are you sure you want to reset all code?')) {
+                document.getElementById('html-code').value = '<h1>Hello World!</h1>\n<p>Start coding your project here...</p>';
+                document.getElementById('css-code').value = 'body {\n  font-family: Arial, sans-serif;\n  padding: 20px;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  color: white;\n}\n\nh1 {\n  color: #fff;\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);\n}';
+                document.getElementById('js-code').value = '// Write your JavaScript here\nconsole.log("Ready to code!");\n\n// Example: Add click event\n// document.querySelector("h1")?.addEventListener("click", () => {\n//   alert("Hello from TesterChip!");\n// });';
+                updatePreview();
+            }
+        }
+
+        // Copy all code
+        function copyCode() {
+            const html = document.getElementById('html-code').value;
+            const css = document.getElementById('css-code').value;
+            const js = document.getElementById('js-code').value;
+            
+            const code = `HTML:\n${html}\n\nCSS:\n${css}\n\nJavaScript:\n${js}`;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        // Download project as JSON
+        function downloadProject() {
+            const projectData = {
+                html: document.getElementById('html-code').value,
+                css: document.getElementById('css-code').value,
+                javascript: document.getElementById('js-code').value,
+                timestamp: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const jsonString = JSON.stringify(projectData, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `testerchip-project-${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Upload project
+        function uploadProject() {
+            document.getElementById('file-input').click();
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.name.endsWith('.json')) {
+                alert('Please upload a valid JSON file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.html !== undefined) {
+                        document.getElementById('html-code').value = data.html;
+                    }
+                    if (data.css !== undefined) {
+                        document.getElementById('css-code').value = data.css;
+                    }
+                    if (data.javascript !== undefined) {
+                        document.getElementById('js-code').value = data.javascript;
+                    }
+                    
+                    updatePreview();
+                    alert('Project loaded successfully!');
+                } catch (err) {
+                    alert('Error loading file: Invalid JSON format');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+            
+            event.target.value = '';
+        }
+
+        // Initialize preview on load
+        window.onload = function() {
+            updatePreview();
+        };
+    </script>
+</body>
+</html>
