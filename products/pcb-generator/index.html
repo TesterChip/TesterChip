@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TesterChip - PCB Layout Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
         }
         .gradient-bg {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
+            background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #0f172a);
         }
         .gradient-text {
             background: linear-gradient(to right, #22d3ee, #3b82f6);
@@ -19,54 +18,9 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        /* Navigation Styles */
-        .nav-header {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-        .nav-header a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.15);
-            transition: all 0.3s;
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .nav-header a:hover {
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-2px);
-        }
-        .nav-header-links {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        @media (max-width: 768px) {
-            .nav-header {
-                flex-direction: column;
-                gap: 8px;
-            }
-            .nav-header-links {
-                width: 100%;
-                justify-content: center;
-            }
-            .nav-header a {
-                font-size: 0.9rem;
-                padding: 6px 12px;
-            }
-        }
     </style>
 </head>
-<body class="gradient-bg text-white">
+<body class="gradient-bg text-white min-h-screen">
     <div class="p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
@@ -201,6 +155,7 @@
                                 <strong class="text-white">Features:</strong> Custom board dimensions, component selection, 90° Manhattan routing, multi-layer support, and exportable design files.
                                 <br>
                                 <strong class="text-white">Note:</strong> Our project is still in its early phase. We're laying the groundwork and shaping core ideas—more updates soon!
+                            </div>
                             </div>
                         </div>
                     </div>
