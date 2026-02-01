@@ -6,31 +6,14 @@
     <title>Product Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --gradient-start: #4f46e5;
-            --gradient-middle: #7c3aed;
-            --gradient-end: #06b6d4;
-            --accent-gold: #f59e0b;
-            --accent-orange: #f97316;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark {
-            --gradient-start: #1e1b4b;
-            --gradient-middle: #312e81;
-            --gradient-end: #1e40af;
-            --glass-bg: rgba(0, 0, 0, 0.2);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
         body {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
+            background: linear-gradient(135deg, #181a20 0%, #23243a 50%, #0a0c18 100%);
             margin: 0;
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             min-height: 100vh;
             transition: background 0.3s;
             overflow-x: hidden;
+            padding-bottom: 120px; /* Added padding to prevent content from being hidden behind the footer */
         }
         .glass-header {
             position: fixed;
@@ -40,12 +23,12 @@
             width: 100%;
             box-sizing: border-box;
             height: 64px;
-            background: var(--glass-bg);
+            background: rgba(255,255,255,0.09);
             border-radius: 0 0 24px 24px;
             box-shadow: 0 4px 32px rgba(0,0,0,0.18);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255,255,255,0.18);
             padding: 0 32px;
             display: flex;
             align-items: center;
@@ -65,7 +48,7 @@
         }
         .company-logo {
             font-size: 2.2rem;
-            color: var(--accent-gold);
+            color: #f59e0b;
             background: rgba(255,255,255,0.18);
             border-radius: 10px;
             padding: 6px;
@@ -99,6 +82,10 @@
             box-shadow: 0 2px 12px rgba(76,110,245,0.13);
             transform: scale(1.08) rotate(8deg);
         }
+        .toggle-btn:focus {
+            outline: 2px solid rgba(255,255,255,0.3);
+            outline-offset: 2px;
+        }
         .toggle-icon {
             font-size: 1.5rem;
             color: #fff;
@@ -109,10 +96,6 @@
         body.day .company-name {
             color: #222;
         }
-        body.day .glass-header {
-            background: rgba(255,255,255,0.55); /* more transparent for day */
-            border: 1px solid rgba(0,0,0,0.08);
-        }
         body.day .company-logo {
             color: #f59e0b;
             background: rgba(0,0,0,0.08);
@@ -120,28 +103,10 @@
         body.day .toggle-icon {
             color: #222;
         }
-        .glass-box {
-            background: rgba(20,22,34,0.45); /* more transparent glass for night */
-            border-radius: 18px;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.18);
-            max-width: 500px;
-            width: 100%;
-            padding: 32px;
-            text-align: center;
-            margin: 0 auto;
-            color: #f3f6fa; /* light text for readability */
-        }
-        body.day .glass-box {
-            background: rgba(255,255,255,0.65); /* more transparent for glossy effect */
-            color: #222;
-        }
         .product-list {
             list-style: none;
             padding: 0;
-            margin: 90px auto 0 auto; /* adjust for new header height */
+            margin: 90px auto 0 auto;
             max-width: 520px;
             display: flex;
             flex-direction: column;
@@ -172,7 +137,6 @@
         body.day .product-item {
             background: rgba(255,255,255,0.22);
             color: #222;
-            transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
         }
         body.day .product-item:hover {
             background: rgba(255,255,255,0.32);
@@ -204,37 +168,105 @@
             transform: scale(1.04);
             text-decoration: none;
         }
+        .footer {
+            margin-top: 80px;
+            padding: 60px 32px 40px;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0a1128 100%);
+            border-top: 2px solid rgba(99, 102, 241, 0.3);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        body.day .footer {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
+            border-top: 2px solid rgba(79, 70, 229, 0.2);
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        body.day .footer-container {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .footer-section {
+            color: #b0b9d4;
+            background: rgba(99, 102, 241, 0.08);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid rgba(124, 142, 248, 0.15);
+        }
+        body.day .footer-section {
+            color: #1f2937;
+            background: rgba(79, 70, 229, 0.05);
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        .footer-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 20px 0;
+            color: #7c8ef8;
+        }
+        body.day .footer-section h3 {
+            color: #111827;
+        }
+        .footer-section p {
+            margin: 0 0 12px 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #a0a9c4;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .footer-section li {
+            margin: 10px 0;
+        }
+        .footer-section a {
+            color: #7c8ef8;
+            text-decoration: none;
+            transition: color 0.18s;
+            font-weight: 500;
+        }
+        .footer-section a:hover {
+            color: #9db4ff;
+            text-decoration: underline;
+        }
+        body.day .footer-section a {
+            color: #3b82f6;
+        }
+        body.day .footer-section a:hover {
+            color: #1d4ed8;
+        }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        body.day .footer-bottom {
+            color: #6b7280;
+        }
         @media (max-width: 700px) {
-            .glass-header {
-                height: 54px;
-                padding: 0 10px;
-                border-radius: 0 0 16px 16px;
-                width: 100%;
-            }
-            .product-list {
-                margin-top: 70px;
+            .footer {
+                padding: 30px 16px;
+                margin-top: 60px;
             }
         }
         @media (max-width: 480px) {
-            .glass-header {
-                height: 44px;
-                padding: 0 4vw;
-                border-radius: 0 0 10px 10px;
-                width: 100%;
+            .footer {
+                padding: 24px 12px;
+                margin-top: 50px;
             }
-            .company-name {
-                font-size: 1.1rem;
-            }
-            .company-logo {
-                font-size: 1.5rem;
-                padding: 4px;
-            }
-            .toggle-btn {
-                width: 36px;
-                height: 36px;
-            }
-            .product-list {
-                margin-top: 56px;
+            .footer-content {
+                font-size: 0.85rem;
             }
         }
     </style>
@@ -245,14 +277,9 @@
             <i class="fas fa-microchip company-logo"></i>
             <span class="company-name">Tester Chip</span>
         </div>
-        <div style="display: flex; gap: 12px; align-items: center;">
-            <a href="../index.html" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">Home</a>
-            <a href="../About/index.html" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">About Us</a>
-            <a href="https://github.com/TesterChip" target="_blank" style="color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 50px; background: rgba(255,255,255,0.1); transition: all 0.3s; font-weight: 600;">GitHub</a>
-            <button class="toggle-btn" id="toggleMode" title="Toggle Day/Night" style="display: flex;">
-                <span class="toggle-icon" id="toggleIcon">&#x1F319;</span>
-            </button>
-        </div>
+        <button class="toggle-btn" id="toggleMode" title="Toggle Day/Night" style="display: flex;">
+            <span class="toggle-icon" id="toggleIcon">&#x1F319;</span>
+        </button>
     </div>
     <ul class="product-list">
         <li class="product-item">
@@ -283,7 +310,46 @@
                 Open PCB Generator
             </a>
         </li>
+        <li class="product-item">
+            <h2 class="product-title"><i class="fa-solid fa-cube"></i> TesterChip - Task AutoPilot</h2>
+            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">TesterChip - Find the Perfect AI Tool</p>
+            <a class="editor-link" href="https://testerchip.github.io/TesterChip-Task-AutoPilot/" target="_blank">
+                Open Task-AutoPilot
+            </a>
+        </li>
     </ul>
+    <div class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-microchip company-logo"></i> Tester Chip</h3>
+                <p>Professional digital PCB design services. Transform your electronic innovations into reality with expert layout and schematic design.</p>
+                <a href="mailto:testerchipcompany@gmail.com" style="display: inline-flex; align-items: center; gap: 8px;">
+                    ✉️ Contact Us
+                </a>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul>
+                    <li><a href="#pcb-layout">PCB Layout Design</a></li>
+                    <li><a href="#schematic">Schematic Design</a></li>
+                    <li><a href="#design-review">Design Review</a></li>
+                    <li><a href="#consultation">Design Consultation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="../About/index.html">About Us</a></li>
+                    <li><a href="mailto:testerchipcompany@gmail.com">Contact</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Tester Chip. All rights reserved.</p>
+        </div>
+    </div>
     <script>
         // Day-Night mode toggle
         const toggleBtn = document.getElementById('toggleMode');
@@ -299,7 +365,6 @@
         });
     </script>
 </body>
-
 </html>
 
 
