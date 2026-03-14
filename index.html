@@ -1,1596 +1,979 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tester Chip - Professional Digital PCB Design Services</title>
-    <meta name="description" content="Professional digital PCB design services - Expert circuit board layout and schematic design for your electronic projects">
-    <meta name="keywords" content="PCB design, circuit board layout, schematic design, electronics design, digital PCB services">
-    
-    <!-- Open Graph tags -->
-    <meta property="og:title" content="Tester Chip - Professional Digital PCB Design Services">
-    <meta property="og:description" content="Expert digital PCB design services. High-quality circuit board layouts and schematics for your electronic innovations.">
-    <meta property="og:type" content="website">
-    
-    <!-- Fonts and Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --gradient-start: #4f46e5;
-            --gradient-middle: #7c3aed;
-            --gradient-end: #06b6d4;
-            --accent-gold: #f59e0b;
-            --accent-orange: #f97316;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
-
-        body.dark {
-            --gradient-start: #1e1b4b;
-            --gradient-middle: #312e81;
-            --gradient-end: #1e40af;
-            --glass-bg: rgba(0, 0, 0, 0.2);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            width: 100%;
-        }
-
-        /* Ensure smooth layout on all screen sizes */
-        .section {
-            width: 100%;
-            overflow-x: hidden;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-        }
-
-        /* Header Styles */
-        header {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 2px 8px #223a5e, 0 1px 0 #000;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            color: var(--accent-gold);
-            margin-right: 8px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a, .nav-links button {
-            color: #fff;
-            text-decoration: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            text-shadow: 0 2px 8px #223a5e, 0 1px 0 #000;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links a:hover, .nav-links button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .theme-toggle {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102,126,234,0.10);
-            cursor: pointer;
-            margin-left: 1rem;
-        }
-
-        .theme-toggle:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(102,126,234,0.18);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: var(--glass-bg);
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.5rem;
-            margin-left: 0.5rem;
-            z-index: 1001;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 1.5rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--glass-border);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(30, 27, 75, 0.98);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-30px);
-            transition: opacity 0.3s, transform 0.3s;
-        }
-        .mobile-menu.active {
-            display: flex;
-            opacity: 1;
-            pointer-events: auto;
-            animation: mobileMenuSlideDown 0.35s cubic-bezier(.4,0,.2,1);
-            transform: translateY(0);
-        }
-        @keyframes mobileMenuSlideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .mobile-menu a {
-            color: #fff;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border-radius: 20px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            background: rgba(255,255,255,0.08);
-            width: 80vw;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .mobile-menu a:hover {
-            background: rgba(255,255,255,0.18);
-            color: var(--accent-gold);
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: none;
-            opacity: 0;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: slideInUp 1s ease-out;
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            animation: slideInUp 1s ease-out 0.3s both;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            align-items: center; /* Add this line to vertically center if needed */
-            animation: slideInUp 1s ease-out 0.6s both;
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, var(--accent-gold), var(--accent-orange));
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn-secondary {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 1rem 2rem;
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px) scale(1.05);
-        }
-
-        /* Features Section */
-        .features {
-            padding: 4rem 0;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: 3rem;
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        .section-header p {
-            font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.8);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            color: white;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px) scale(1.08);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            z-index: 10;
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .star-rating {
-            display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
-            justify-content: center;
-        }
-
-        .star {
-            font-size: 2rem;
-            color: #ddd;
-            cursor: pointer;
-            transition: transform 0.3s ease, color 0.3s;
-        }
-
-        .star.active {
-            color: var(--accent-gold);
-        }
-
-        /* Unified zoom effect for all relevant elements */
-        .star:hover,
-        .feature-icon:hover,
-        .step-icon:hover,
-        .logo:hover,
-        .nav-links a:hover,
-        .file-upload:hover {
-            transform: scale(1.15);
-            transition: transform 0.3s ease, color 0.3s;
-        }
-
-        .star:hover {
-            color: var(--accent-gold);
-        }
-
-        /* Process Section */
-        .process {
-            padding: 4rem 0;
-        }
-
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .step {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            color: white;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .step:hover {
-            transform: translateY(-10px) scale(1.08);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            z-index: 10;
-        }
-
-        .step-number {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(45deg, var(--accent-gold), var(--accent-orange));
-            color: #333;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .step-icon {
-            font-size: 3rem;
-            margin: 1rem 0;
-            display: block;
-        }
-
-        .step h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Form Section */
-        .form-section {
-            padding: 4rem 0;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        }
-
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
-            transform: scale(1.02);
-        }
-
-        .form-group input:hover,
-        .form-group textarea:hover,
-        .form-group select:hover {
-            transform: scale(1.01);
-            border-color: #bbb;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .file-upload {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .file-upload:hover {
-            border-color: #667eea;
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .file-upload i {
-            font-size: 3rem;
-            color: #999;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .submit-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            padding: 1rem 3rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 4rem 0;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            color: white;
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-            position: relative;
-            word-wrap: break-word;
-            word-break: break-all;
-            overflow-wrap: break-word;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px) scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .contact-card p {
-            word-wrap: break-word;
-            word-break: break-all;
-            overflow-wrap: break-word;
-            hyphens: auto;
-        }
-
-        .contact-card i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .contact-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 3rem 0 1rem;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand i {
-            font-size: 1.5rem;
-            color: var(--accent-gold);
-        }
-
-        .footer-brand span {
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            display: block;
-            padding: 0.25rem 0;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Animations */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-slide-up {
-            animation: slideInUp 0.6s ease-out;
-        }
-
-        /* Zoom effects for various elements */
-        .feature-icon:hover, .step-icon:hover {
-            transform: scale(1.15);
-            transition: transform 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            transform: scale(1.1);
-        }
-
-        .file-upload:hover {
-            transform: scale(1.02);
-        }
-
-        /* Responsive Design */
-        @media (min-width: 769px) {
-            .nav-links {
-                display: flex !important;
-            }
-            .mobile-menu-btn {
-                display: none !important;
-            }
-            .mobile-menu {
-                display: none !important;
-            }
-            .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 2rem;
-            }
-            .process-steps {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 2rem;
-            }
-            .contact-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 2rem;
-            }
-            .footer-content {
-                grid-template-columns: 2fr 1fr 1fr;
-                gap: 2rem;
-                text-align: left;
-            }
-            .btn-primary, .btn-secondary {
-                width: auto;
-                max-width: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 10px;
-            }
-            header {
-                padding: 0.5rem 0;
-            }
-            nav {
-                flex-direction: row;
-                align-items: center;
-            }
-            .logo {
-                font-size: 1.5rem;
-            }
-            .nav-links {
-                display: none !important;
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-            .mobile-menu.active {
-                display: flex;
-            }
-            .hero {
-                padding: 2.5rem 0;
-            }
-            .hero h1 {
-                font-size: 2.1rem;
-                margin-bottom: 0.7rem;
-            }
-            .hero p {
-                font-size: 1.05rem;
-                margin-bottom: 1.2rem;
-            }
-            .hero-buttons {
-                flex-direction: column;
-                gap: 0.7rem;
-            }
-            .btn-primary, .btn-secondary {
-                padding: 0.8rem 1.3rem;
-                font-size: 1rem;
-                width: 90vw;
-                max-width: 350px;
-                justify-content: center;
-            }
-            .features {
-                padding: 2rem 0;
-            }
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            .feature-card {
-                padding: 1.2rem;
-                font-size: 1rem;
-            }
-            .section-header h2 {
-                font-size: 1.5rem;
-            }
-            .section-header p {
-                font-size: 1rem;
-            }
-            .process {
-                padding: 2rem 0;
-            }
-            .process-steps {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            .step {
-                padding: 1.2rem;
-                font-size: 1rem;
-            }
-            .form-section {
-                padding: 2rem 0;
-            }
-            .form-container {
-                padding: 1.2rem 0.7rem;
-                margin: 0 2px;
-            }
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 0.7rem;
-            }
-            .form-group input,
-            .form-group textarea,
-            .form-group select {
-                padding: 0.8rem;
-                font-size: 0.98rem;
-            }
-            .file-upload {
-                padding: 1.2rem;
-                font-size: 0.95rem;
-            }
-            .contact {
-                padding: 2rem 0;
-            }
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 1.2rem;
-            }
-            .contact-card {
-                padding: 1.2rem;
-                font-size: 1rem;
-            }
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                text-align: center;
-                padding: 0 5px;
-            }
-            .footer-brand span {
-                font-size: 1rem;
-            }
-            .footer-links h3 {
-                font-size: 1rem;
-            }
-            .footer-bottom {
-                padding-top: 1rem;
-                font-size: 0.95rem;
-            }
-            .notification {
-                bottom: 10px;
-                right: 10px;
-                padding: 0.7rem 1rem;
-                font-size: 0.95rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 4px;
-            }
-            .hero h1 {
-                font-size: 1.3rem;
-            }
-            .hero p {
-                font-size: 0.95rem;
-                padding: 0 2px;
-            }
-            .section-header h2 {
-                font-size: 1.1rem;
-            }
-            .section-header p {
-                font-size: 0.95rem;
-                padding: 0 2px;
-            }
-            .form-container {
-                padding: 0.7rem 0.3rem;
-                margin: 0 1px;
-            }
-            .btn-primary, .btn-secondary {
-                padding: 0.7rem 1rem;
-                font-size: 0.95rem;
-                width: 98vw;
-                max-width: 320px;
-            }
-            .feature-card, .step, .contact-card {
-                padding: 0.7rem;
-                font-size: 0.95rem;
-            }
-            .contact-card p {
-                font-size: 0.85rem;
-                line-height: 1.3;
-            }
-            .footer-content {
-                padding: 0 2px;
-            }
-            .footer-bottom {
-                font-size: 0.9rem;
-            }
-            .notification {
-                bottom: 5px;
-                right: 5px;
-                padding: 0.5rem 0.7rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Dark mode styles */
-        .dark body {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-middle) 50%, var(--gradient-end) 100%);
-        }
-
-        /* Color classes */
-        .text-accent { color: var(--accent-gold); }
-        .text-emerald { color: #10b981; }
-        .text-blue { color: #3b82f6; }
-        .text-purple { color: #8b5cf6; }
-        .text-red { color: #ef4444; }
-        .text-green { color: #22c55e; }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #22c55e, #16a34a);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .notification.show {
-            display: flex;
-            animation: slideInUp 0.3s ease-out;
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TesterChip — Professional Digital PCB Design Services</title>
+<meta name="description" content="Professional digital PCB design services — expert circuit board layout and schematic design for your electronic projects."/>
+<meta name="keywords" content="PCB design, circuit board layout, schematic design, electronics design, digital PCB services"/>
+<meta property="og:title" content="TesterChip — Professional Digital PCB Design Services"/>
+<meta property="og:description" content="Expert digital PCB design services. High-quality circuit board layouts and schematics for your electronic innovations."/>
+<meta property="og:type" content="website"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:      #080c10;
+  --surface: #0d1117;
+  --card:    #111820;
+  --border:  #1e2a38;
+  --accent:  #e8b84b;
+  --a2:      #4be8c8;
+  --a3:      #e84b6b;
+  --a4:      #4b8be8;
+  --a5:      #a04be8;
+  --a6:      #4be870;
+  --text:    #c8d6e8;
+  --muted:   #526070;
+  --mono:    'Share Tech Mono', monospace;
+  --head:    'Barlow Condensed', sans-serif;
+  --body:    'Barlow', sans-serif;
+}
+body.day {
+  --bg:      #f0f4f8;
+  --surface: #ffffff;
+  --card:    #ffffff;
+  --border:  #d1dce8;
+  --text:    #1a2535;
+  --muted:   #7a90a8;
+  --accent:  #c9820a;
+  --a2:      #0ca678;
+  --a3:      #d63355;
+  --a4:      #2563eb;
+  --a5:      #7c3aed;
+  --a6:      #16a34a;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:var(--body); font-size:15px; line-height:1.6;
+  overflow-x:hidden; min-height:100vh;
+  transition:background .35s,color .35s;
+}
+body:not(.day)::before{
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size:180px; pointer-events:none; z-index:0;
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ── NAV ── */
+nav{
+  position:fixed; top:0; left:0; right:0; z-index:300;
+  height:56px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 40px;
+  background:rgba(8,12,16,.93); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  transition:background .35s,border-color .35s;
+}
+body.day nav{background:rgba(240,244,248,.93);}
+.nav-logo{
+  font-family:var(--mono); font-size:14px; color:var(--accent);
+  letter-spacing:.08em; display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+.nav-logo .nav-name{color:var(--text)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-links{display:flex;gap:18px}
+.nav-links a{
+  font-family:var(--head); font-size:12px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none; transition:color .2s;
+}
+.nav-links a:hover{color:var(--accent)}
+.toggle-btn,.menu-btn{
+  width:36px;height:36px;border-radius:3px;
+  background:transparent;border:1px solid var(--border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;color:var(--muted);font-size:13px;
+}
+.toggle-btn:hover,.menu-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.08)}
+.menu-btn{display:none}
+
+/* Mobile menu */
+.mobile-menu{
+  display:none;position:fixed;top:64px;right:20px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:4px;padding:8px;z-index:299;min-width:220px;
+  box-shadow:0 16px 40px rgba(0,0,0,.4);
+  animation:fadeUp .2s ease;
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--head);font-size:13px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  padding:10px 14px;border-radius:2px;transition:all .18s;
+}
+.mobile-menu a:hover{color:var(--accent);background:rgba(232,184,75,.07)}
+
+/* ── HERO ── */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:90px 24px 64px;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(232,184,75,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,184,75,.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 20%,transparent 100%);
+  transition:opacity .35s;
+}
+body.day .hero-grid{opacity:.25}
+.hero-glow{
+  position:absolute;width:700px;height:700px;
+  background:radial-gradient(circle,rgba(232,184,75,.08) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.hero-badge{
+  font-family:var(--mono);font-size:11px;color:var(--accent);
+  letter-spacing:.2em;text-transform:uppercase;
+  background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);
+  padding:5px 16px;border-radius:2px;margin-bottom:24px;
+  display:inline-flex;align-items:center;gap:8px;
+  animation:fadeUp .5s .05s ease both;
+}
+.shield-wrap{
+  width:78px;height:78px;
+  background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.3);
+  border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:32px;color:var(--accent);margin-bottom:22px;
+  transform:rotate(-4deg);box-shadow:0 0 40px rgba(232,184,75,.15);
+  animation:fadeUp .45s ease both;transition:color .35s,background .35s;
+}
+h1.hero-title{
+  font-family:var(--head);
+  font-size:clamp(48px,8vw,100px);font-weight:900;
+  line-height:.92;letter-spacing:-.02em;
+  color:var(--text);text-transform:uppercase;
+  animation:fadeUp .5s .1s ease both;
+}
+h1.hero-title .acc{color:var(--accent)}
+h1.hero-title .acc2{color:var(--a2);font-size:.6em;letter-spacing:.04em;display:block;margin-top:4px}
+.hero-sub{
+  font-size:15px;color:var(--muted);max-width:560px;
+  margin:18px auto 36px;font-weight:300;line-height:1.75;
+  animation:fadeUp .5s .18s ease both;
+}
+.hero-btns{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp .5s .25s ease both;
+}
+.btn-p,.btn-s{
+  font-family:var(--head);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 24px;border-radius:3px;text-decoration:none;
+  transition:all .2s;cursor:pointer;border:none;
+}
+.btn-p{background:var(--accent);color:#080c10}
+.btn-p:hover{background:#f0c860;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,184,75,.3)}
+.btn-s{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.btn-s:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.07)}
+
+.hero-stats{
+  display:flex;gap:36px;margin-top:44px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  animation:fadeUp .5s .32s ease both;
+}
+.hero-stats span b{color:var(--accent);font-size:22px;font-family:var(--head);font-weight:700;display:block}
+
+/* ── SHARED SECTION LAYOUT ── */
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:80px 40px}
+.divider{border:none;border-top:1px solid var(--border);position:relative;z-index:1;transition:border-color .35s}
+
+.sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.sec-title{font-family:var(--head);font-size:clamp(28px,5vw,48px);font-weight:700;text-transform:uppercase;color:var(--text);margin-bottom:12px;line-height:1}
+.sec-desc{color:var(--muted);font-size:14px;font-weight:300;max-width:560px;line-height:1.75;margin-bottom:48px}
+.sec-center{text-align:center}
+.sec-center .sec-desc{margin-left:auto;margin-right:auto}
+
+/* ── GRID CARDS (features, contact) ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.feat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:26px;transition:all .25s;position:relative;overflow:hidden;
+}
+.feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.feat-card:hover{border-color:rgba(232,184,75,.4);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.35)}
+.feat-card:hover::before{transform:scaleX(1)}
+.feat-card.c-teal::before{background:var(--a2)}.feat-card.c-teal:hover{border-color:rgba(75,232,200,.4)}
+.feat-card.c-red::before{background:var(--a3)}.feat-card.c-red:hover{border-color:rgba(232,75,107,.4)}
+.feat-card.c-blue::before{background:var(--a4)}.feat-card.c-blue:hover{border-color:rgba(75,139,232,.4)}
+.feat-card.c-purple::before{background:var(--a5)}.feat-card.c-purple:hover{border-color:rgba(160,75,232,.4)}
+.feat-card.c-green::before{background:var(--a6)}.feat-card.c-green:hover{border-color:rgba(75,232,112,.4)}
+
+.fi{font-size:26px;margin-bottom:14px;display:block}
+.fc-title{font-family:var(--head);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
+.fc-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
+
+/* ── PROCESS STEPS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.step-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:28px 22px 22px;text-align:center;position:relative;
+  transition:all .25s;
+}
+.step-card:hover{border-color:rgba(232,184,75,.35);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
+.step-num{
+  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  width:28px;height:28px;border-radius:2px;
+  background:var(--accent);color:#080c10;
+  font-family:var(--head);font-size:14px;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-num.n-teal{background:var(--a2)}
+.step-num.n-red{background:var(--a3)}
+.step-num.n-blue{background:var(--a4)}
+.step-num.n-purple{background:var(--a5)}
+.si{font-size:28px;margin:8px 0 12px;display:block}
+.sc-title{font-family:var(--head);font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
+.sc-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
+
+/* ── CTA CHIP ── */
+.cta-chip{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--head);font-size:13px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;padding:12px 24px;border-radius:3px;
+  background:var(--accent);color:#080c10;
+  transition:all .2s;margin-bottom:48px;
+}
+.cta-chip:hover{background:#f0c860;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,184,75,.3)}
+.cta-chip.teal{background:var(--a2);color:#080c10}.cta-chip.teal:hover{background:#6ef5dc;box-shadow:0 8px 24px rgba(75,232,200,.3)}
+.cta-chip.blue{background:var(--a4);color:#fff}.cta-chip.blue:hover{background:#6fa9f0;box-shadow:0 8px 24px rgba(75,139,232,.3)}
+
+/* ── OSINT HUB HIGHLIGHT CARD ── */
+.osint-highlight{
+  background:var(--card);border:1px solid rgba(232,184,75,.3);border-radius:4px;
+  padding:32px;margin-bottom:32px;
+  display:flex;align-items:flex-start;gap:24px;
+  position:relative;overflow:hidden;
+  transition:border-color .25s,box-shadow .25s;
+}
+.osint-highlight::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--a2));
+}
+.osint-highlight:hover{border-color:rgba(232,184,75,.5);box-shadow:0 10px 32px rgba(0,0,0,.35)}
+.oh-icon{
+  width:56px;height:56px;flex-shrink:0;border-radius:8px;
+  background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:var(--accent);
+}
+.oh-body{flex:1}
+.oh-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--a2);margin-bottom:6px}
+.oh-title{font-family:var(--head);font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
+.oh-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:14px;max-width:600px}
+.oh-pills{display:flex;gap:8px;flex-wrap:wrap}
+.oh-pill{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 9px;border-radius:2px}
+
+/* ── FORM ── */
+.form-wrap{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:40px;max-width:840px;margin:0 auto;
+  transition:background .35s,border-color .35s;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{margin-bottom:20px}
+.inp-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.inp-field{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-family:var(--mono);font-size:13px;
+  padding:11px 14px;border-radius:3px;outline:none;
+  transition:border-color .2s,box-shadow .2s;resize:vertical;
+  transition:background .35s,border-color .35s,color .35s;
+}
+.inp-field::placeholder{color:var(--muted)}
+.inp-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,184,75,.1)}
+.inp-field:hover{border-color:var(--muted)}
+.file-drop{
+  border:1px dashed var(--border);border-radius:3px;
+  padding:28px;text-align:center;
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  cursor:pointer;transition:all .2s;
+}
+.file-drop i{font-size:28px;display:block;margin-bottom:10px;color:var(--muted)}
+.file-drop:hover{border-color:var(--accent);color:var(--text);background:rgba(232,184,75,.04)}
+.budget-note{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+.submit-btn{
+  width:100%;margin-top:8px;
+  font-family:var(--head);font-size:14px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  background:var(--accent);color:#080c10;
+  border:none;padding:14px;border-radius:3px;cursor:pointer;
+  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.submit-btn:hover{background:#f0c860;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,.3)}
+
+/* contact cards */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.contact-card{
+  background:var(--card);border:1px solid var(--border);border-radius:4px;
+  padding:26px;text-align:center;
+  transition:all .25s;
+}
+.contact-card:hover{border-color:rgba(232,184,75,.35);transform:translateY(-2px)}
+.contact-card i{font-size:26px;margin-bottom:12px;display:block;color:var(--accent)}
+.contact-card.c-teal i{color:var(--a2)}
+.contact-card.c-blue i{color:var(--a4)}
+.cc-title{font-family:var(--head);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.cc-val{font-family:var(--mono);font-size:12px;color:var(--muted);word-break:break-all}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  background:var(--surface);
+  padding:52px 40px 32px;
+  transition:background .35s,border-color .35s;
+}
+.footer-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:28px;padding-bottom:36px;
+  border-bottom:1px solid var(--border);
+}
+.footer-col h4{
+  font-family:var(--head);font-size:13px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.footer-col h4 i{color:var(--accent)}
+.footer-col p{font-size:13px;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:12px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-col a{
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  text-decoration:none;display:inline-flex;align-items:center;gap:7px;
+  transition:color .2s;
+}
+.footer-col a:hover{color:var(--accent)}
+.footer-contact{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--head);font-size:12px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(232,184,75,.3);
+  padding:8px 16px;border-radius:2px;text-decoration:none;
+  background:rgba(232,184,75,.06);transition:all .2s;
+}
+.footer-contact:hover{background:rgba(232,184,75,.14);border-color:var(--accent)}
+.footer-bottom{
+  max-width:1200px;margin:24px auto 0;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:10px;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+.footer-bottom span{color:var(--accent)}
+
+/* ── NOTIFICATION ── */
+.notif{
+  position:fixed;bottom:20px;right:20px;z-index:500;
+  background:var(--card);border:1px solid var(--a6);border-radius:3px;
+  padding:14px 18px;display:none;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:12px;color:var(--text);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  animation:fadeUp .3s ease;
+}
+.notif.show{display:flex}
+.notif i{color:var(--a6)}
+.notif .close-n{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;margin-left:8px;padding:0}
+.notif.error{border-color:var(--a3)}.notif.error i{color:var(--a3)}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── ANIMATIONS ── */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .nav-links{display:none}
+  .menu-btn{display:flex}
+}
+@media(max-width:680px){
+  nav{padding:0 16px}
+  .wrap{padding:56px 16px}
+  footer{padding:36px 16px 24px}
+  .hero-stats{gap:20px}
+  .form-row{grid-template-columns:1fr}
+  .form-wrap{padding:24px 16px}
+  .hero-btns{flex-direction:column;align-items:center}
+  .btn-p,.btn-s{width:90vw;max-width:320px;justify-content:center}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <i class="fas fa-microchip"></i>
-                <span>Tester Chip</span>
-            </div>
-            
-            <ul class="nav-links">
-                <li><a href="#features" onclick="scrollToSection('features')">Features</a></li>
-                <li><a href="#process" onclick="scrollToSection('process')">Process</a></li>
-                <li><a href="#submit" onclick="scrollToSection('submit')">Submit Project</a></li>
-                <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
-                <li><a href="./About/index.html">About Us</a></li>
-                <li><a href="./products/index.html">Products</a></li>
-            </ul>
-            
-            <div style="display: flex; align-items: center;">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-            
-            <div class="mobile-menu" id="mobile-menu">
-                <a href="#features" onclick="scrollToSection('features')">Features</a>
-                <a href="#process" onclick="scrollToSection('process')">Process</a>
-                <a href="#submit" onclick="scrollToSection('submit')">Submit Project</a>
-                <a href="#contact" onclick="scrollToSection('contact')">Contact</a>
-                <a href="./About/index.html">About Us</a>
-                <a href="./products/index.html">Products</a>
-                <button style="margin-top:2rem;background:none;border:none;color:#fff;font-size:2rem;" onclick="toggleMobileMenu()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </nav>
-    </header>
 
-    <!-- Hero Section -->
-    <section class="hero section">
-        <div class="container">
-            <h1>
-                Transform Your <span style="color: #f59e0b;">PCB</span> Ideas into Reality
-            </h1>
-            <p>
-                Professional digital PCB design services. We specialize in creating high-quality circuit board layouts and schematics for your electronic projects.
-            </p>
-            <div class="hero-buttons">
-                <a href="#submit" class="btn-primary" onclick="scrollToSection('submit')">
-                    <span>Start Your Project</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                <a href="#process" class="btn-secondary" onclick="scrollToSection('process')">
-                    <span>Learn More</span>
-                    <i class="fas fa-play"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Features</h2>
-                <p>Professional digital PCB design solutions with cutting-edge software and industry expertise</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-microchip text-accent"></i>
-                    <h3>Professional Design</h3>
-                    <p>Expert digital PCB design services using industry-standard software and best practices for optimal layouts.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-shipping-fast text-emerald"></i>
-                    <h3>Fast Delivery</h3>
-                    <p>Quick turnaround on digital design files, getting your PCB layouts ready for manufacturing faster.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-award text-blue"></i>
-                    <h3>Quality Design</h3>
-                    <p>Rigorous design review processes ensure every PCB layout meets the highest technical standards.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-tools text-purple"></i>
-                    <h3>Custom Layouts</h3>
-                    <p>Tailored PCB designs to meet your specific project requirements and technical specifications.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-headset text-red"></i>
-                    <h3>Design Support</h3>
-                    <p>Dedicated design support team available throughout your project for guidance and revisions.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-dollar-sign text-green"></i>
-                    <h3>Affordable Rates</h3>
-                    <p>Cost-effective digital design services without compromising on quality and technical excellence.</p>
-                </div>
-
-                <div class="feature-card">
-                    <i class="feature-icon fas fa-tachometer-alt text-accent"></i>
-                    <h3>Complexity Assessment</h3>
-                    <p>We evaluate your project's technical complexity to ensure accurate planning, pricing, and delivery timelines.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section id="process" class="process section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Process</h2>
-                <p>From initial consultation to final design delivery, we ensure a smooth and efficient PCB design process</p>
-            </div>
-            
-            <div class="process-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <i class="step-icon fas fa-lightbulb text-accent"></i>
-                    <h3>Consultation</h3>
-                    <p>Discuss your project requirements, specifications, and design goals with our expert team.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <i class="step-icon fas fa-drafting-compass text-blue"></i>
-                    <h3>Design</h3>
-                    <p>Create detailed PCB layouts and schematics using industry-standard design software.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <i class="step-icon fas fa-search text-emerald"></i>
-                    <h3>Review</h3>
-                    <p>Thorough design review and optimization to ensure manufacturability and performance.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <i class="step-icon fas fa-download text-purple"></i>
-                    <h3>Delivery</h3>
-                    <p>Final design files delivered in your preferred format, ready for manufacturing.</p>
-                </div>
-            </div>
-        </div>
-        </section>
-
-        <!-- New AI PCB Layout System Section -->
-        <section id="New Ai PCB Layout System" class="New Ai section" style="padding: 4rem 0;">
-            <div class="container">
-            <div class="section-header">
-                <h2>New AI PCB Layout System</h2>
-                <p>Introducing our <span style="color: var(--accent-orange); font-weight: 600;">AI-powered PCB layout system</span> that automates complex design tasks, ensuring faster and more efficient PCB designs.</p>
-            </div>
-            
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <a href="https://testerchip.github.io/TesterChip-PCB-Layout-Generator-/" class="btn-primary" style="background: var(--accent-orange); display: inline-flex;">
-                <span>PCB Layout Generator By AI</span>
-                <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="process-steps">
-                <div class="step">
-                <div class="step-number">1</div>
-                <i class="step-icon fas fa-robot text-accent"></i>
-                <h3>AI Analysis</h3>
-                <p>AI analyzes your project requirements and generates <span style="color: var(--accent-orange); font-weight: 600;">optimal layout suggestions</span>.</p>
-                </div>
-                
-                <div class="step">
-                <div class="step-number">2</div>
-                <i class="step-icon fas fa-cogs text-blue"></i>
-                <h3>Automated Design</h3>
-                <p>Automated design processes reduce manual effort and <span style="color: var(--accent-orange); font-weight: 600;">speed up layout creation</span>.</p>
-                </div>
-                
-                <div class="step">
-                <div class="step-number">3</div>
-                <i class="step-icon fas fa-check-circle text-emerald"></i>
-                <h3>Quality Assurance</h3>
-                <p>AI ensures <span style="color: var(--accent-orange); font-weight: 600;">compliance with design rules</span> and standards for high-quality outputs.</p>
-                </div>
-                
-                <div class="step">
-                <div class="step-number">4</div>
-                <i class="step-icon fas fa-file-download text-purple"></i>
-                <h3>Final Output</h3>
-                <p>Receive your <span style="color: var(--accent-orange); font-weight: 600;">AI-enhanced PCB layouts</span> ready for manufacturing.</p>
-                </div>
-            </div>
-            </div>
-        </section>
-
-        <!-- Cryptography Tools Section -->
-        <section id="crypto-tools" class="crypto-tools section" style="padding: 4rem 0; background: rgba(255, 255, 255, 0.05);">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Cryptography Tools</h2>
-                    <p>Discover powerful cryptography tools for <span style="color: var(--accent-gold); font-weight: 600;">encoding, decoding, encryption, and security analysis</span></p>
-                </div>
-                
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <a href="https://testerchip.github.io/Caesar-Base-Morse-TesterChip/" class="btn-primary" style="background: var(--accent-gold); display: inline-flex;">
-                        <span>Access Full Crypto Toolkit</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem;">
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-lock text-accent"></i>
-                        <h3>Caesar Cipher</h3>
-                        <p>Shift-based encryption technique. Perfect for learning encryption fundamentals and simple message protection.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-dot-circle text-blue"></i>
-                        <h3>Morse Code</h3>
-                        <p>Encode and decode Morse code messages. Essential for radio communication and historical cryptography.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-code text-emerald"></i>
-                        <h3>Base64 Encoder</h3>
-                        <p>Encode and decode Base64 format. Widely used for data transmission and encoding binary data.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-fingerprint text-purple"></i>
-                        <h3>Hash Generator</h3>
-                        <p>Generate MD5 and SHA hashes. Create secure hash digests for data verification and password storage.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-exchange-alt text-red"></i>
-                        <h3>ROT13 Cipher</h3>
-                        <p>Letter substitution cipher rotating by 13 positions. Classic obfuscation method for text.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <i class="feature-icon fas fa-binary text-accent"></i>
-                        <h3>Binary Converter</h3>
-                        <p>Convert text to binary and binary to text. Understand digital data representation and encoding.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Task Autopilot Section -->
-        <section id="task-autopilot" class="task-autopilot section" style="padding: 4rem 0;">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Task Autopilot</h2>
-                    <p>Automate developer tasks and workflows with <span style="color: var(--accent-orange); font-weight: 600;">Task Autopilot</span> — plan, schedule, and run repetitive tasks so you can focus on building.</p>
-                </div>
-
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <a href="https://testerchip.github.io/TesterChip-Task-AutoPilot/" class="btn-primary" style="background: var(--accent-orange); display: inline-flex;" target="_blank" rel="noopener">
-                        <span>Open Task Autopilot</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </a>
-                </div>
-
-                <div class="process-steps" style="margin-top: 2rem;">
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <i class="step-icon fas fa-list-alt text-accent"></i>
-                        <h3>Plan Tasks</h3>
-                        <p>Create repeatable task templates and schedules to standardize work across projects.</p>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <i class="step-icon fas fa-robot text-blue"></i>
-                        <h3>Automate Routines</h3>
-                        <p>Automate builds, tests, and deployments — reduce manual overhead and speed up delivery.</p>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <i class="step-icon fas fa-chart-line text-emerald"></i>
-                        <h3>Track Progress</h3>
-                        <p>Monitor runs and get actionable logs and results so you always know task status.</p>
-                    </div>
-
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <i class="step-icon fas fa-plug text-purple"></i>
-                        <h3>Integrations</h3>
-                        <p>Connect with your code repos, CI tools, and issue trackers for end-to-end automation.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Project Form Section -->
-        <section id="submit" class="form-section section">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Submit Your PCB Project</h2>
-                    <p>Ready to get started? Fill out the form below and our team will get back to you within 24 hours</p>
-                </div>
-            
-                <div class="form-container">
-                    <form id="project-form" action="https://formspree.io/f/mrbllabp" method="POST">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName">First Name *</label>
-                                <input type="text" id="firstName" name="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName">Last Name *</label>
-                                <input type="text" id="lastName" name="lastName" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="projectName">Project Name *</label>
-                                <input type="text" id="projectName" name="projectName" placeholder="Smart IoT Sensor Board" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="projectType">Project Type *</label>
-                                <select id="projectType" name="projectType" required>
-                                    <option value="">Select project type</option>
-                                    <option value="prototype">Prototype</option>
-                                    <option value="small-batch">Small Batch (1-100)</option>
-                                    <option value="medium-batch">Medium Batch (100-1000)</option>
-                                    <option value="large-batch">Large Batch (1000+)</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="boardLayers">Board Layers</label>
-                                <select id="boardLayers" name="boardLayers">
-                                    <option value="2">2 Layer</option>
-                                    <option value="4">4 Layer</option>
-                                    <option value="6">6 Layer</option>
-                                    <option value="8">8 Layer</option>
-                                    <option value="custom">Custom</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="boardSize">Board Size (mm)</label>
-                                <input type="text" id="boardSize" name="boardSize" placeholder="50 x 30">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="projectDescription">Project Description *</label>
-                            <textarea id="projectDescription" name="projectDescription" rows="4" 
-                                      placeholder="Describe your PCB design requirements, circuit specifications, component requirements, and any special design considerations..." required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Reference Files (Optional)</label>
-                            <div class="file-upload">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Upload reference materials, sketches, or specifications</p>
-                                <p style="font-size: 0.9rem; color: #666;">Supported formats: .pdf, .png, .jpg, .txt, .zip (Max 10MB)</p>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="timeline">Delivery Timeline</label>
-                                <select id="timeline" name="timeline">
-                                    <option value="">Select timeline</option>
-                                    <option value="rush">Rush (1-3 days)</option>
-                                    <option value="standard">Standard (1-2 weeks)</option>
-                                    <option value="flexible">Flexible (2-4 weeks)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="budget">Budget Range</label>
-                                <select id="budget" name="budget">
-                                    <option value="">Select budget range</option>
-                                    <option value="under-500">Under $500</option>
-                                    <option value="500-1000">$500 - $1,000</option>
-                                    <option value="1000-5000">$1,000 - $5,000</option>
-                                    <option value="over-5000">Over $5,000</option>
-                                </select>
-                                <p style="font-size:0.9rem;color:#666;margin-top:0.5rem;">
-                                    Note: This budget is for your components, not for our design service fees.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="additionalNotes">Additional Notes</label>
-                            <textarea id="additionalNotes" name="additionalNotes" rows="3" 
-                                      placeholder="Any additional information or special requirements..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            Submit Project Request
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Get in Touch</h2>
-                <p>Have questions? Our team is here to help you succeed</p>
-            </div>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <i class="fas fa-envelope text-accent"></i>
-                    <h3>Email Us</h3>
-                    <p>testerchipcompany@gmail.com</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-microchip text-emerald"></i>
-                    <h3>Expertise</h3>
-                    <p>Web Development & Electronics</p>
-                </div>
-                
-                <div class="contact-card">
-                    <i class="fas fa-clock text-blue"></i>
-                    <h3>Response Time</h3>
-                    <p>24-48 hours</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div>
-                    <div class="footer-brand">
-                        <i class="fas fa-microchip"></i>
-                        <span>Tester Chip</span>
-                    </div>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; max-width: 400px;">
-                        Professional digital PCB design services. Transform your electronic innovations into reality with expert layout and schematic design.
-                    </p>
-                    <a href="mailto:testerchipcompany@gmail.com" style="color: rgba(255, 255, 255, 0.7); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; word-wrap: break-word; word-break: break-all; overflow-wrap: break-word;">
-                        <i class="fas fa-envelope"></i>
-                        <span style="word-wrap: break-word; word-break: break-all; overflow-wrap: break-word;">Contact Us</span>
-                    </a>
-                </div>
-                
-                <div>
-                    <div class="footer-links">
-                        <h3>Services</h3>
-                        <a href="#">PCB Layout Design</a>
-                        <a href="#">Schematic Design</a>
-                        <a href="#">Design Review</a>
-                        <a href="#">Design Consultation</a>
-                    </div>
-                </div>
-                
-                <div>
-                    <div class="footer-links">
-                        <h3>Company</h3>
-                        <a href="#">About Us</a>
-                        <a href="#contact">Contact</a>
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">Terms of Service</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>© 2024 Tester Chip. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Notification -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notification-text">Project submitted successfully!</span>
-        <button onclick="hideNotification()" style="background: none; border: none; color: white; margin-left: 10px; cursor: pointer;">
-            <i class="fas fa-times"></i>
-        </button>
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="dot"></div>
+    Tester<span class="nav-name">Chip</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#process">Process</a>
+      <a href="#ai-pcb">AI PCB</a>
+      <a href="#osint-hub">OSINT Hub</a>
+      <a href="#submit">Submit Project</a>
+      <a href="#contact">Contact</a>
+      <a href="./About/index.html">About</a>
+      <a href="./products/index.html">Products</a>
     </div>
+    <button class="toggle-btn" id="toggleBtn" title="Toggle Day / Night">
+      <i class="fa-solid fa-moon" id="toggleIcon"></i>
+    </button>
+    <button class="menu-btn" id="menuBtn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</nav>
 
-    <script>
-        // Theme toggle functionality
-        let isDark = false;
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features"><i class="fa-solid fa-microchip"></i>Features</a>
+  <a href="#process"><i class="fa-solid fa-list-check"></i>Process</a>
+  <a href="#ai-pcb"><i class="fa-solid fa-robot"></i>AI PCB</a>
+  <a href="#osint-hub"><i class="fa-solid fa-magnifying-glass-location"></i>OSINT Hub</a>
+  <a href="#submit"><i class="fa-solid fa-paper-plane"></i>Submit Project</a>
+  <a href="#contact"><i class="fa-solid fa-envelope"></i>Contact</a>
+  <a href="./About/index.html"><i class="fa-solid fa-user"></i>About</a>
+  <a href="./products/index.html"><i class="fa-solid fa-box"></i>Products</a>
+</div>
 
-        function toggleTheme() {
-            isDark = !isDark;
-            const body = document.body;
-            const icon = document.getElementById('theme-icon');
-            
-            if (isDark) {
-                body.classList.add('dark');
-                icon.className = 'fas fa-sun';
-            } else {
-                body.classList.remove('dark');
-                icon.className = 'fas fa-moon';
-            }
-        }
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
 
-        // Mobile menu toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('active');
-        }
+  <div class="shield-wrap"><i class="fa-solid fa-microchip"></i></div>
 
-        // Smooth scrolling
-        function scrollToSection(sectionId) {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-                // Close mobile menu if open
-                document.getElementById('mobile-menu').classList.remove('active');
-            }
-        }
+  <div class="hero-badge">
+    <i class="fa-solid fa-circle" style="font-size:7px"></i>
+    Professional Electronics &amp; Developer Tools
+  </div>
 
-        // Form submission with Formspree
-        var form = document.getElementById("project-form");
-        
-        async function handleSubmit(event) {
-            event.preventDefault();
-            var status = document.getElementById("notification");
-            var data = new FormData(event.target);
-            
-            try {
-                const response = await fetch(event.target.action, {
-                    method: form.method,
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Success message
-                    showNotification("Thanks for your submission!");
-                    form.reset();
-                    
-                    // Redirect to Formspree thank you page after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = "https://formspree.io/thanks?language=en";
-                    }, 2000);
-                    
-                } else {
-                    const data = await response.json();
-                    if (data.errors) {
-                        showNotification(data.errors.map(error => error.message).join(", "));
-                    } else {
-                        showNotification("Oops! There was a problem submitting your form");
-                    }
-                }
-            } catch (error) {
-                showNotification("Oops! There was a problem submitting your form");
-            }
-        }
-        
-        // Notification functions
-        function showNotification(message) {
-            const notification = document.getElementById("notification");
-            const notificationText = document.getElementById("notification-text");
-            notificationText.textContent = message;
-            notification.classList.add("show");
-            
-            // Hide notification after 5 seconds
-            setTimeout(() => {
-                hideNotification();
-            }, 5000);
-        }
-        
-        function hideNotification() {
-            const notification = document.getElementById("notification");
-            notification.classList.remove("show");
-        }
-        
-        // Add form event listener
-        form.addEventListener("submit", handleSubmit);
+  <h1 class="hero-title">
+    Tester<span class="acc">Chip</span>
+    <span class="acc2">PCB · Crypto · OSINT</span>
+  </h1>
 
-        // Add scroll animations
-        function addScrollAnimations() {
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+  <p class="hero-sub">
+    Transform your electronic innovations into reality. Expert PCB design, cryptography utilities, and an open source intelligence platform — all built by engineers, for engineers.
+  </p>
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
+  <div class="hero-btns">
+    <a class="btn-p" href="#submit">
+      <i class="fa-solid fa-paper-plane"></i> Start Your Project
+    </a>
+    <a class="btn-s" href="#process">
+      <i class="fa-solid fa-play"></i> Learn More
+    </a>
+  </div>
 
-            // Observe elements for animation
-            const animatedElements = document.querySelectorAll('.feature-card, .step, .contact-card');
-            animatedElements.forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(30px)';
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(el);
-            });
-        }
+  <div class="hero-stats">
+    <span><b>7</b>Features</span>
+    <span><b>4</b>Process Steps</span>
+    <span><b>30+</b>OSINT Tools</span>
+    <span><b>6</b>Crypto Tools</span>
+  </div>
+</div>
 
-        // Initialize animations when page loads
-        document.addEventListener('DOMContentLoaded', addScrollAnimations);
-    </script>
+<hr class="divider"/>
+
+<!-- ══ FEATURES ══ -->
+<div class="wrap sec-center" id="features">
+  <div class="sec-label">// 01 — Features</div>
+  <h2 class="sec-title">What We Offer</h2>
+  <p class="sec-desc">Professional digital PCB design solutions with cutting-edge software and industry expertise.</p>
+
+  <div class="cards-grid">
+    <div class="feat-card reveal">
+      <i class="fi fa-solid fa-microchip" style="color:var(--accent)"></i>
+      <div class="fc-title">Professional Design</div>
+      <div class="fc-desc">Expert digital PCB design services using industry-standard software and best practices for optimal, production-ready layouts.</div>
+    </div>
+    <div class="feat-card c-teal reveal">
+      <i class="fi fa-solid fa-truck-fast" style="color:var(--a2)"></i>
+      <div class="fc-title">Fast Delivery</div>
+      <div class="fc-desc">Quick turnaround on digital design files — PCB layouts ready for manufacturing sooner, without sacrificing quality.</div>
+    </div>
+    <div class="feat-card c-blue reveal">
+      <i class="fi fa-solid fa-award" style="color:var(--a4)"></i>
+      <div class="fc-title">Quality Design</div>
+      <div class="fc-desc">Rigorous design review processes ensure every PCB layout meets the highest technical and manufacturing standards.</div>
+    </div>
+    <div class="feat-card c-purple reveal">
+      <i class="fi fa-solid fa-screwdriver-wrench" style="color:var(--a5)"></i>
+      <div class="fc-title">Custom Layouts</div>
+      <div class="fc-desc">Tailored PCB designs built to your exact project requirements, component specifications, and dimensional constraints.</div>
+    </div>
+    <div class="feat-card c-red reveal">
+      <i class="fi fa-solid fa-headset" style="color:var(--a3)"></i>
+      <div class="fc-title">Design Support</div>
+      <div class="fc-desc">Dedicated design support throughout your project — guidance, revisions, and technical consultation included.</div>
+    </div>
+    <div class="feat-card c-green reveal">
+      <i class="fi fa-solid fa-dollar-sign" style="color:var(--a6)"></i>
+      <div class="fc-title">Affordable Rates</div>
+      <div class="fc-desc">Cost-effective digital design services that deliver professional-grade output without breaking your project budget.</div>
+    </div>
+    <div class="feat-card reveal">
+      <i class="fi fa-solid fa-gauge-high" style="color:var(--accent)"></i>
+      <div class="fc-title">Complexity Assessment</div>
+      <div class="fc-desc">We evaluate your project's technical complexity to ensure accurate planning, realistic pricing, and reliable delivery timelines.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ PROCESS ══ -->
+<div class="wrap sec-center" id="process">
+  <div class="sec-label">// 02 — Process</div>
+  <h2 class="sec-title">Our Process</h2>
+  <p class="sec-desc">From initial consultation to final design delivery, we ensure a smooth and efficient PCB design workflow.</p>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">1</div>
+      <i class="si fa-solid fa-lightbulb" style="color:var(--accent)"></i>
+      <div class="sc-title">Consultation</div>
+      <div class="sc-desc">Discuss your project requirements, specifications, and design goals with our expert team.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-blue">2</div>
+      <i class="si fa-solid fa-compass-drafting" style="color:var(--a4)"></i>
+      <div class="sc-title">Design</div>
+      <div class="sc-desc">Create detailed PCB layouts and schematics using industry-standard design software and verified component libraries.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-teal">3</div>
+      <i class="si fa-solid fa-magnifying-glass" style="color:var(--a2)"></i>
+      <div class="sc-title">Review</div>
+      <div class="sc-desc">Thorough design review and optimization to ensure manufacturability, signal integrity, and performance.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-purple">4</div>
+      <i class="si fa-solid fa-file-arrow-down" style="color:var(--a5)"></i>
+      <div class="sc-title">Delivery</div>
+      <div class="sc-desc">Final design files delivered in your preferred format — Gerber, KiCad, Altium, or Eagle — ready for manufacturing.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ AI PCB ══ -->
+<div class="wrap sec-center" id="ai-pcb">
+  <div class="sec-label">// 03 — AI Tool</div>
+  <h2 class="sec-title">AI PCB Layout System</h2>
+  <p class="sec-desc">Our AI-powered PCB layout generator automates complex design tasks, producing faster and more efficient board layouts.</p>
+
+  <a class="cta-chip teal" href="https://testerchip.github.io/TesterChip-PCB-Layout-Generator-/" target="_blank" rel="noopener">
+    <i class="fa-solid fa-robot"></i> Open PCB Layout Generator
+  </a>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">1</div>
+      <i class="si fa-solid fa-robot" style="color:var(--accent)"></i>
+      <div class="sc-title">AI Analysis</div>
+      <div class="sc-desc">The AI analyses your project requirements and generates optimal layout suggestions based on your component list and board constraints.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-blue">2</div>
+      <i class="si fa-solid fa-gears" style="color:var(--a4)"></i>
+      <div class="sc-title">Automated Design</div>
+      <div class="sc-desc">Automated routing and placement processes reduce manual effort and significantly accelerate layout creation.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-teal">3</div>
+      <i class="si fa-solid fa-circle-check" style="color:var(--a2)"></i>
+      <div class="sc-title">Quality Assurance</div>
+      <div class="sc-desc">The AI verifies compliance with design rules and electrical standards to ensure high-quality, manufacturable outputs.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-purple">4</div>
+      <i class="si fa-solid fa-file-arrow-down" style="color:var(--a5)"></i>
+      <div class="sc-title">Final Output</div>
+      <div class="sc-desc">Receive your AI-enhanced PCB layout files, fully annotated and ready for submission to a PCB manufacturer.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ OSINT HUB (replaces old standalone Crypto section) ══ -->
+<div class="wrap" id="osint-hub">
+  <div class="sec-label">// 04 — Intelligence &amp; Crypto</div>
+  <h2 class="sec-title">Crypto &amp; OSINT Hub</h2>
+  <p class="sec-desc">The TesterChip Crypto Toolkit has been expanded into a full Open Source Intelligence platform. Cryptography tools, OSINT directories, practice labs, and curated GitHub projects — all in one place.</p>
+
+  <!-- Highlight card -->
+  <div class="osint-highlight reveal">
+    <div class="oh-icon"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+    <div class="oh-body">
+      <div class="oh-label">Updated — Previously "Crypto Toolkit"</div>
+      <div class="oh-title">TesterChip Crypto &amp; OSINT Hub</div>
+      <div class="oh-desc">The original cryptography toolkit (Caesar Cipher, Morse Code, Base64, Hash Generator, ROT13, Binary Converter) is now part of a larger intelligence platform featuring 30+ OSINT tools, 8 practice platforms, and 12 curated open-source GitHub projects.</div>
+      <div class="oh-pills">
+        <span class="oh-pill">Caesar Cipher</span>
+        <span class="oh-pill">Morse Code</span>
+        <span class="oh-pill">Base64</span>
+        <span class="oh-pill">Hash Generator</span>
+        <span class="oh-pill">ROT13</span>
+        <span class="oh-pill">Binary</span>
+        <span class="oh-pill">30+ OSINT Tools</span>
+        <span class="oh-pill">Practice Labs</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-bottom:48px">
+    <a class="cta-chip" href="https://testerchip.github.io/TesterChip-Crypto-OSINT-Hub/" target="_blank" rel="noopener">
+      <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Crypto &amp; OSINT Hub
+    </a>
+  </div>
+
+  <!-- Crypto tool cards -->
+  <div class="sec-label" style="margin-bottom:8px">Crypto Tools Inside the Hub</div>
+  <div class="cards-grid" style="margin-bottom:0">
+    <div class="feat-card reveal">
+      <i class="fi fa-solid fa-lock" style="color:var(--accent)"></i>
+      <div class="fc-title">Caesar Cipher</div>
+      <div class="fc-desc">Shift-based encryption. Encrypt and decrypt messages by shifting alphabet characters by a chosen value (1–25).</div>
+    </div>
+    <div class="feat-card c-blue reveal">
+      <i class="fi fa-solid fa-tower-broadcast" style="color:var(--a4)"></i>
+      <div class="fc-title">Morse Code</div>
+      <div class="fc-desc">Encode plain text to Morse code and decode Morse back to text — essential for radio communication and historical cryptography.</div>
+    </div>
+    <div class="feat-card c-teal reveal">
+      <i class="fi fa-solid fa-code" style="color:var(--a2)"></i>
+      <div class="fc-title">Base64 Encoder</div>
+      <div class="fc-desc">Encode and decode Base64 strings directly in the browser. Widely used for data transmission and binary encoding.</div>
+    </div>
+    <div class="feat-card c-purple reveal">
+      <i class="fi fa-solid fa-fingerprint" style="color:var(--a5)"></i>
+      <div class="fc-title">Hash Generator</div>
+      <div class="fc-desc">Generate MD5 and SHA-256 hash digests for any input text — useful for data verification and integrity checking.</div>
+    </div>
+    <div class="feat-card c-red reveal">
+      <i class="fi fa-solid fa-arrows-rotate" style="color:var(--a3)"></i>
+      <div class="fc-title">ROT13 Cipher</div>
+      <div class="fc-desc">Classic letter-substitution cipher that rotates each character by 13 positions. Applying it twice restores the original text.</div>
+    </div>
+    <div class="feat-card c-green reveal">
+      <i class="fi fa-solid fa-laptop-code" style="color:var(--a6)"></i>
+      <div class="fc-title">Binary Converter</div>
+      <div class="fc-desc">Convert plain text to binary (8-bit per character) and binary back to text — ideal for learning digital data representation.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ TASK AUTOPILOT ══ -->
+<div class="wrap sec-center" id="task-autopilot">
+  <div class="sec-label">// 05 — Automation</div>
+  <h2 class="sec-title">Task AutoPilot</h2>
+  <p class="sec-desc">Describe your task and instantly find the perfect AI tool for the job. No more guessing which tool to use — AutoPilot matches your workflow to the right AI stack.</p>
+
+  <a class="cta-chip blue" href="https://testerchip.github.io/TesterChip-Task-AutoPilot/" target="_blank" rel="noopener">
+    <i class="fa-solid fa-robot"></i> Open Task AutoPilot
+  </a>
+
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">1</div>
+      <i class="si fa-solid fa-list-check" style="color:var(--accent)"></i>
+      <div class="sc-title">Describe the Task</div>
+      <div class="sc-desc">Type in what you need to accomplish — coding, writing, research, design, analysis, or anything else.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-blue">2</div>
+      <i class="si fa-solid fa-robot" style="color:var(--a4)"></i>
+      <div class="sc-title">AI Matching</div>
+      <div class="sc-desc">The recommendation engine evaluates your task against a curated database of AI tools and finds the best fit.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-teal">3</div>
+      <i class="si fa-solid fa-chart-line" style="color:var(--a2)"></i>
+      <div class="sc-title">Review Results</div>
+      <div class="sc-desc">See ranked tool recommendations with explanations of why each tool suits your specific use case.</div>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num n-purple">4</div>
+      <i class="si fa-solid fa-plug" style="color:var(--a5)"></i>
+      <div class="sc-title">Get to Work</div>
+      <div class="sc-desc">Follow direct links to recommended tools and start building — no more time wasted searching for the right AI.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ SUBMIT FORM ══ -->
+<div class="wrap sec-center" id="submit">
+  <div class="sec-label">// 06 — Submit</div>
+  <h2 class="sec-title">Submit Your PCB Project</h2>
+  <p class="sec-desc">Ready to get started? Fill out the form below and our team will respond within 24 hours.</p>
+
+  <div class="form-wrap">
+    <form id="project-form" action="https://formspree.io/f/mrbllabp" method="POST">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="inp-label" for="firstName">First Name *</label>
+          <input class="inp-field" type="text" id="firstName" name="firstName" placeholder="Prateek" required/>
+        </div>
+        <div class="form-group">
+          <label class="inp-label" for="lastName">Last Name *</label>
+          <input class="inp-field" type="text" id="lastName" name="lastName" placeholder="Priyadarshi" required/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="inp-label" for="email">Email Address *</label>
+        <input class="inp-field" type="email" id="email" name="email" placeholder="you@example.com" required/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="inp-label" for="projectName">Project Name *</label>
+          <input class="inp-field" type="text" id="projectName" name="projectName" placeholder="Smart IoT Sensor Board" required/>
+        </div>
+        <div class="form-group">
+          <label class="inp-label" for="projectType">Project Type *</label>
+          <select class="inp-field" id="projectType" name="projectType" required>
+            <option value="">Select project type</option>
+            <option value="prototype">Prototype</option>
+            <option value="small-batch">Small Batch (1–100 units)</option>
+            <option value="medium-batch">Medium Batch (100–1,000 units)</option>
+            <option value="large-batch">Large Batch (1,000+ units)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="inp-label" for="boardLayers">Board Layers</label>
+          <select class="inp-field" id="boardLayers" name="boardLayers">
+            <option value="2">2 Layer</option>
+            <option value="4">4 Layer</option>
+            <option value="6">6 Layer</option>
+            <option value="8">8 Layer</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="inp-label" for="boardSize">Board Size (mm)</label>
+          <input class="inp-field" type="text" id="boardSize" name="boardSize" placeholder="e.g. 50 × 30"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="inp-label" for="projectDescription">Project Description *</label>
+        <textarea class="inp-field" id="projectDescription" name="projectDescription" rows="5"
+          placeholder="Describe your PCB design requirements, circuit specifications, component list, and any special design considerations..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="inp-label">Reference Files (Optional)</label>
+        <div class="file-drop">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p>Upload reference materials, sketches, or specifications</p>
+          <p style="margin-top:6px;font-size:11px">Supported: .pdf .png .jpg .txt .zip — max 10 MB</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="inp-label" for="timeline">Delivery Timeline</label>
+          <select class="inp-field" id="timeline" name="timeline">
+            <option value="">Select timeline</option>
+            <option value="rush">Rush (1–3 days)</option>
+            <option value="standard">Standard (1–2 weeks)</option>
+            <option value="flexible">Flexible (2–4 weeks)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="inp-label" for="budget">Component Budget Range</label>
+          <select class="inp-field" id="budget" name="budget">
+            <option value="">Select budget range</option>
+            <option value="under-500">Under $500</option>
+            <option value="500-1000">$500 – $1,000</option>
+            <option value="1000-5000">$1,000 – $5,000</option>
+            <option value="over-5000">Over $5,000</option>
+          </select>
+          <div class="budget-note">⚠ This refers to your component budget, not our design service fee.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="inp-label" for="additionalNotes">Additional Notes</label>
+        <textarea class="inp-field" id="additionalNotes" name="additionalNotes" rows="3"
+          placeholder="Any additional information or special requirements..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fa-solid fa-paper-plane"></i> Submit Project Request
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ CONTACT ══ -->
+<div class="wrap sec-center" id="contact">
+  <div class="sec-label">// 07 — Contact</div>
+  <h2 class="sec-title">Get in Touch</h2>
+  <p class="sec-desc">Have questions? Our team is ready to help you bring your project to life.</p>
+
+  <div class="contact-grid">
+    <div class="contact-card reveal">
+      <i class="fa-solid fa-envelope"></i>
+      <div class="cc-title">Email Us</div>
+      <div class="cc-val">testerchipcompany@gmail.com</div>
+    </div>
+    <div class="contact-card c-teal reveal">
+      <i class="fa-solid fa-microchip"></i>
+      <div class="cc-title">Expertise</div>
+      <div class="cc-val">Web Development &amp; Electronics</div>
+    </div>
+    <div class="contact-card c-blue reveal">
+      <i class="fa-solid fa-clock"></i>
+      <div class="cc-title">Response Time</div>
+      <div class="cc-val">24 – 48 hours</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4><i class="fa-solid fa-microchip"></i> TesterChip</h4>
+      <p>Professional digital PCB design services. Transform your electronic innovations into reality with expert layout and schematic design.</p>
+      <a class="footer-contact" href="mailto:testerchipcompany@gmail.com">
+        <i class="fa-solid fa-envelope"></i> Contact Us
+      </a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#features"><i class="fa-solid fa-chevron-right"></i>PCB Layout Design</a></li>
+        <li><a href="#features"><i class="fa-solid fa-chevron-right"></i>Schematic Design</a></li>
+        <li><a href="#features"><i class="fa-solid fa-chevron-right"></i>Design Review</a></li>
+        <li><a href="#features"><i class="fa-solid fa-chevron-right"></i>Design Consultation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="./About/index.html"><i class="fa-solid fa-chevron-right"></i>About Us</a></li>
+        <li><a href="./products/index.html"><i class="fa-solid fa-chevron-right"></i>Products</a></li>
+        <li><a href="mailto:testerchipcompany@gmail.com"><i class="fa-solid fa-chevron-right"></i>Contact</a></li>
+        <li><a href="#"><i class="fa-solid fa-chevron-right"></i>Privacy Policy</a></li>
+        <li><a href="#"><i class="fa-solid fa-chevron-right"></i>Terms of Service</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>&copy; 2024 <span>TesterChip</span>. All rights reserved.</div>
+    <div style="font-size:10px">Built with <i class="fa-solid fa-heart" style="color:var(--a3)"></i> for engineers &amp; researchers</div>
+  </div>
+</footer>
+
+<!-- Notification -->
+<div class="notif" id="notif">
+  <i class="fa-solid fa-circle-check" id="notif-icon"></i>
+  <span id="notif-text">Project submitted successfully!</span>
+  <button class="close-n" onclick="hideNotif()"><i class="fa-solid fa-xmark"></i></button>
+</div>
+
+<script>
+/* ── DAY / NIGHT ── */
+const toggleBtn  = document.getElementById('toggleBtn');
+const toggleIcon = document.getElementById('toggleIcon');
+toggleBtn.addEventListener('click', () => {
+  const isDay = document.body.classList.toggle('day');
+  toggleIcon.className = isDay ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+});
+
+/* ── MOBILE MENU ── */
+const menuBtn    = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+document.addEventListener('click', e => {
+  if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target))
+    mobileMenu.classList.remove('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+/* ── SMOOTH SCROLL for nav links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+/* ── FORM SUBMISSION ── */
+const form = document.getElementById('project-form');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  try {
+    const res = await fetch(e.target.action, {
+      method: 'POST', body: data, headers: { Accept: 'application/json' }
+    });
+    if (res.ok) {
+      showNotif('Project submitted successfully! We\'ll be in touch within 24 hours.', false);
+      form.reset();
+      setTimeout(() => { window.location.href = 'https://formspree.io/thanks?language=en'; }, 2500);
+    } else {
+      const d = await res.json();
+      showNotif(d.errors ? d.errors.map(x => x.message).join(', ') : 'Submission failed. Please try again.', true);
+    }
+  } catch { showNotif('Network error. Please check your connection and try again.', true); }
+});
+
+function showNotif(msg, isError) {
+  const n = document.getElementById('notif');
+  const ic = document.getElementById('notif-icon');
+  document.getElementById('notif-text').textContent = msg;
+  n.classList.toggle('error', isError);
+  ic.className = isError ? 'fa-solid fa-circle-exclamation' : 'fa-solid fa-circle-check';
+  n.classList.add('show');
+  setTimeout(hideNotif, 6000);
+}
+function hideNotif() { document.getElementById('notif').classList.remove('show'); }
+
+/* ── SCROLL REVEAL ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
