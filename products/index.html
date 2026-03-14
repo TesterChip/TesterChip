@@ -1,379 +1,650 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background: linear-gradient(135deg, #181a20 0%, #23243a 50%, #0a0c18 100%);
-            margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            min-height: 100vh;
-            transition: background 0.3s;
-            overflow-x: hidden;
-            padding-bottom: 120px; /* Added padding to prevent content from being hidden behind the footer */
-        }
-        .glass-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            box-sizing: border-box;
-            height: 64px;
-            background: rgba(255,255,255,0.09);
-            border-radius: 0 0 24px 24px;
-            box-shadow: 0 4px 32px rgba(0,0,0,0.18);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.18);
-            padding: 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            z-index: 100;
-            max-width: none;
-            margin: 0;
-        }
-        body.day .glass-header {
-            background: rgba(255,255,255,0.55);
-            border-bottom: 1px solid rgba(0,0,0,0.08);
-        }
-        .company-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .company-logo {
-            font-size: 2.2rem;
-            color: #f59e0b;
-            background: rgba(255,255,255,0.18);
-            border-radius: 10px;
-            padding: 6px;
-            transition: box-shadow 0.18s, transform 0.18s, background 0.18s;
-        }
-        .company-logo:hover {
-            box-shadow: 0 2px 12px rgba(245,158,11,0.18);
-            background: rgba(255,255,255,0.28);
-            transform: scale(1.08) rotate(-8deg);
-        }
-        .company-name {
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #fff;
-            letter-spacing: 1px;
-        }
-        .toggle-btn {
-            background: rgba(255,255,255,0.18);
-            border: none;
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
-        }
-        .toggle-btn:hover {
-            background: rgba(255,255,255,0.32);
-            box-shadow: 0 2px 12px rgba(76,110,245,0.13);
-            transform: scale(1.08) rotate(8deg);
-        }
-        .toggle-btn:focus {
-            outline: 2px solid rgba(255,255,255,0.3);
-            outline-offset: 2px;
-        }
-        .toggle-icon {
-            font-size: 1.5rem;
-            color: #fff;
-        }
-        body.day {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
-        }
-        body.day .company-name {
-            color: #222;
-        }
-        body.day .company-logo {
-            color: #f59e0b;
-            background: rgba(0,0,0,0.08);
-        }
-        body.day .toggle-icon {
-            color: #222;
-        }
-        .product-list {
-            list-style: none;
-            padding: 0;
-            margin: 90px auto 0 auto;
-            max-width: 520px;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            align-items: center;
-            justify-content: center;
-        }
-        .product-item {
-            background: rgba(20,22,34,0.13);
-            border-radius: 18px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.10);
-            width: 100%;
-            max-width: 480px;
-            padding: 32px;
-            text-align: center;
-            color: #f3f6fa;
-            transition: box-shadow 0.35s cubic-bezier(.4,0,.2,1), background 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
-            margin: 0 auto;
-        }
-        .product-item:hover {
-            box-shadow: 0 6px 28px rgba(0,0,0,0.16), 0 1px 4px rgba(0,123,255,0.06);
-            background: rgba(20,22,34,0.22);
-            transform: translateY(-1px) scale(1.012);
-        }
-        body.day .product-item {
-            background: rgba(255,255,255,0.22);
-            color: #222;
-        }
-        body.day .product-item:hover {
-            background: rgba(255,255,255,0.32);
-            box-shadow: 0 6px 28px rgba(76,110,245,0.10), 0 1px 4px rgba(6,182,212,0.06);
-            transform: translateY(-1px) scale(1.012);
-        }
-        .product-title {
-            margin-bottom: 18px;
-            color: inherit;
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        .editor-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 12px 28px;
-            background: rgba(0,123,255,0.18);
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.18s;
-        }
-        .editor-link:hover, .editor-link:focus {
-            background: rgba(0,123,255,0.32);
-            color: #fff;
-            box-shadow: 0 2px 12px rgba(0,123,255,0.18);
-            transform: scale(1.04);
-            text-decoration: none;
-        }
-        .footer {
-            margin-top: 80px;
-            padding: 60px 32px 40px;
-            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 50%, #0a1128 100%);
-            border-top: 2px solid rgba(99, 102, 241, 0.3);
-            width: 100%;
-            box-sizing: border-box;
-        }
-        body.day .footer {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%);
-            border-top: 2px solid rgba(79, 70, 229, 0.2);
-        }
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        body.day .footer-container {
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-        .footer-section {
-            color: #b0b9d4;
-            background: rgba(99, 102, 241, 0.08);
-            padding: 24px;
-            border-radius: 12px;
-            border: 1px solid rgba(124, 142, 248, 0.15);
-        }
-        body.day .footer-section {
-            color: #1f2937;
-            background: rgba(79, 70, 229, 0.05);
-            border: 1px solid rgba(79, 70, 229, 0.1);
-        }
-        .footer-section h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 0 0 20px 0;
-            color: #7c8ef8;
-        }
-        body.day .footer-section h3 {
-            color: #111827;
-        }
-        .footer-section p {
-            margin: 0 0 12px 0;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #a0a9c4;
-        }
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .footer-section li {
-            margin: 10px 0;
-        }
-        .footer-section a {
-            color: #7c8ef8;
-            text-decoration: none;
-            transition: color 0.18s;
-            font-weight: 500;
-        }
-        .footer-section a:hover {
-            color: #9db4ff;
-            text-decoration: underline;
-        }
-        body.day .footer-section a {
-            color: #3b82f6;
-        }
-        body.day .footer-section a:hover {
-            color: #1d4ed8;
-        }
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 30px;
-            text-align: center;
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        body.day .footer-bottom {
-            color: #6b7280;
-        }
-        @media (max-width: 700px) {
-            .footer {
-                padding: 30px 16px;
-                margin-top: 60px;
-            }
-        }
-        @media (max-width: 480px) {
-            .footer {
-                padding: 24px 12px;
-                margin-top: 50px;
-            }
-            .footer-content {
-                font-size: 0.85rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TesterChip — Product Hub</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── TOKENS ── */
+:root {
+  --bg:      #080c10;
+  --surface: #0d1117;
+  --card:    #111820;
+  --border:  #1e2a38;
+  --accent:  #e8b84b;
+  --a2:      #4be8c8;
+  --a3:      #e84b6b;
+  --a4:      #4b8be8;
+  --text:    #c8d6e8;
+  --muted:   #526070;
+  --mono:    'Share Tech Mono', monospace;
+  --head:    'Barlow Condensed', sans-serif;
+  --body:    'Barlow', sans-serif;
+}
+
+/* day-mode overrides */
+body.day {
+  --bg:      #f0f4f8;
+  --surface: #ffffff;
+  --card:    #ffffff;
+  --border:  #d1dce8;
+  --text:    #1a2535;
+  --muted:   #7a90a8;
+  --accent:  #c9820a;
+  --a2:      #0ca678;
+  --a3:      #d63355;
+  --a4:      #2563eb;
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background .35s, color .35s;
+}
+
+/* noise layer (dark only) */
+body:not(.day)::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 180px;
+  pointer-events: none; z-index: 0;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  background: rgba(8,12,16,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  transition: background .35s, border-color .35s;
+}
+body.day nav {
+  background: rgba(240,244,248,.92);
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: 14px; color: var(--accent);
+  letter-spacing: .08em;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); animation: pulse 2s infinite;
+}
+.nav-logo .nav-name { color: var(--text); }
+
+.nav-right { display: flex; align-items: center; gap: 24px; }
+
+.nav-links { display: flex; gap: 24px; }
+.nav-links a {
+  font-family: var(--head);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* toggle */
+.toggle-btn {
+  width: 38px; height: 38px; border-radius: 3px;
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; color: var(--muted); font-size: 15px;
+}
+.toggle-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(232,184,75,.08); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 90px 24px 60px;
+  overflow: hidden;
+}
+
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(232,184,75,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,184,75,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 100%);
+  transition: opacity .35s;
+}
+body.day .hero-grid { opacity: .3; }
+
+.hero-glow {
+  position: absolute;
+  width: 680px; height: 680px;
+  background: radial-gradient(circle, rgba(232,184,75,.08) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+  transition: opacity .35s;
+}
+body.day .hero-glow { opacity: .4; }
+
+.hero-badge {
+  font-family: var(--mono);
+  font-size: 11px; color: var(--accent);
+  letter-spacing: .2em; text-transform: uppercase;
+  background: rgba(232,184,75,.08);
+  border: 1px solid rgba(232,184,75,.25);
+  padding: 5px 16px; border-radius: 2px;
+  margin-bottom: 24px;
+  display: inline-flex; align-items: center; gap: 8px;
+  animation: fadeUp .5s .05s ease both;
+}
+body.day .hero-badge { background: rgba(201,130,10,.1); }
+
+.shield-wrap {
+  width: 76px; height: 76px;
+  background: rgba(232,184,75,.1);
+  border: 1px solid rgba(232,184,75,.3);
+  border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 30px; color: var(--accent);
+  margin-bottom: 20px;
+  transform: rotate(-4deg);
+  box-shadow: 0 0 40px rgba(232,184,75,.15);
+  animation: fadeUp .45s ease both;
+  transition: color .35s, background .35s, border-color .35s;
+}
+
+h1.hero-title {
+  font-family: var(--head);
+  font-size: clamp(52px, 9vw, 108px);
+  font-weight: 900; line-height: .92;
+  letter-spacing: -.02em;
+  color: var(--text); text-transform: uppercase;
+  margin-bottom: 8px;
+  animation: fadeUp .5s .1s ease both;
+}
+h1.hero-title .acc { color: var(--accent); }
+
+.hero-sub {
+  font-size: 15px; color: var(--muted);
+  max-width: 480px; margin: 16px auto 36px;
+  font-weight: 300; line-height: 1.7;
+  animation: fadeUp .5s .18s ease both;
+}
+
+/* version pill */
+.version-pill {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--a2); background: rgba(75,232,200,.08);
+  border: 1px solid rgba(75,232,200,.2);
+  padding: 4px 12px; border-radius: 2px;
+  display: inline-block; margin-bottom: 40px;
+  animation: fadeUp .5s .24s ease both;
+}
+
+/* hero stats */
+.hero-stats {
+  display: flex; gap: 36px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  animation: fadeUp .5s .3s ease both;
+}
+.hero-stats span b {
+  color: var(--accent); font-size: 22px;
+  font-family: var(--head); font-weight: 700; display: block;
+}
+
+/* ── PRODUCTS ── */
+.products-wrap {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: 80px 40px;
+}
+
+.sec-label {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.sec-title {
+  font-family: var(--head);
+  font-size: clamp(30px,5vw,50px); font-weight: 700;
+  text-transform: uppercase; color: var(--text);
+  margin-bottom: 12px; line-height: 1;
+}
+.sec-desc {
+  color: var(--muted); font-size: 14px; font-weight: 300;
+  max-width: 500px; line-height: 1.7; margin-bottom: 48px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+/* ── PRODUCT CARD ── */
+.pcard {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  display: flex; flex-direction: column; gap: 12px;
+  position: relative; overflow: hidden;
+  transition: border-color .25s, transform .2s, box-shadow .25s, background .35s;
+  text-decoration: none;
+}
+
+/* accent top bar */
+.pcard::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .3s;
+}
+.pcard:hover { border-color: rgba(232,184,75,.4); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,.35); }
+.pcard:hover::before { transform: scaleX(1); }
+
+/* per-card accent variants */
+.pcard.teal::before  { background: var(--a2); }
+.pcard.teal:hover    { border-color: rgba(75,232,200,.4); }
+.pcard.red::before   { background: var(--a3); }
+.pcard.red:hover     { border-color: rgba(232,75,107,.4); }
+.pcard.blue::before  { background: var(--a4); }
+.pcard.blue:hover    { border-color: rgba(75,139,232,.4); }
+.pcard.gold::before  { background: var(--accent); }
+
+.pcard-top { display: flex; justify-content: space-between; align-items: flex-start; }
+
+.pcard-icon {
+  width: 42px; height: 42px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+  border: 1px solid rgba(232,184,75,.25);
+  background: rgba(232,184,75,.1);
+  color: var(--accent);
+  transition: background .35s, border-color .35s, color .35s;
+}
+.pcard.teal .pcard-icon  { background: rgba(75,232,200,.1); border-color: rgba(75,232,200,.25); color: var(--a2); }
+.pcard.red  .pcard-icon  { background: rgba(232,75,107,.1); border-color: rgba(232,75,107,.25); color: var(--a3); }
+.pcard.blue .pcard-icon  { background: rgba(75,139,232,.1); border-color: rgba(75,139,232,.25); color: var(--a4); }
+
+.pcard-tag {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  background: rgba(232,184,75,.08);
+  border: 1px solid rgba(232,184,75,.2);
+  color: var(--accent); padding: 3px 9px; border-radius: 2px;
+}
+.pcard.teal .pcard-tag { background: rgba(75,232,200,.08); border-color: rgba(75,232,200,.2); color: var(--a2); }
+.pcard.red  .pcard-tag { background: rgba(232,75,107,.08); border-color: rgba(232,75,107,.2); color: var(--a3); }
+.pcard.blue .pcard-tag { background: rgba(75,139,232,.08); border-color: rgba(75,139,232,.2); color: var(--a4); }
+
+.pcard-title {
+  font-family: var(--head);
+  font-size: 22px; font-weight: 700;
+  color: var(--text); letter-spacing: .02em;
+  transition: color .35s;
+}
+
+.pcard-desc {
+  font-size: 13px; color: var(--muted);
+  font-weight: 300; line-height: 1.6; flex: 1;
+}
+
+.pcard-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 4px;
+}
+
+.pcard-link {
+  font-family: var(--head);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex; align-items: center; gap: 7px;
+  text-decoration: none;
+  border: 1px solid rgba(232,184,75,.3);
+  padding: 8px 16px; border-radius: 2px;
+  transition: all .2s; background: rgba(232,184,75,.05);
+}
+.pcard-link:hover { background: rgba(232,184,75,.15); border-color: var(--accent); transform: translateX(2px); }
+
+.pcard.teal .pcard-link { color: var(--a2); border-color: rgba(75,232,200,.3); background: rgba(75,232,200,.05); }
+.pcard.teal .pcard-link:hover { background: rgba(75,232,200,.15); border-color: var(--a2); }
+
+.pcard.red .pcard-link { color: var(--a3); border-color: rgba(232,75,107,.3); background: rgba(232,75,107,.05); }
+.pcard.red .pcard-link:hover { background: rgba(232,75,107,.15); border-color: var(--a3); }
+
+.pcard.blue .pcard-link { color: var(--a4); border-color: rgba(75,139,232,.3); background: rgba(75,139,232,.05); }
+.pcard.blue .pcard-link:hover { background: rgba(75,139,232,.15); border-color: var(--a4); }
+
+.pcard-status {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  display: flex; align-items: center; gap: 5px;
+}
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--a2);
+  animation: pulse 2s infinite;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  transition: background .35s, border-color .35s;
+  padding: 60px 40px 36px;
+}
+
+.footer-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-col h4 {
+  font-family: var(--head);
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.footer-col h4 i { color: var(--accent); }
+
+.footer-col p {
+  font-size: 13px; color: var(--muted);
+  font-weight: 300; line-height: 1.7; margin-bottom: 14px;
+}
+
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+.footer-col a {
+  font-family: var(--mono); font-size: 12px;
+  color: var(--muted); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px;
+  transition: color .2s;
+}
+.footer-col a:hover { color: var(--accent); }
+.footer-col a i { font-size: 11px; }
+
+.footer-contact-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--head); font-size: 12px; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(232,184,75,.3);
+  padding: 8px 16px; border-radius: 2px;
+  text-decoration: none; background: rgba(232,184,75,.06);
+  transition: all .2s;
+}
+.footer-contact-btn:hover { background: rgba(232,184,75,.14); border-color: var(--accent); }
+
+.footer-bottom {
+  max-width: 1200px; margin: 28px auto 0;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+}
+
+.footer-copy span { color: var(--accent); }
+
+/* ── DIVIDER ── */
+hr.div { border: none; border-top: 1px solid var(--border); position: relative; z-index: 1; transition: border-color .35s; }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* staggered card reveal */
+.pcard { animation: fadeUp .5s ease both; }
+.pcard:nth-child(1){animation-delay:.05s}
+.pcard:nth-child(2){animation-delay:.1s}
+.pcard:nth-child(3){animation-delay:.15s}
+.pcard:nth-child(4){animation-delay:.2s}
+.pcard:nth-child(5){animation-delay:.25s}
+.pcard:nth-child(6){animation-delay:.3s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .products-wrap { padding: 56px 20px; }
+  footer { padding: 40px 20px 28px; }
+  .hero-stats { gap: 20px; }
+}
+</style>
 </head>
-<body class="day">
-    <div class="glass-header">
-        <div class="company-info">
-            <i class="fas fa-microchip company-logo"></i>
-            <span class="company-name">Tester Chip</span>
-        </div>
-        <button class="toggle-btn" id="toggleMode" title="Toggle Day/Night" style="display: flex;">
-            <span class="toggle-icon" id="toggleIcon">&#x1F319;</span>
-        </button>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">
+    <div class="dot"></div>
+    Tester<span class="nav-name">Chip</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="#products">Products</a>
+      <a href="./OSINT/testerchip-osint.html">OSINT</a>
+      <a href="mailto:testerchipcompany@gmail.com">Contact</a>
     </div>
-    <ul class="product-list">
-        <li class="product-item">
-            <h2 class="product-title">⚙️ Flood Detector</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Arduino-based water level detection system with LCD display and alerts</p>
-            <a class="editor-link" href="./flood-detector/index.html">
-                View Project Details
-            </a>
-        </li>
-        <li class="product-item">
-            <h2 class="product-title">📝 HTML Live Editor</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Write, edit, and preview HTML code in real-time</p>
-            <a class="editor-link" href="./html-editor/index.html">
-                Open HTML Editor
-            </a>
-        </li>
-        <li class="product-item">
-            <h2 class="product-title">🐍 Python Live Editor</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">Execute Python code directly in your browser</p>
-            <a class="editor-link" href="./python-editor/index.html">
-                Open Python Editor
-            </a>
-        </li>
-        <li class="product-item">
-            <h2 class="product-title">🎨 PCB Layout Generator</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">AI-powered PCB design and layout generation tool</p>
-            <a class="editor-link" href="./pcb-generator/index.html">
-                Open PCB Generator
-            </a>
-        </li>
-        <li class="product-item">
-            <h2 class="product-title"><i class="fa-solid fa-cube"></i> TesterChip - Task AutoPilot</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;">TesterChip - Find the Perfect AI Tool</p>
-            <a class="editor-link" href="./Ai suggestion/TesterChip - Find the Perfect AI Tool.html" target="_blank">
-                Open Task-AutoPilot
-            </a>
-        </li>
-        <li class="product-item">
-            <h2 class="product-title"><i class="fa-solid fa-cube"></i> TesterChip — Crypto & OSINT Hub</h2>
-            <p style="margin: 8px 0; color: #e5e7eb; font-size: 0.95rem;"> TesterChip - Crypto & Open Source Intelligence — All-in-One</p>
-            <a class="editor-link" href="./OSINT/testerchip-osint.html" target="_blank">
-                Open OSINT Hub
-            </a>
-        </li>
-    </ul>
-    <div class="footer">
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3><i class="fas fa-microchip company-logo"></i> Tester Chip</h3>
-                <p>Professional digital PCB design services. Transform your electronic innovations into reality with expert layout and schematic design.</p>
-                <a href="mailto:testerchipcompany@gmail.com" style="display: inline-flex; align-items: center; gap: 8px;">
-                    ✉️ Contact Us
-                </a>
-            </div>
-            <div class="footer-section">
-                <h3>Services</h3>
-                <ul>
-                    <li><a href="#pcb-layout">PCB Layout Design</a></li>
-                    <li><a href="#schematic">Schematic Design</a></li>
-                    <li><a href="#design-review">Design Review</a></li>
-                    <li><a href="#consultation">Design Consultation</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Company</h3>
-                <ul>
-                    <li><a href="../About/index.html">About Us</a></li>
-                    <li><a href="mailto:testerchipcompany@gmail.com">Contact</a></li>
-                    <li><a href="#privacy">Privacy Policy</a></li>
-                    <li><a href="#terms">Terms of Service</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Tester Chip. All rights reserved.</p>
-        </div>
+    <button class="toggle-btn" id="toggleBtn" title="Toggle Day / Night">
+      <i class="fa-solid fa-moon" id="toggleIcon"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="shield-wrap">
+    <i class="fa-solid fa-microchip"></i>
+  </div>
+
+  <div class="hero-badge">
+    <i class="fa-solid fa-circle" style="font-size:7px"></i>
+    Professional Electronics &amp; Developer Tools
+  </div>
+
+  <h1 class="hero-title">Tester<span class="acc">Chip</span></h1>
+
+  <p class="hero-sub">
+    Transform your electronic innovations into reality. PCB design, developer tools, intelligence platforms — all in one hub.
+  </p>
+
+  <div class="version-pill">v2.0 — Production Ready</div>
+
+  <div class="hero-stats">
+    <span><b>6</b>Tools</span>
+    <span><b>2</b>Editors</span>
+    <span><b>30+</b>OSINT Sources</span>
+  </div>
+</div>
+
+<hr class="div"/>
+
+<!-- ── PRODUCTS ── -->
+<div class="products-wrap" id="products">
+  <div class="sec-label">// Products</div>
+  <h2 class="sec-title">All Tools</h2>
+  <p class="sec-desc">Explore the full TesterChip suite — hardware, software, and intelligence tools built for engineers and researchers.</p>
+
+  <div class="products-grid">
+
+    <!-- Flood Detector -->
+    <div class="pcard gold">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-solid fa-water"></i></div>
+        <span class="pcard-tag">Hardware</span>
+      </div>
+      <div class="pcard-title">Flood Detector</div>
+      <div class="pcard-desc">Arduino-based water level detection system with LCD display, threshold alerts, and real-time sensor monitoring.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./flood-detector/index.html">
+          View Project <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
     </div>
-    <script>
-        // Day-Night mode toggle
-        const toggleBtn = document.getElementById('toggleMode');
-        const toggleIcon = document.getElementById('toggleIcon');
-        toggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('night');
-            document.body.classList.toggle('day');
-            if(document.body.classList.contains('night')) {
-                toggleIcon.textContent = '🌙';
-            } else {
-                toggleIcon.textContent = '☀️';
-            }
-        });
-    </script>
+
+    <!-- HTML Editor -->
+    <div class="pcard teal">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-solid fa-code"></i></div>
+        <span class="pcard-tag">Editor</span>
+      </div>
+      <div class="pcard-title">HTML Live Editor</div>
+      <div class="pcard-desc">Write, edit, and preview HTML code in real-time with instant rendering, syntax highlighting, and split-view layout.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./html-editor/index.html">
+          Open Editor <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
+    </div>
+
+    <!-- Python Editor -->
+    <div class="pcard blue">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-brands fa-python"></i></div>
+        <span class="pcard-tag">Editor</span>
+      </div>
+      <div class="pcard-title">Python Live Editor</div>
+      <div class="pcard-desc">Execute Python code directly in your browser — no installs, no setup. Powered by client-side Python execution.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./python-editor/index.html">
+          Open Editor <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
+    </div>
+
+    <!-- PCB Generator -->
+    <div class="pcard red">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-solid fa-circuit-board"></i></div>
+        <span class="pcard-tag">AI Tool</span>
+      </div>
+      <div class="pcard-title">PCB Layout Generator</div>
+      <div class="pcard-desc">AI-powered PCB design and layout generation tool. Describe your schematic, get a production-ready layout instantly.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./pcb-generator/index.html">
+          Open Generator <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
+    </div>
+
+    <!-- Task AutoPilot -->
+    <div class="pcard gold">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-solid fa-robot"></i></div>
+        <span class="pcard-tag">AI Tool</span>
+      </div>
+      <div class="pcard-title">Task AutoPilot</div>
+      <div class="pcard-desc">Find the perfect AI tool for any task. Intelligent recommendation engine that matches your workflow to the right AI stack.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./Ai suggestion/TesterChip - Find the Perfect AI Tool.html" target="_blank">
+          Open AutoPilot <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
+    </div>
+
+    <!-- OSINT Hub -->
+    <div class="pcard teal">
+      <div class="pcard-top">
+        <div class="pcard-icon"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+        <span class="pcard-tag">Intelligence</span>
+      </div>
+      <div class="pcard-title">Crypto &amp; OSINT Hub</div>
+      <div class="pcard-desc">All-in-one open source intelligence directory — 30 OSINT tools, 6 crypto utilities, 8 practice platforms, and curated GitHub projects.</div>
+      <div class="pcard-footer">
+        <a class="pcard-link" href="./OSINT/testerchip-osint.html" target="_blank">
+          Open Hub <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="pcard-status"><span class="status-dot"></span>Live</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div"/>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+
+    <div class="footer-col">
+      <h4><i class="fa-solid fa-microchip"></i> Tester Chip</h4>
+      <p>Professional digital PCB design services. Transform your electronic innovations into reality with expert layout and schematic design.</p>
+      <a class="footer-contact-btn" href="mailto:testerchipcompany@gmail.com">
+        <i class="fa-solid fa-envelope"></i> Contact Us
+      </a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#pcb-layout"><i class="fa-solid fa-chevron-right"></i>PCB Layout Design</a></li>
+        <li><a href="#schematic"><i class="fa-solid fa-chevron-right"></i>Schematic Design</a></li>
+        <li><a href="#design-review"><i class="fa-solid fa-chevron-right"></i>Design Review</a></li>
+        <li><a href="#consultation"><i class="fa-solid fa-chevron-right"></i>Design Consultation</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="../About/index.html"><i class="fa-solid fa-chevron-right"></i>About Us</a></li>
+        <li><a href="mailto:testerchipcompany@gmail.com"><i class="fa-solid fa-chevron-right"></i>Contact</a></li>
+        <li><a href="#privacy"><i class="fa-solid fa-chevron-right"></i>Privacy Policy</a></li>
+        <li><a href="#terms"><i class="fa-solid fa-chevron-right"></i>Terms of Service</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2024 <span>Tester Chip</span>. All rights reserved.</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--muted)">
+      Built with <i class="fa-solid fa-heart" style="color:var(--a3)"></i> for engineers &amp; researchers
+    </div>
+  </div>
+</footer>
+
+<script>
+const btn  = document.getElementById('toggleBtn');
+const icon = document.getElementById('toggleIcon');
+btn.addEventListener('click', () => {
+  const isDay = document.body.classList.toggle('day');
+  icon.className = isDay ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+});
+</script>
 </body>
 </html>
-
-
-
-
