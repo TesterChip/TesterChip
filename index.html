@@ -12,7 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
-/* ── TOKENS ── */
 :root {
   --bg:      #080c10;
   --surface: #0d1117;
@@ -44,167 +43,57 @@ body.day {
   --a5:      #7c3aed;
   --a6:      #16a34a;
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg); color:var(--text);
-  font-family:var(--body); font-size:15px; line-height:1.6;
-  overflow-x:hidden; min-height:100vh;
-  transition:background .35s,color .35s;
-}
-body:not(.day)::before{
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  background-size:180px; pointer-events:none; z-index:0;
-}
+body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden;min-height:100vh;transition:background .35s,color .35s}
+body:not(.day)::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:180px;pointer-events:none;z-index:0}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--muted)}
-
-/* ── NAV ── */
-nav{
-  position:fixed; top:0; left:0; right:0; z-index:300;
-  height:56px; display:flex; align-items:center; justify-content:space-between;
-  padding:0 40px;
-  background:rgba(8,12,16,.93); backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-  transition:background .35s,border-color .35s;
-}
-body.day nav{background:rgba(240,244,248,.93);}
-.nav-logo{
-  font-family:var(--mono); font-size:14px; color:var(--accent);
-  letter-spacing:.08em; display:flex; align-items:center; gap:10px;
-  text-decoration:none;
-}
+nav{position:fixed;top:0;left:0;right:0;z-index:300;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(8,12,16,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);transition:background .35s,border-color .35s}
+body.day nav{background:rgba(240,244,248,.93)}
+.nav-logo{font-family:var(--mono);font-size:14px;color:var(--accent);letter-spacing:.08em;display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
 .nav-logo .nav-name{color:var(--text)}
 .nav-right{display:flex;align-items:center;gap:16px}
 .nav-links{display:flex;gap:18px}
-.nav-links a{
-  font-family:var(--head); font-size:12px; font-weight:600;
-  letter-spacing:.13em; text-transform:uppercase;
-  color:var(--muted); text-decoration:none; transition:color .2s;
-}
+.nav-links a{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--accent)}
-.toggle-btn,.menu-btn{
-  width:36px;height:36px;border-radius:3px;
-  background:transparent;border:1px solid var(--border);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:all .2s;color:var(--muted);font-size:13px;
-}
+.toggle-btn,.menu-btn{width:36px;height:36px;border-radius:3px;background:transparent;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);font-size:13px}
 .toggle-btn:hover,.menu-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.08)}
 .menu-btn{display:none}
-
-/* Mobile menu */
-.mobile-menu{
-  display:none;position:fixed;top:64px;right:20px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:4px;padding:8px;z-index:299;min-width:220px;
-  box-shadow:0 16px 40px rgba(0,0,0,.4);
-  animation:fadeUp .2s ease;
-}
+.mobile-menu{display:none;position:fixed;top:64px;right:20px;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:8px;z-index:299;min-width:220px;box-shadow:0 16px 40px rgba(0,0,0,.4);animation:fadeUp .2s ease}
 .mobile-menu.open{display:block}
-.mobile-menu a{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--head);font-size:13px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:var(--muted);text-decoration:none;
-  padding:10px 14px;border-radius:2px;transition:all .18s;
-}
+.mobile-menu a{display:flex;align-items:center;gap:10px;font-family:var(--head);font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:10px 14px;border-radius:2px;transition:all .18s}
 .mobile-menu a:hover{color:var(--accent);background:rgba(232,184,75,.07)}
-
-/* ── HERO ── */
-.hero{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:90px 24px 64px;overflow:hidden;
-}
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(232,184,75,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,184,75,.04) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 20%,transparent 100%);
-  transition:opacity .35s;
-}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 24px 64px;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,184,75,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,184,75,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 20%,transparent 100%);transition:opacity .35s}
 body.day .hero-grid{opacity:.25}
-.hero-glow{
-  position:absolute;width:700px;height:700px;
-  background:radial-gradient(circle,rgba(232,184,75,.08) 0%,transparent 70%);
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  pointer-events:none;
-}
-.hero-badge{
-  font-family:var(--mono);font-size:11px;color:var(--accent);
-  letter-spacing:.2em;text-transform:uppercase;
-  background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);
-  padding:5px 16px;border-radius:2px;margin-bottom:24px;
-  display:inline-flex;align-items:center;gap:8px;
-  animation:fadeUp .5s .05s ease both;
-}
-.shield-wrap{
-  width:78px;height:78px;
-  background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.3);
-  border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
-  font-size:32px;color:var(--accent);margin-bottom:22px;
-  transform:rotate(-4deg);box-shadow:0 0 40px rgba(232,184,75,.15);
-  animation:fadeUp .45s ease both;transition:color .35s,background .35s;
-}
-h1.hero-title{
-  font-family:var(--head);
-  font-size:clamp(48px,8vw,100px);font-weight:900;
-  line-height:.92;letter-spacing:-.02em;
-  color:var(--text);text-transform:uppercase;
-  animation:fadeUp .5s .1s ease both;
-}
+.hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(232,184,75,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.hero-badge{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);padding:5px 16px;border-radius:2px;margin-bottom:24px;display:inline-flex;align-items:center;gap:8px;animation:fadeUp .5s .05s ease both}
+.shield-wrap{width:78px;height:78px;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.3);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;color:var(--accent);margin-bottom:22px;transform:rotate(-4deg);box-shadow:0 0 40px rgba(232,184,75,.15);animation:fadeUp .45s ease both;transition:color .35s,background .35s}
+h1.hero-title{font-family:var(--head);font-size:clamp(48px,8vw,100px);font-weight:900;line-height:.92;letter-spacing:-.02em;color:var(--text);text-transform:uppercase;animation:fadeUp .5s .1s ease both}
 h1.hero-title .acc{color:var(--accent)}
 h1.hero-title .acc2{color:var(--a2);font-size:.6em;letter-spacing:.04em;display:block;margin-top:4px}
-.hero-sub{
-  font-size:15px;color:var(--muted);max-width:560px;
-  margin:18px auto 36px;font-weight:300;line-height:1.75;
-  animation:fadeUp .5s .18s ease both;
-}
-.hero-btns{
-  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
-  animation:fadeUp .5s .25s ease both;
-}
-.btn-p,.btn-s{
-  font-family:var(--head);font-size:13px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  display:inline-flex;align-items:center;gap:8px;
-  padding:11px 24px;border-radius:3px;text-decoration:none;
-  transition:all .2s;cursor:pointer;border:none;
-}
+.hero-sub{font-size:15px;color:var(--muted);max-width:560px;margin:18px auto 36px;font-weight:300;line-height:1.75;animation:fadeUp .5s .18s ease both}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fadeUp .5s .25s ease both}
+.btn-p,.btn-s{font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:3px;text-decoration:none;transition:all .2s;cursor:pointer;border:none}
 .btn-p{background:var(--accent);color:#080c10}
 .btn-p:hover{background:#f0c860;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,184,75,.3)}
 .btn-s{background:transparent;border:1px solid var(--border);color:var(--muted)}
 .btn-s:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.07)}
-
-.hero-stats{
-  display:flex;gap:36px;margin-top:44px;
-  font-family:var(--mono);font-size:11px;color:var(--muted);
-  animation:fadeUp .5s .32s ease both;
-}
+.hero-stats{display:flex;gap:36px;margin-top:44px;font-family:var(--mono);font-size:11px;color:var(--muted);animation:fadeUp .5s .32s ease both}
 .hero-stats span b{color:var(--accent);font-size:22px;font-family:var(--head);font-weight:700;display:block}
-
-/* ── SHARED SECTION LAYOUT ── */
 .wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:80px 40px}
 .divider{border:none;border-top:1px solid var(--border);position:relative;z-index:1;transition:border-color .35s}
-
 .sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .sec-title{font-family:var(--head);font-size:clamp(28px,5vw,48px);font-weight:700;text-transform:uppercase;color:var(--text);margin-bottom:12px;line-height:1}
 .sec-desc{color:var(--muted);font-size:14px;font-weight:300;max-width:560px;line-height:1.75;margin-bottom:48px}
 .sec-center{text-align:center}
 .sec-center .sec-desc{margin-left:auto;margin-right:auto}
-
-/* ── GRID CARDS (features, contact) ── */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
-.feat-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:26px;transition:all .25s;position:relative;overflow:hidden;
-}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:26px;transition:all .25s;position:relative;overflow:hidden}
 .feat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .feat-card:hover{border-color:rgba(232,184,75,.4);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.35)}
 .feat-card:hover::before{transform:scaleX(1)}
@@ -213,213 +102,87 @@ h1.hero-title .acc2{color:var(--a2);font-size:.6em;letter-spacing:.04em;display:
 .feat-card.c-blue::before{background:var(--a4)}.feat-card.c-blue:hover{border-color:rgba(75,139,232,.4)}
 .feat-card.c-purple::before{background:var(--a5)}.feat-card.c-purple:hover{border-color:rgba(160,75,232,.4)}
 .feat-card.c-green::before{background:var(--a6)}.feat-card.c-green:hover{border-color:rgba(75,232,112,.4)}
-
 .fi{font-size:26px;margin-bottom:14px;display:block}
 .fc-title{font-family:var(--head);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
 .fc-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
-
-/* ── PROCESS STEPS ── */
 .steps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.step-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:28px 22px 22px;text-align:center;position:relative;
-  transition:all .25s;
-}
+.step-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:28px 22px 22px;text-align:center;position:relative;transition:all .25s}
 .step-card:hover{border-color:rgba(232,184,75,.35);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.35)}
-.step-num{
-  position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  width:28px;height:28px;border-radius:2px;
-  background:var(--accent);color:#080c10;
-  font-family:var(--head);font-size:14px;font-weight:900;
-  display:flex;align-items:center;justify-content:center;
-}
-.step-num.n-teal{background:var(--a2)}
-.step-num.n-red{background:var(--a3)}
-.step-num.n-blue{background:var(--a4)}
-.step-num.n-purple{background:var(--a5)}
+.step-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:2px;background:var(--accent);color:#080c10;font-family:var(--head);font-size:14px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.step-num.n-teal{background:var(--a2)}.step-num.n-red{background:var(--a3)}.step-num.n-blue{background:var(--a4)}.step-num.n-purple{background:var(--a5)}
 .si{font-size:28px;margin:8px 0 12px;display:block}
 .sc-title{font-family:var(--head);font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
 .sc-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6}
-
-/* ── CTA CHIP ── */
-.cta-chip{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--head);font-size:13px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  text-decoration:none;padding:12px 24px;border-radius:3px;
-  background:var(--accent);color:#080c10;
-  transition:all .2s;margin-bottom:48px;
-}
+.cta-chip{display:inline-flex;align-items:center;gap:10px;font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:12px 24px;border-radius:3px;background:var(--accent);color:#080c10;transition:all .2s;margin-bottom:48px}
 .cta-chip:hover{background:#f0c860;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,184,75,.3)}
 .cta-chip.teal{background:var(--a2);color:#080c10}.cta-chip.teal:hover{background:#6ef5dc;box-shadow:0 8px 24px rgba(75,232,200,.3)}
 .cta-chip.blue{background:var(--a4);color:#fff}.cta-chip.blue:hover{background:#6fa9f0;box-shadow:0 8px 24px rgba(75,139,232,.3)}
-
-/* ── OSINT HUB HIGHLIGHT CARD ── */
-.osint-highlight{
-  background:var(--card);border:1px solid rgba(232,184,75,.3);border-radius:4px;
-  padding:32px;margin-bottom:32px;
-  display:flex;align-items:flex-start;gap:24px;
-  position:relative;overflow:hidden;
-  transition:border-color .25s,box-shadow .25s;
-}
-.osint-highlight::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--accent),var(--a2));
-}
+.osint-highlight{background:var(--card);border:1px solid rgba(232,184,75,.3);border-radius:4px;padding:32px;margin-bottom:32px;display:flex;align-items:flex-start;gap:24px;position:relative;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.osint-highlight::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--a2))}
 .osint-highlight:hover{border-color:rgba(232,184,75,.5);box-shadow:0 10px 32px rgba(0,0,0,.35)}
-.oh-icon{
-  width:56px;height:56px;flex-shrink:0;border-radius:8px;
-  background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;color:var(--accent);
-}
+.oh-icon{width:56px;height:56px;flex-shrink:0;border-radius:8px;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--accent)}
 .oh-body{flex:1}
 .oh-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--a2);margin-bottom:6px}
 .oh-title{font-family:var(--head);font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px}
 .oh-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:14px;max-width:600px}
 .oh-pills{display:flex;gap:8px;flex-wrap:wrap}
 .oh-pill{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 9px;border-radius:2px}
-
-/* ── FORM ── */
-.form-wrap{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:40px;max-width:840px;margin:0 auto;
-  transition:background .35s,border-color .35s;
-}
+.form-wrap{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:40px;max-width:840px;margin:0 auto;transition:background .35s,border-color .35s}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-group{margin-bottom:20px}
 .inp-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
-.inp-field{
-  width:100%;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);font-family:var(--mono);font-size:13px;
-  padding:11px 14px;border-radius:3px;outline:none;
-  transition:border-color .2s,box-shadow .2s;resize:vertical;
-  transition:background .35s,border-color .35s,color .35s;
-}
+.inp-field{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:13px;padding:11px 14px;border-radius:3px;outline:none;transition:background .35s,border-color .35s,color .35s;resize:vertical}
 .inp-field::placeholder{color:var(--muted)}
 .inp-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,184,75,.1)}
 .inp-field:hover{border-color:var(--muted)}
-.file-drop{
-  border:1px dashed var(--border);border-radius:3px;
-  padding:28px;text-align:center;
-  font-family:var(--mono);font-size:12px;color:var(--muted);
-  cursor:pointer;transition:all .2s;
-}
-.file-drop i{font-size:28px;display:block;margin-bottom:10px;color:var(--muted)}
+/* FILE UPLOAD FIX — label wraps hidden input so entire area is clickable */
+.file-drop{border:1px dashed var(--border);border-radius:3px;padding:28px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--muted);cursor:pointer;transition:all .2s;display:block}
+.file-drop i{font-size:28px;display:block;margin-bottom:10px;color:var(--muted);transition:color .2s}
 .file-drop:hover{border-color:var(--accent);color:var(--text);background:rgba(232,184,75,.04)}
+.file-drop:hover i{color:var(--accent)}
+.file-drop.selected{border-color:var(--a2);background:rgba(75,232,200,.04);color:var(--text)}
+.file-drop.selected i{color:var(--a2)}
 .budget-note{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
-.submit-btn{
-  width:100%;margin-top:8px;
-  font-family:var(--head);font-size:14px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  background:var(--accent);color:#080c10;
-  border:none;padding:14px;border-radius:3px;cursor:pointer;
-  transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;
-}
+.submit-btn{width:100%;margin-top:8px;font-family:var(--head);font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:#080c10;border:none;padding:14px;border-radius:3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px}
 .submit-btn:hover{background:#f0c860;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,184,75,.3)}
-
-/* contact cards */
-.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.contact-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:26px;text-align:center;
-  transition:all .25s;
-}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:26px;text-align:center;transition:all .25s}
 .contact-card:hover{border-color:rgba(232,184,75,.35);transform:translateY(-2px)}
 .contact-card i{font-size:26px;margin-bottom:12px;display:block;color:var(--accent)}
 .contact-card.c-teal i{color:var(--a2)}
 .contact-card.c-blue i{color:var(--a4)}
+.contact-card.c-red i{color:var(--a3)}
 .cc-title{font-family:var(--head);font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
 .cc-val{font-family:var(--mono);font-size:12px;color:var(--muted);word-break:break-all}
-
-/* ── FOOTER ── */
-footer{
-  position:relative;z-index:1;
-  border-top:1px solid var(--border);
-  background:var(--surface);
-  padding:52px 40px 32px;
-  transition:background .35s,border-color .35s;
-}
-.footer-grid{
-  max-width:1200px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:28px;padding-bottom:36px;
-  border-bottom:1px solid var(--border);
-}
-.footer-col h4{
-  font-family:var(--head);font-size:13px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text);margin-bottom:14px;
-  display:flex;align-items:center;gap:8px;
-}
+.cc-val a{color:var(--a3);text-decoration:none}
+.cc-val a:hover{text-decoration:underline}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);background:var(--surface);padding:52px 40px 32px;transition:background .35s,border-color .35s}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;padding-bottom:36px;border-bottom:1px solid var(--border)}
+.footer-col h4{font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
 .footer-col h4 i{color:var(--accent)}
 .footer-col p{font-size:13px;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:12px}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-.footer-col a{
-  font-family:var(--mono);font-size:12px;color:var(--muted);
-  text-decoration:none;display:inline-flex;align-items:center;gap:7px;
-  transition:color .2s;
-}
+.footer-col a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:color .2s}
 .footer-col a:hover{color:var(--accent)}
-.footer-contact{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--head);font-size:12px;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  color:var(--accent);border:1px solid rgba(232,184,75,.3);
-  padding:8px 16px;border-radius:2px;text-decoration:none;
-  background:rgba(232,184,75,.06);transition:all .2s;
-}
+.footer-contact{display:inline-flex;align-items:center;gap:8px;font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(232,184,75,.3);padding:8px 16px;border-radius:2px;text-decoration:none;background:rgba(232,184,75,.06);transition:all .2s}
 .footer-contact:hover{background:rgba(232,184,75,.14);border-color:var(--accent)}
-.footer-bottom{
-  max-width:1200px;margin:24px auto 0;
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:10px;
-  font-family:var(--mono);font-size:11px;color:var(--muted);
-}
+.footer-bottom{max-width:1200px;margin:24px auto 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:11px;color:var(--muted)}
 .footer-bottom span{color:var(--accent)}
-
-/* ── NOTIFICATION ── */
-.notif{
-  position:fixed;bottom:20px;right:20px;z-index:500;
-  background:var(--card);border:1px solid var(--a6);border-radius:3px;
-  padding:14px 18px;display:none;align-items:center;gap:10px;
-  font-family:var(--mono);font-size:12px;color:var(--text);
-  box-shadow:0 8px 24px rgba(0,0,0,.4);
-  animation:fadeUp .3s ease;
-}
+.notif{position:fixed;bottom:20px;right:20px;z-index:500;background:var(--card);border:1px solid var(--a6);border-radius:3px;padding:14px 18px;display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.4);animation:fadeUp .3s ease}
 .notif.show{display:flex}
 .notif i{color:var(--a6)}
 .notif .close-n{background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;margin-left:8px;padding:0}
 .notif.error{border-color:var(--a3)}.notif.error i{color:var(--a3)}
-
-/* ── SCROLL REVEAL ── */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
-
-/* ── ANIMATIONS ── */
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── RESPONSIVE ── */
-@media(max-width:960px){
-  .nav-links{display:none}
-  .menu-btn{display:flex}
-}
-@media(max-width:680px){
-  nav{padding:0 16px}
-  .wrap{padding:56px 16px}
-  footer{padding:36px 16px 24px}
-  .hero-stats{gap:20px}
-  .form-row{grid-template-columns:1fr}
-  .form-wrap{padding:24px 16px}
-  .hero-btns{flex-direction:column;align-items:center}
-  .btn-p,.btn-s{width:90vw;max-width:320px;justify-content:center}
-}
+@media(max-width:960px){.nav-links{display:none}.menu-btn{display:flex}}
+@media(max-width:680px){nav{padding:0 16px}.wrap{padding:56px 16px}footer{padding:36px 16px 24px}.hero-stats{gap:20px}.form-row{grid-template-columns:1fr}.form-wrap{padding:24px 16px}.hero-btns{flex-direction:column;align-items:center}.btn-p,.btn-s{width:90vw;max-width:320px;justify-content:center}}
 </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav>
   <a class="nav-logo" href="#">
     <div class="dot"></div>
@@ -445,7 +208,6 @@ footer{
   </div>
 </nav>
 
-<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#features"><i class="fa-solid fa-microchip"></i>Features</a>
   <a href="#process"><i class="fa-solid fa-list-check"></i>Process</a>
@@ -457,51 +219,38 @@ footer{
   <a href="./products/index.html"><i class="fa-solid fa-box"></i>Products</a>
 </div>
 
-<!-- ══ HERO ══ -->
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-
   <div class="shield-wrap"><i class="fa-solid fa-microchip"></i></div>
-
   <div class="hero-badge">
     <i class="fa-solid fa-circle" style="font-size:7px"></i>
     Professional Electronics &amp; Developer Tools
   </div>
-
   <h1 class="hero-title">
     Tester<span class="acc">Chip</span>
-    <span class="acc2">PCB · Task-AutoPilot · Crypto & OSINT</span>
+    <span class="acc2">PCB · Task-AutoPilot · Crypto &amp; OSINT</span>
   </h1>
-
   <p class="hero-sub">
     Transform your electronic innovations into reality. Expert PCB design, cryptography utilities, and an open source intelligence platform — all built by engineers, for engineers.
   </p>
-
   <div class="hero-btns">
-    <a class="btn-p" href="#submit">
-      <i class="fa-solid fa-paper-plane"></i> Start Your Project
-    </a>
-    <a class="btn-s" href="#process">
-      <i class="fa-solid fa-play"></i> Learn More
-    </a>
+    <a class="btn-p" href="#submit"><i class="fa-solid fa-paper-plane"></i> Start Your Project</a>
+    <a class="btn-s" href="#process"><i class="fa-solid fa-play"></i> Learn More</a>
   </div>
-
   <div class="hero-stats">
     <span><b>7</b>Features</span>
     <span><b>4</b>Process Steps</span>
-    <span><b>3</b> Engineering Marvel Products</span>
+    <span><b>3</b>Engineering Marvel Products</span>
   </div>
 </div>
 
 <hr class="divider"/>
 
-<!-- ══ FEATURES ══ -->
 <div class="wrap sec-center" id="features">
   <div class="sec-label">// 01 — Features</div>
   <h2 class="sec-title">What We Offer</h2>
   <p class="sec-desc">Professional digital PCB design solutions with cutting-edge software and industry expertise.</p>
-
   <div class="cards-grid">
     <div class="feat-card reveal">
       <i class="fi fa-solid fa-microchip" style="color:var(--accent)"></i>
@@ -543,12 +292,10 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ PROCESS ══ -->
 <div class="wrap sec-center" id="process">
   <div class="sec-label">// 02 — Process</div>
   <h2 class="sec-title">Our Process</h2>
   <p class="sec-desc">From initial consultation to final design delivery, we ensure a smooth and efficient PCB design workflow.</p>
-
   <div class="steps-grid">
     <div class="step-card reveal">
       <div class="step-num">1</div>
@@ -579,16 +326,13 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ AI PCB ══ -->
 <div class="wrap sec-center" id="ai-pcb">
   <div class="sec-label">// 03 — AI Tool</div>
   <h2 class="sec-title">AI PCB Layout System</h2>
   <p class="sec-desc">Our AI-powered PCB layout generator automates complex design tasks, producing faster and more efficient board layouts.</p>
-
   <a class="cta-chip teal" href="products/pcb-generator/index.html" target="_blank" rel="noopener">
     <i class="fa-solid fa-robot"></i> Open PCB Layout Generator
   </a>
-
   <div class="steps-grid">
     <div class="step-card reveal">
       <div class="step-num">1</div>
@@ -619,19 +363,16 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ OSINT HUB (replaces old standalone Crypto section) ══ -->
 <div class="wrap" id="osint-hub">
   <div class="sec-label">// 04 — Intelligence &amp; Crypto</div>
   <h2 class="sec-title">Crypto &amp; OSINT Hub</h2>
   <p class="sec-desc">The TesterChip Crypto Toolkit has been expanded into a full Open Source Intelligence platform. Cryptography tools, OSINT directories, practice labs, and curated GitHub projects — all in one place.</p>
-
-  <!-- Highlight card -->
   <div class="osint-highlight reveal">
     <div class="oh-icon"><i class="fa-solid fa-magnifying-glass-location"></i></div>
     <div class="oh-body">
       <div class="oh-label">Updated — Previously "Crypto Toolkit"</div>
       <div class="oh-title">TesterChip Crypto &amp; OSINT Hub</div>
-      <div class="oh-desc">The original cryptography toolkit (Caesar Cipher, Morse Code, Base64, Hash Generator, ROT13, Binary Converter) is now part of a larger intelligence platform featuring 30+ OSINT tools, 8 practice platforms, and 12 curated open-source GitHub projects.</div>
+      <div class="oh-desc">An all-in-one browser tool combining six cryptography utilities — Caesar Cipher, Base64, Hash Generator, Morse Code, ROT13, and Binary Converter — with a curated directory of 30+ OSINT tools, practice platforms, and GitHub projects. Free, no login, no data collection.</div>
       <div class="oh-pills">
         <span class="oh-pill">Caesar Cipher</span>
         <span class="oh-pill">Morse Code</span>
@@ -644,14 +385,11 @@ footer{
       </div>
     </div>
   </div>
-
   <div style="text-align:center;margin-bottom:48px">
     <a class="cta-chip" href="products/OSINT/testerchip-osint.html" target="_blank" rel="noopener">
       <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Crypto &amp; OSINT Hub
     </a>
   </div>
-
-  <!-- Crypto tool cards -->
   <div class="sec-label" style="margin-bottom:8px">Crypto Tools Inside the Hub</div>
   <div class="cards-grid" style="margin-bottom:0">
     <div class="feat-card reveal">
@@ -689,16 +427,13 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ TASK AUTOPILOT ══ -->
 <div class="wrap sec-center" id="task-autopilot">
   <div class="sec-label">// 05 — Automation</div>
   <h2 class="sec-title">Task AutoPilot</h2>
   <p class="sec-desc">Describe your task and instantly find the perfect AI tool for the job. No more guessing which tool to use — AutoPilot matches your workflow to the right AI stack.</p>
-
   <a class="cta-chip blue" href="products/Ai suggestion/TesterChip - Find the Perfect AI Tool.html" target="_blank" rel="noopener">
     <i class="fa-solid fa-robot"></i> Open Task AutoPilot
   </a>
-
   <div class="steps-grid">
     <div class="step-card reveal">
       <div class="step-num">1</div>
@@ -729,12 +464,10 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ SUBMIT FORM ══ -->
 <div class="wrap sec-center" id="submit">
   <div class="sec-label">// 06 — Submit</div>
   <h2 class="sec-title">Submit Your PCB Project</h2>
   <p class="sec-desc">Ready to get started? Fill out the form below and our team will respond within 24 hours.</p>
-
   <div class="form-wrap">
     <form id="project-form" action="https://formspree.io/f/mrbllabp" method="POST">
       <div class="form-row">
@@ -747,12 +480,10 @@ footer{
           <input class="inp-field" type="text" id="lastName" name="lastName" placeholder="Priyadarshi" required/>
         </div>
       </div>
-
       <div class="form-group">
         <label class="inp-label" for="email">Email Address *</label>
         <input class="inp-field" type="email" id="email" name="email" placeholder="you@example.com" required/>
       </div>
-
       <div class="form-row">
         <div class="form-group">
           <label class="inp-label" for="projectName">Project Name *</label>
@@ -769,7 +500,6 @@ footer{
           </select>
         </div>
       </div>
-
       <div class="form-row">
         <div class="form-group">
           <label class="inp-label" for="boardLayers">Board Layers</label>
@@ -786,20 +516,21 @@ footer{
           <input class="inp-field" type="text" id="boardSize" name="boardSize" placeholder="e.g. 50 × 30"/>
         </div>
       </div>
-
       <div class="form-group">
         <label class="inp-label" for="projectDescription">Project Description *</label>
         <textarea class="inp-field" id="projectDescription" name="projectDescription" rows="5"
           placeholder="Describe your PCB design requirements, circuit specifications, component list, and any special design considerations..." required></textarea>
       </div>
 
+      <!-- FIX 1: File upload — label wraps a hidden <input type="file"> so clicking anywhere opens the file picker -->
       <div class="form-group">
         <label class="inp-label">Reference Files (Optional)</label>
-        <div class="file-drop">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          <p>Upload reference materials, sketches, or specifications</p>
-          <p style="margin-top:6px;font-size:11px">Supported: .pdf .png .jpg .txt .zip — max 10 MB</p>
-        </div>
+        <label class="file-drop" id="fileDropZone" for="fileInput">
+          <i class="fa-solid fa-cloud-arrow-up" id="fileIcon"></i>
+          <p id="fileText">Click to upload reference materials, sketches, or specifications</p>
+          <p id="fileHint" style="margin-top:6px;font-size:11px">Supported: .pdf .png .jpg .txt .zip — max 10 MB</p>
+          <input type="file" id="fileInput" name="file" accept=".pdf,.png,.jpg,.jpeg,.txt,.zip" multiple style="display:none"/>
+        </label>
       </div>
 
       <div class="form-row">
@@ -824,13 +555,11 @@ footer{
           <div class="budget-note">⚠ This refers to your component budget, not our design service fee.</div>
         </div>
       </div>
-
       <div class="form-group">
         <label class="inp-label" for="additionalNotes">Additional Notes</label>
         <textarea class="inp-field" id="additionalNotes" name="additionalNotes" rows="3"
           placeholder="Any additional information or special requirements..."></textarea>
       </div>
-
       <button type="submit" class="submit-btn">
         <i class="fa-solid fa-paper-plane"></i> Submit Project Request
       </button>
@@ -840,12 +569,11 @@ footer{
 
 <hr class="divider"/>
 
-<!-- ══ CONTACT ══ -->
+<!-- FIX 2: 4 contact cards — YouTube added as 4th -->
 <div class="wrap sec-center" id="contact">
   <div class="sec-label">// 07 — Contact</div>
   <h2 class="sec-title">Get in Touch</h2>
   <p class="sec-desc">Have questions? Our team is ready to help you bring your project to life.</p>
-
   <div class="contact-grid">
     <div class="contact-card reveal">
       <i class="fa-solid fa-envelope"></i>
@@ -862,12 +590,20 @@ footer{
       <div class="cc-title">Response Time</div>
       <div class="cc-val">24 – 48 hours</div>
     </div>
+    <div class="contact-card c-red reveal">
+      <i class="fa-brands fa-youtube"></i>
+      <div class="cc-title">YouTube</div>
+      <div class="cc-val">
+        <a href="https://www.youtube.com/@TesterChip-Official" target="_blank" rel="noopener">
+          @TesterChip-Official
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
 <hr class="divider"/>
 
-<!-- ══ FOOTER ══ -->
 <footer>
   <div class="footer-grid">
     <div class="footer-col">
@@ -903,7 +639,6 @@ footer{
   </div>
 </footer>
 
-<!-- Notification -->
 <div class="notif" id="notif">
   <i class="fa-solid fa-circle-check" id="notif-icon"></i>
   <span id="notif-text">Project submitted successfully!</span>
@@ -911,7 +646,7 @@ footer{
 </div>
 
 <script>
-/* ── DAY / NIGHT ── */
+/* DAY / NIGHT */
 const toggleBtn  = document.getElementById('toggleBtn');
 const toggleIcon = document.getElementById('toggleIcon');
 toggleBtn.addEventListener('click', () => {
@@ -919,7 +654,7 @@ toggleBtn.addEventListener('click', () => {
   toggleIcon.className = isDay ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
 });
 
-/* ── MOBILE MENU ── */
+/* MOBILE MENU */
 const menuBtn    = document.getElementById('menuBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
@@ -929,7 +664,7 @@ document.addEventListener('click', e => {
 });
 mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
 
-/* ── SMOOTH SCROLL for nav links ── */
+/* SMOOTH SCROLL */
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const target = document.querySelector(a.getAttribute('href'));
@@ -937,7 +672,27 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 
-/* ── FORM SUBMISSION ── */
+/* FILE UPLOAD FEEDBACK */
+document.getElementById('fileInput').addEventListener('change', function () {
+  const zone = document.getElementById('fileDropZone');
+  const icon = document.getElementById('fileIcon');
+  const text = document.getElementById('fileText');
+  const hint = document.getElementById('fileHint');
+  if (this.files.length === 0) {
+    zone.classList.remove('selected');
+    icon.className = 'fa-solid fa-cloud-arrow-up';
+    text.textContent = 'Click to upload reference materials, sketches, or specifications';
+    hint.textContent = 'Supported: .pdf .png .jpg .txt .zip — max 10 MB';
+  } else {
+    zone.classList.add('selected');
+    icon.className = 'fa-solid fa-circle-check';
+    const names = Array.from(this.files).map(f => f.name).join(', ');
+    text.textContent = this.files.length === 1 ? '✓ ' + names : '✓ ' + this.files.length + ' files: ' + names;
+    hint.textContent = 'Ready to submit with your project request.';
+  }
+});
+
+/* FORM SUBMISSION */
 const form = document.getElementById('project-form');
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -947,8 +702,12 @@ form.addEventListener('submit', async e => {
       method: 'POST', body: data, headers: { Accept: 'application/json' }
     });
     if (res.ok) {
-      showNotif('Project submitted successfully! We\'ll be in touch within 24 hours.', false);
+      showNotif("Project submitted successfully! We'll be in touch within 24 hours.", false);
       form.reset();
+      document.getElementById('fileDropZone').classList.remove('selected');
+      document.getElementById('fileIcon').className = 'fa-solid fa-cloud-arrow-up';
+      document.getElementById('fileText').textContent = 'Click to upload reference materials, sketches, or specifications';
+      document.getElementById('fileHint').textContent = 'Supported: .pdf .png .jpg .txt .zip — max 10 MB';
       setTimeout(() => { window.location.href = 'https://formspree.io/thanks?language=en'; }, 2500);
     } else {
       const d = await res.json();
@@ -958,7 +717,7 @@ form.addEventListener('submit', async e => {
 });
 
 function showNotif(msg, isError) {
-  const n = document.getElementById('notif');
+  const n  = document.getElementById('notif');
   const ic = document.getElementById('notif-icon');
   document.getElementById('notif-text').textContent = msg;
   n.classList.toggle('error', isError);
@@ -968,7 +727,7 @@ function showNotif(msg, isError) {
 }
 function hideNotif() { document.getElementById('notif').classList.remove('show'); }
 
-/* ── SCROLL REVEAL ── */
+/* SCROLL REVEAL */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
