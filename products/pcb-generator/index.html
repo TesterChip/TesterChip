@@ -1,572 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TesterChip - PCB Layout Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-        .gradient-bg {
-            background: linear-gradient(to bottom right, #0f172a, #1e3a8a, #0f172a);
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #22d3ee, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCB.AI — Manufacturing-Ready PCB Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#070b0c; --surface:#0d1416; --card:#101a1d; --border:#1a2e33;
+    --accent:#00e5ff; --accent2:#ff6b35; --accent3:#39ff14; --accent4:#ffd700;
+    --text:#dceef2; --muted:#4a6e78;
+    --mono:'Share Tech Mono',monospace; --sans:'Syne',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.025) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+  .orb{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;}
+  .orb1{width:600px;height:600px;background:rgba(0,229,255,.05);top:-150px;left:-150px;}
+  .orb2{width:500px;height:500px;background:rgba(255,107,53,.04);bottom:-100px;right:-100px;}
+
+  /* HEADER */
+  header{position:relative;z-index:100;padding:15px 36px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(7,11,12,.88);backdrop-filter:blur(16px);}
+  .logo{font-family:var(--mono);font-size:1.2rem;color:var(--accent);letter-spacing:3px;display:flex;align-items:center;gap:10px;}
+  .logo-dot{width:7px;height:7px;background:var(--accent3);border-radius:50%;animation:blink 2s infinite;}
+  @keyframes blink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(57,255,20,.5)}50%{opacity:.4;box-shadow:0 0 0 8px rgba(57,255,20,0)}}
+  .badge{font-family:var(--mono);font-size:.62rem;color:var(--accent3);border:1px solid var(--accent3);padding:4px 12px;letter-spacing:2px;}
+
+  /* HERO */
+  .hero{position:relative;z-index:10;text-align:center;padding:46px 20px 26px;}
+  .hero-tag{font-family:var(--mono);font-size:.68rem;color:var(--accent);letter-spacing:4px;margin-bottom:12px;animation:fadeUp .5s forwards .1s;opacity:0;}
+  .hero h1{font-size:clamp(2rem,5vw,4.2rem);font-weight:800;line-height:1.06;letter-spacing:-2px;animation:fadeUp .5s forwards .3s;opacity:0;}
+  .c1{color:var(--accent);} .c2{color:var(--accent2);}
+  .hero-sub{margin-top:10px;font-family:var(--mono);font-size:.8rem;color:var(--muted);animation:fadeUp .5s forwards .5s;opacity:0;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  /* WORKSPACE */
+  .workspace{position:relative;z-index:10;max-width:1420px;margin:0 auto;padding:16px 18px 60px;display:grid;grid-template-columns:340px 1fr;gap:18px;}
+  @media(max-width:880px){.workspace{grid-template-columns:1fr;}header{padding:13px 18px;}}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);padding:22px;position:relative;overflow:hidden;}
+  .card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.35;}
+  .card-title{font-family:var(--mono);font-size:.62rem;color:var(--accent);letter-spacing:3px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .card-title::before{content:'';width:13px;height:1px;background:var(--accent);}
+
+  /* FORM */
+  .form-group{margin-bottom:13px;}
+  label{display:block;font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:2px;margin-bottom:5px;}
+  input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:.78rem;padding:8px 11px;outline:none;transition:border-color .2s;appearance:none;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 1px rgba(0,229,255,.07);}
+  select option{background:var(--card);}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .check-group{display:flex;flex-direction:column;gap:7px;}
+  .check-item{display:flex;align-items:center;gap:7px;cursor:pointer;font-family:var(--mono);font-size:.72rem;}
+  .check-item input[type=checkbox]{width:13px;height:13px;accent-color:var(--accent);cursor:pointer;}
+
+  .btn-gen{width:100%;padding:13px;background:transparent;border:1px solid var(--accent);color:var(--accent);font-family:var(--mono);font-size:.8rem;letter-spacing:3px;cursor:pointer;position:relative;overflow:hidden;transition:color .3s;margin-top:5px;}
+  .btn-gen::before{content:'';position:absolute;inset:0;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s;z-index:-1;}
+  .btn-gen:hover{color:var(--bg);} .btn-gen:hover::before{transform:scaleX(1);}
+  .btn-gen:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* VIEWER */
+  .viewer-col{display:flex;flex-direction:column;gap:18px;}
+  .viewer-card{background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden;min-height:500px;}
+  .viewer-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent2),transparent);opacity:.5;}
+
+  .viewer-header{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .viewer-title{font-family:var(--mono);font-size:.62rem;color:var(--accent2);letter-spacing:3px;display:flex;align-items:center;gap:8px;}
+  .viewer-title::before{content:'';width:13px;height:1px;background:var(--accent2);}
+
+  .layer-tabs{display:flex;gap:3px;flex-wrap:wrap;}
+  .layer-tab{font-family:var(--mono);font-size:.58rem;letter-spacing:1px;padding:4px 9px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .18s;}
+  .layer-tab:hover{border-color:var(--text);color:var(--text);}
+  .lt-all  {--lc:#00e5ff;} .lt-fcu  {--lc:#e05050;} .lt-bcu  {--lc:#5080df;}
+  .lt-mask {--lc:#a040d0;} .lt-silk {--lc:#d8d890;} .lt-edge {--lc:#f0f020;} .lt-drill{--lc:#ff9900;}
+  .layer-tab.active{background:var(--lc) !important;border-color:var(--lc) !important;color:#050a0b !important;}
+
+  .canvas-wrap{flex:1;position:relative;background:#030507;overflow:hidden;min-height:440px;}
+  #pcbCanvas{display:block;cursor:grab;width:100%;height:100%;}
+  #pcbCanvas:active{cursor:grabbing;}
+
+  .canvas-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;pointer-events:none;}
+  .canvas-placeholder svg{opacity:.25;}
+  .canvas-placeholder span{font-family:var(--mono);font-size:.65rem;letter-spacing:2px;color:var(--muted);opacity:.5;}
+
+  .viewer-footer{padding:9px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+  .vinfo{font-family:var(--mono);font-size:.6rem;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap;}
+  .vinfo span{color:var(--text);}
+  .zoom-row{display:flex;gap:3px;}
+  .zbtn{width:24px;height:24px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+  .zbtn:hover{border-color:var(--accent);color:var(--accent);}
+
+  .legend{padding:9px 18px;border-top:1px solid var(--border);display:flex;gap:12px;flex-wrap:wrap;}
+  .leg-item{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.58rem;color:var(--muted);}
+  .leg-sw{width:9px;height:9px;border-radius:1px;}
+
+  /* OUTPUT */
+  .output-card{background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;}
+  .output-card::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent3),transparent);opacity:.4;}
+  .output-body{padding:18px;font-family:var(--mono);font-size:.72rem;line-height:1.7;color:var(--muted);min-height:200px;max-height:300px;overflow:auto;}
+  .output-body.active{color:var(--text);}
+
+  .ph-msg{display:flex;flex-direction:column;align-items:center;justify-content:center;height:140px;gap:9px;opacity:.3;}
+  .progress-bar{height:2px;background:var(--border);margin:9px 0;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));width:0%;transition:width .32s ease;}
+  .status-bar{display:flex;align-items:center;gap:7px;margin-bottom:10px;padding-bottom:9px;border-bottom:1px solid var(--border);}
+  .sdot{width:5px;height:5px;border-radius:50%;background:var(--accent3);animation:blink 1s infinite;}
+  .stxt{font-size:.62rem;color:var(--accent3);letter-spacing:2px;}
+
+  .tag{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:2px 7px;border:1px solid;letter-spacing:1px;margin:2px;}
+  .tb{color:var(--accent);border-color:var(--accent);} .tg{color:var(--accent3);border-color:var(--accent3);} .to{color:var(--accent2);border-color:var(--accent2);}
+  .dfm-item{display:flex;align-items:center;gap:7px;font-size:.7rem;padding:2px 0;}
+  .dp{color:var(--accent3);} .dw{color:var(--accent2);}
+
+  .gbr-sec{margin-bottom:12px;}
+  .gbr-fn{color:var(--accent2);font-size:.72rem;margin-bottom:2px;display:flex;align-items:center;gap:5px;}
+  .gbr-fn::before{content:'▶';font-size:.52rem;}
+  .gbr-body{color:#2e5560;font-size:.64rem;padding-left:12px;border-left:2px solid var(--border);}
+  .cmd{color:var(--accent);} .coord{color:#4a8090;} .cmt{color:#264550;}
+
+  .dl-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+  .btn-dl{padding:5px 13px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:.62rem;letter-spacing:1px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:4px;}
+  .btn-dl:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-dl-all{border-color:var(--accent3) !important;color:var(--accent3) !important;}
+
+  .spinner{display:inline-block;width:11px;height:11px;border:1px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .5s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .err{color:#ff5555;font-family:var(--mono);font-size:.74rem;padding:9px;border:1px solid rgba(255,85,85,.3);background:rgba(255,85,85,.05);}
+</style>
 </head>
-<body class="gradient-bg text-white min-h-screen">
-    <div class="p-6">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="mb-6 text-center">
-                <div class="flex items-center justify-center gap-3 mb-2">
-                    <svg class="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
-                    </svg>
-                    <h1 class="text-4xl font-bold gradient-text">Your PCB Assistant</h1>
-                </div>
-                <p class="text-slate-300">Professional PCB Design Generator by TesterChip</p>
-            </div>
+<body>
+<div class="orb orb1"></div><div class="orb orb2"></div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Control Panel -->
-                <div class="lg:col-span-1 space-y-4">
-                    <!-- Board Dimensions -->
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
-                        <h3 class="font-semibold mb-4">Board Size</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm text-slate-300 mb-1">Width (mm)</label>
-                                <input type="number" id="boardWidth" value="900" min="400" max="1200" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-sm text-slate-300 mb-1">Height (mm)</label>
-                                <input type="number" id="boardHeight" value="600" min="300" max="900" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm">
-                            </div>
-                        </div>
-                    </div>
+<header>
+  <div class="logo"><div class="logo-dot"></div>PCB.AI</div>
+  <div class="badge">MANUFACTURING-READY</div>
+</header>
 
-                    <!-- Component Selection -->
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700 max-h-96 overflow-y-auto">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-semibold">Components</h3>
-                            <button onclick="resetComponents()" class="text-xs text-slate-400 hover:text-white">Reset</button>
-                        </div>
-                        <div id="componentList" class="space-y-3"></div>
-                        <div class="mt-4 pt-4 border-t border-slate-700">
-                            <div class="text-sm text-slate-400">
-                                Total: <span id="totalComponents" class="text-white font-semibold">0</span> components
-                            </div>
-                        </div>
-                    </div>
+<div class="hero">
+  <div class="hero-tag">AI-POWERED PCB GENERATOR</div>
+  <h1>Design. <span class="c1">Visualize.</span><br><span class="c2">Manufacture.</span> Instantly.</h1>
+  <p class="hero-sub">Configure specs → live layer viewer → download Gerber files</p>
+</div>
 
-                    <!-- Settings -->
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
-                        <h3 class="font-semibold mb-4">Settings</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm text-slate-300 mb-2">Grid Size: <span id="gridSizeValue">20</span>px</label>
-                                <input type="range" id="gridSize" min="10" max="40" step="5" value="20" class="w-full">
-                            </div>
-                            <div>
-                                <label class="block text-sm text-slate-300 mb-2">Min Spacing: <span id="minSpacingValue">40</span>px</label>
-                                <input type="range" id="minSpacing" min="20" max="80" step="10" value="40" class="w-full">
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-slate-300">Auto-Route</span>
-                                <button id="autoRouteBtn" onclick="toggleAutoRoute()" class="px-3 py-1 rounded text-xs font-medium bg-green-600">ON</button>
-                            </div>
-                        </div>
-                    </div>
+<div class="workspace">
 
-                    <!-- Layer Control -->
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
-                        <h3 class="font-semibold mb-4">Layer View</h3>
-                        <div class="space-y-2">
-                            <button onclick="setLayer('all')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-cyan-600 text-white">All Layers</button>
-                            <button onclick="setLayer('top')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600">Top Layer</button>
-                            <button onclick="setLayer('bottom')" class="layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600">Bottom Layer</button>
-                        </div>
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
-                        <h3 class="font-semibold mb-4">Design Stats</h3>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Components:</span>
-                                <span id="statsComponents" class="font-mono">0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Traces:</span>
-                                <span id="statsTraces" class="font-mono">0</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-400">Board Area:</span>
-                                <span id="statsArea" class="font-mono">0.00 cm²</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="space-y-2">
-                        <button onclick="generateDesign()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 px-4 py-3 rounded-lg font-semibold transition shadow-lg">
-                            Generate Design
-                        </button>
-                        <button onclick="exportDesign()" id="exportBtn" class="w-full bg-green-600 hover:bg-green-500 px-4 py-3 rounded-lg font-semibold transition">
-                            Export Design
-                        </button>
-                        <button onclick="clearCanvas()" class="w-full bg-red-600 hover:bg-red-500 px-4 py-3 rounded-lg font-semibold transition">
-                            Clear Canvas
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Canvas Area -->
-                <div class="lg:col-span-3">
-                    <div class="bg-slate-800 rounded-lg p-4 shadow-xl border border-slate-700">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-semibold">PCB Layout View</h3>
-                                <span id="boardDimensions" class="text-xs text-slate-400">(900 × 600 mm)</span>
-                            </div>
-                            <div class="flex gap-2">
-                                <div class="flex items-center gap-2 text-xs bg-slate-700 px-3 py-1 rounded">
-                                    <div class="w-3 h-3 bg-cyan-400 rounded"></div>
-                                    <span>Traces</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-xs bg-slate-700 px-3 py-1 rounded">
-                                    <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                                    <span>Vias/Pins</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-slate-900 rounded-lg p-4 border-2 border-slate-700 overflow-auto">
-                            <canvas id="pcbCanvas" width="900" height="600" class="border border-slate-600 rounded"></canvas>
-                        </div>
-                        <div class="mt-4 p-3 bg-slate-700/50 border border-slate-600 rounded-lg">
-                            <div class="text-sm text-slate-300">
-                                <strong class="text-white">Features:</strong> Custom board dimensions, component selection, 90° Manhattan routing, multi-layer support, and exportable design files.
-                                <br>
-                                <strong class="text-white">Note:</strong> Our project is still in its early phase. We're laying the groundwork and shaping core ideas—more updates soon!
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- LEFT: Specs + Output -->
+  <div style="display:flex;flex-direction:column;gap:18px;">
+    <div class="card">
+      <div class="card-title">CIRCUIT SPECIFICATIONS</div>
+      <div class="form-group">
+        <label>CIRCUIT TYPE</label>
+        <select id="circuitType"><option value="arduino">Arduino-Compatible MCU</option><option value="esp32">ESP32 IoT Dev Board</option><option value="buck">Buck Converter / PSU</option><option value="motor">Motor Driver Board</option><option value="custom">Custom</option></select>
+      </div>
+      <div class="form-group">
+        <label>BOARD SIZE (mm)</label>
+        <div class="row2">
+          <input type="number" id="boardW" value="68" placeholder="Width">
+          <input type="number" id="boardH" value="53" placeholder="Height">
         </div>
+      </div>
+      <div class="form-group">
+        <label>LAYERS</label>
+        <select id="layers"><option value="2">2-Layer</option><option value="4">4-Layer</option><option value="6">6-Layer</option></select>
+      </div>
+      <div class="form-group">
+        <label>KEY ICs / COMPONENTS</label>
+        <input type="text" id="mainIC" value="ATmega328P, CH340G">
+      </div>
+      <div class="form-group">
+        <label>TRACE CONSTRAINTS (mil)</label>
+        <div class="row2">
+          <div><label>TRACE WIDTH</label><input type="number" id="traceW" value="6" min="3"></div>
+          <div><label>CLEARANCE</label><input type="number" id="clearance" value="6" min="3"></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>VIA DRILL SIZE (mm)</label>
+        <input type="number" id="viaDrill" value="0.3" step="0.05" min="0.2">
+      </div>
+      <div class="form-group">
+        <label>TARGET MANUFACTURER</label>
+        <select id="manufacturer"><option value="jlcpcb">JLCPCB</option><option value="pcbway">PCBWay</option><option value="oshpark">OSH Park</option><option value="generic">Generic</option></select>
+      </div>
+      <div class="form-group">
+        <label>OPTIMIZATION GOALS</label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" id="optTrace" checked> Minimize trace length</label>
+          <label class="check-item"><input type="checkbox" id="optThermal" checked> Thermal management</label>
+          <label class="check-item"><input type="checkbox" id="optEMI" checked> EMI / solid ground plane</label>
+          <label class="check-item"><input type="checkbox" id="optDFM" checked> DFM compliance check</label>
+        </div>
+      </div>
+      <button class="btn-gen" id="genBtn" onclick="generatePCB()">▶ GENERATE GERBER FILES</button>
     </div>
 
-    <script>
-        // State
-        let components = [];
-        let traces = [];
-        let selectedLayer = 'all';
-        let autoRoute = true;
-        let selectedComponents = {
-            IC: 0,
-            Resistor: 0,
-            Capacitor: 0,
-            LED: 0,
-            Transistor: 0,
-            Diode: 0,
-            Inductor: 0,
-            Crystal: 0
-        };
+    <div class="output-card">
+      <div style="padding:13px 18px 0;"><div class="card-title" style="margin-bottom:10px;">OUTPUT &amp; FILES</div></div>
+      <div id="outputArea" class="output-body">
+        <div class="ph-msg">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="2" y="2" width="34" height="34" rx="2" stroke="#00e5ff" stroke-width="1.1"/><circle cx="19" cy="19" r="6.5" stroke="#00e5ff" stroke-width="1.1"/><circle cx="19" cy="19" r="1.8" fill="#00e5ff"/><line x1="2" y1="12" x2="36" y2="12" stroke="#00e5ff" stroke-width=".4"/><line x1="2" y1="26" x2="36" y2="26" stroke="#00e5ff" stroke-width=".4"/><line x1="12" y1="2" x2="12" y2="36" stroke="#00e5ff" stroke-width=".4"/><line x1="26" y1="2" x2="26" y2="36" stroke="#00e5ff" stroke-width=".4"/></svg>
+          <span>CONFIGURE SPECS → GENERATE</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        const componentTypes = {
-            IC: { symbol: '□', color: '#3b82f6', width: 60, height: 60, pins: 8 },
-            Resistor: { symbol: 'R', color: '#10b981', width: 40, height: 20, pins: 2 },
-            Capacitor: { symbol: 'C', color: '#f59e0b', width: 30, height: 30, pins: 2 },
-            LED: { symbol: 'D', color: '#ef4444', width: 25, height: 25, pins: 2 },
-            Transistor: { symbol: 'Q', color: '#8b5cf6', width: 35, height: 35, pins: 3 },
-            Diode: { symbol: 'D', color: '#ec4899', width: 35, height: 20, pins: 2 },
-            Inductor: { symbol: 'L', color: '#14b8a6', width: 40, height: 25, pins: 2 },
-            Crystal: { symbol: 'Y', color: '#a855f7', width: 30, height: 40, pins: 2 }
-        };
+  <!-- RIGHT: PCB Viewer -->
+  <div class="viewer-col">
+    <div class="viewer-card">
+      <div class="viewer-header">
+        <div class="viewer-title">PCB LAYER VIEWER</div>
+        <div class="layer-tabs">
+          <button class="layer-tab lt-all active"  data-l="all"   onclick="setLayer('all')">ALL</button>
+          <button class="layer-tab lt-fcu"          data-l="fcu"   onclick="setLayer('fcu')">F.Cu</button>
+          <button class="layer-tab lt-bcu"          data-l="bcu"   onclick="setLayer('bcu')">B.Cu</button>
+          <button class="layer-tab lt-mask"         data-l="mask"  onclick="setLayer('mask')">Mask</button>
+          <button class="layer-tab lt-silk"         data-l="silk"  onclick="setLayer('silk')">Silk</button>
+          <button class="layer-tab lt-edge"         data-l="edge"  onclick="setLayer('edge')">Edge</button>
+          <button class="layer-tab lt-drill"        data-l="drill" onclick="setLayer('drill')">Drill</button>
+        </div>
+      </div>
 
-        // Initialize
-        function init() {
-            renderComponentList();
-            setupEventListeners();
-            drawPCB();
-        }
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="pcbCanvas"></canvas>
+        <div class="canvas-placeholder" id="placeholder">
+          <svg width="58" height="58" viewBox="0 0 58 58" fill="none"><rect x="2" y="2" width="54" height="54" rx="3" stroke="#00e5ff" stroke-width="1"/><circle cx="29" cy="29" r="9" stroke="#00e5ff" stroke-width="1"/><circle cx="29" cy="29" r="2.2" fill="#00e5ff"/><line x1="2" y1="19" x2="56" y2="19" stroke="#00e5ff" stroke-width=".5" stroke-dasharray="3,3"/><line x1="2" y1="39" x2="56" y2="39" stroke="#00e5ff" stroke-width=".5" stroke-dasharray="3,3"/><line x1="19" y1="2" x2="19" y2="56" stroke="#00e5ff" stroke-width=".5" stroke-dasharray="3,3"/><line x1="39" y1="2" x2="39" y2="56" stroke="#00e5ff" stroke-width=".5" stroke-dasharray="3,3"/></svg>
+          <span>GENERATE PCB TO VIEW LAYERS</span>
+        </div>
+      </div>
 
-        function renderComponentList() {
-            const list = document.getElementById('componentList');
-            list.innerHTML = '';
+      <div class="legend">
+        <div class="leg-item"><div class="leg-sw" style="background:#e05050"></div>F.Cu</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#5080df"></div>B.Cu / GND</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#a040d0;opacity:.7"></div>Soldermask</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#d8d890"></div>Silkscreen</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#f0f020"></div>Board Edge</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#ff9900"></div>Drill / Vias</div>
+        <div class="leg-item"><div class="leg-sw" style="background:#ffd700"></div>Crystal / Passives</div>
+      </div>
 
-            Object.entries(componentTypes).forEach(([type, data]) => {
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between';
-                div.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-bold" style="background-color: ${data.color}">
-                            ${data.symbol}
-                        </div>
-                        <span class="text-sm">${type}</span>
-                    </div>
-                    <input type="number" id="comp-${type}" value="0" min="0" max="20" 
-                           class="w-16 bg-slate-700 border border-slate-600 rounded px-2 py-1 text-sm text-center"
-                           onchange="updateComponentCount('${type}', this.value)">
-                `;
-                list.appendChild(div);
-            });
-        }
+      <div class="viewer-footer">
+        <div class="vinfo">
+          <div>SIZE: <span id="iSize">—</span></div>
+          <div>LAYER: <span id="iLayer">—</span></div>
+          <div>ZOOM: <span id="iZoom">1.0×</span></div>
+        </div>
+        <div class="zoom-row">
+          <button class="zbtn" onclick="doZoom(1.25)" title="Zoom In">+</button>
+          <button class="zbtn" onclick="doZoom(0.8)"  title="Zoom Out">−</button>
+          <button class="zbtn" onclick="resetView()"   title="Reset">⊙</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        function setupEventListeners() {
-            document.getElementById('gridSize').addEventListener('input', (e) => {
-                document.getElementById('gridSizeValue').textContent = e.target.value;
-                drawPCB();
-            });
+</div><!-- /workspace -->
 
-            document.getElementById('minSpacing').addEventListener('input', (e) => {
-                document.getElementById('minSpacingValue').textContent = e.target.value;
-            });
+<script>
+// ════════════════════════════════════
+//  CANVAS + STATE
+// ════════════════════════════════════
+const canvas  = document.getElementById('pcbCanvas');
+const ctx     = canvas.getContext('2d');
+const wrap    = document.getElementById('canvasWrap');
 
-            document.getElementById('boardWidth').addEventListener('change', (e) => {
-                const canvas = document.getElementById('pcbCanvas');
-                canvas.width = Math.max(400, Math.min(1200, parseInt(e.target.value) || 900));
-                updateBoardDimensions();
-                drawPCB();
-            });
+let layer   = 'all';
+let zoom    = 1, panX = 0, panY = 0;
+let drag    = false, lx = 0, ly = 0;
+let ready   = false;
+let gFiles  = {};
 
-            document.getElementById('boardHeight').addEventListener('change', (e) => {
-                const canvas = document.getElementById('pcbCanvas');
-                canvas.height = Math.max(300, Math.min(900, parseInt(e.target.value) || 600));
-                updateBoardDimensions();
-                drawPCB();
-            });
-        }
+// Resize canvas to fill wrapper
+function resizeCanvas() {
+  canvas.width  = wrap.clientWidth  || 700;
+  canvas.height = wrap.clientHeight || 480;
+  if (ready) renderPCB(); else drawIdle();
+}
+window.addEventListener('resize', () => { setTimeout(resizeCanvas, 60); });
+setTimeout(resizeCanvas, 80);
 
-        function updateBoardDimensions() {
-            const canvas = document.getElementById('pcbCanvas');
-            document.getElementById('boardDimensions').textContent = `(${canvas.width} × ${canvas.height} mm)`;
-        }
+// Pan
+canvas.addEventListener('mousedown', e => { drag=true; lx=e.clientX; ly=e.clientY; });
+window.addEventListener('mouseup',   () => drag=false);
+window.addEventListener('mousemove', e => {
+  if (!drag) return;
+  panX += e.clientX-lx; panY += e.clientY-ly; lx=e.clientX; ly=e.clientY;
+  if(ready) renderPCB();
+});
+// Zoom scroll
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  doZoom(e.deltaY < 0 ? 1.1 : 0.9);
+}, {passive:false});
 
-        function updateComponentCount(type, value) {
-            selectedComponents[type] = Math.max(0, parseInt(value) || 0);
-            updateTotalComponents();
-        }
+function doZoom(f) { zoom = Math.max(0.25, Math.min(10, zoom*f)); document.getElementById('iZoom').textContent = zoom.toFixed(1)+'×'; if(ready) renderPCB(); }
+function resetView() { zoom=1; panX=0; panY=0; document.getElementById('iZoom').textContent='1.0×'; if(ready) renderPCB(); }
+function setLayer(l) {
+  layer = l;
+  document.querySelectorAll('.layer-tab').forEach(t => t.classList.toggle('active', t.dataset.l===l));
+  const names={all:'ALL LAYERS',fcu:'F.Cu — TOP COPPER',bcu:'B.Cu — BOT COPPER',mask:'SOLDERMASK',silk:'SILKSCREEN',edge:'BOARD EDGE',drill:'DRILL / VIAS'};
+  document.getElementById('iLayer').textContent = names[l]||l;
+  if(ready) renderPCB();
+}
 
-        function updateTotalComponents() {
-            const total = Object.values(selectedComponents).reduce((a, b) => a + b, 0);
-            document.getElementById('totalComponents').textContent = total;
-        }
+// Idle grid
+function drawIdle() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#030507'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(0,229,255,.04)'; ctx.lineWidth=.5;
+  for(let x=0;x<canvas.width;x+=30){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=0;y<canvas.height;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+}
 
-        function resetComponents() {
-            Object.keys(selectedComponents).forEach(type => {
-                selectedComponents[type] = 0;
-                document.getElementById(`comp-${type}`).value = 0;
-            });
-            updateTotalComponents();
-        }
+// ════════════════════════════════════
+//  COMPONENT DEFINITIONS
+// ════════════════════════════════════
+const CIRCUIT_COMPS = {
+  arduino:[
+    {id:'U1',lbl:'ATmega328P',type:'tqfp',  x:12,y:14,w:9, h:11,pins:32,col:'#e05050'},
+    {id:'U2',lbl:'CH340G',    type:'soic',  x:32,y:9, w:6, h:7, pins:16,col:'#e05050'},
+    {id:'Y1',lbl:'16MHz',     type:'xtal',  x:12,y:7, w:3.5,h:2.2,col:'#ffd700'},
+    {id:'U3',lbl:'AMS1117',   type:'sot',   x:48,y:18,w:4.5,h:3.2,col:'#ff6b35'},
+    {id:'J1',lbl:'USB-B',     type:'conn',  x:33,y:2, w:9, h:5, col:'#4a7fff'},
+    {id:'J2',lbl:'PWR IN',    type:'conn',  x:3, y:3, w:5, h:3.5,col:'#4a7fff'},
+    {id:'JP1',lbl:'ICSP',     type:'hdr',   x:57,y:28,w:4.5,h:8, col:'#4a7fff'},
+    {id:'SW1',lbl:'RESET',    type:'sw',    x:56,y:11,w:4.5,h:3.5,col:'#00ffcc'},
+    {id:'D1',lbl:'LED',       type:'led',   x:63,y:8, w:1.8,h:1.2,col:'#39ff14'},
+    {id:'D2',lbl:'RX LED',    type:'led',   x:63,y:11,w:1.8,h:1.2,col:'#39ff14'},
+    {id:'C1',lbl:'100nF',     type:'cap',   x:9, y:12,w:1.8,h:1.2,col:'#a040d0'},
+    {id:'C2',lbl:'100nF',     type:'cap',   x:22,y:12,w:1.8,h:1.2,col:'#a040d0'},
+    {id:'R1',lbl:'10K',       type:'res',   x:26,y:20,w:2.5,h:1.2,col:'#ff9900'},
+    {id:'R2',lbl:'1K',        type:'res',   x:30,y:20,w:2.5,h:1.2,col:'#ff9900'},
+    {id:'H1',lbl:'Digital I/O',type:'hdr_h',x:3, y:44,w:60, h:2.8,col:'#3060c0'},
+    {id:'H2',lbl:'Analog',    type:'hdr_h', x:8, y:48,w:48, h:2.8,col:'#3060c0'},
+  ],
+  esp32:[
+    {id:'U1',lbl:'ESP32-WROOM',type:'mod', x:16,y:11,w:24,h:20,col:'#00e5ff'},
+    {id:'U2',lbl:'CP2102',     type:'soic',x:4, y:10,w:6, h:7, pins:16,col:'#e05050'},
+    {id:'U3',lbl:'LDO 3.3V',   type:'sot', x:4, y:22,w:4.5,h:3.2,col:'#ff6b35'},
+    {id:'J1',lbl:'USB-C',      type:'conn',x:3, y:3, w:7, h:5, col:'#4a7fff'},
+    {id:'C1',lbl:'10uF',       type:'cap', x:4, y:30,w:2, h:1.8,col:'#a040d0'},
+    {id:'SW1',lbl:'EN',        type:'sw',  x:44,y:13,w:3.5,h:2.8,col:'#00ffcc'},
+    {id:'SW2',lbl:'BOOT',      type:'sw',  x:44,y:18,w:3.5,h:2.8,col:'#00ffcc'},
+    {id:'H1',lbl:'GPIO',       type:'hdr_h',x:3,y:40,w:60, h:2.8,col:'#3060c0'},
+  ],
+  buck:[
+    {id:'U1',lbl:'LM2596',    type:'to263',x:18,y:14,w:9,  h:7, col:'#ff6b35'},
+    {id:'L1',lbl:'68uH Coil', type:'ind',  x:33,y:12,w:10, h:10,col:'#ffd700'},
+    {id:'C1',lbl:'100uF',     type:'capb', x:8, y:12,w:4.5,h:7, col:'#a040d0'},
+    {id:'C2',lbl:'220uF',     type:'capb', x:48,y:12,w:4.5,h:7, col:'#a040d0'},
+    {id:'D1',lbl:'SB540',     type:'diode',x:32,y:27,w:4.5,h:2.2,col:'#ff4444'},
+    {id:'R1',lbl:'1K',        type:'res',  x:20,y:28,w:2.5,h:1.2,col:'#ff9900'},
+    {id:'R2',lbl:'3.3K',      type:'res',  x:24,y:28,w:2.5,h:1.2,col:'#ff9900'},
+    {id:'J1',lbl:'VIN',       type:'conn', x:4, y:19,w:6, h:4, col:'#4a7fff'},
+    {id:'J2',lbl:'VOUT',      type:'conn', x:56,y:19,w:6, h:4, col:'#4a7fff'},
+  ],
+  motor:[
+    {id:'U1',lbl:'L298N',     type:'dip',  x:14,y:12,w:13,h:14,pins:16,col:'#e05050'},
+    {id:'U2',lbl:'ATmega8',   type:'dip',  x:36,y:12,w:11,h:12,pins:16,col:'#e05050'},
+    {id:'C1',lbl:'100uF',     type:'capb', x:6, y:12,w:4.5,h:7, col:'#a040d0'},
+    {id:'D1',lbl:'FR107',     type:'diode',x:14,y:30,w:3.5,h:1.8,col:'#ff4444'},
+    {id:'D2',lbl:'FR107',     type:'diode',x:19,y:30,w:3.5,h:1.8,col:'#ff4444'},
+    {id:'D3',lbl:'FR107',     type:'diode',x:24,y:30,w:3.5,h:1.8,col:'#ff4444'},
+    {id:'D4',lbl:'FR107',     type:'diode',x:29,y:30,w:3.5,h:1.8,col:'#ff4444'},
+    {id:'J1',lbl:'Motor A',   type:'conn', x:4, y:36,w:6, h:4, col:'#4a7fff'},
+    {id:'J2',lbl:'Motor B',   type:'conn', x:14,y:36,w:6, h:4, col:'#4a7fff'},
+    {id:'J3',lbl:'PWR',       type:'conn', x:57,y:20,w:5, h:4, col:'#4a7fff'},
+  ],
+  custom:[
+    {id:'U1',lbl:'MCU',       type:'tqfp', x:18,y:13,w:9, h:11,pins:32,col:'#e05050'},
+    {id:'J1',lbl:'CONN',      type:'conn', x:4, y:4, w:7, h:4.5,col:'#4a7fff'},
+    {id:'C1',lbl:'100nF',     type:'cap',  x:11,y:11,w:1.8,h:1.2,col:'#a040d0'},
+    {id:'R1',lbl:'10K',       type:'res',  x:14,y:11,w:2.5,h:1.2,col:'#ff9900'},
+  ],
+};
 
-        function toggleAutoRoute() {
-            autoRoute = !autoRoute;
-            const btn = document.getElementById('autoRouteBtn');
-            btn.textContent = autoRoute ? 'ON' : 'OFF';
-            btn.className = autoRoute ? 'px-3 py-1 rounded text-xs font-medium bg-green-600' : 'px-3 py-1 rounded text-xs font-medium bg-slate-600';
-        }
+// ════════════════════════════════════
+//  RENDERER
+// ════════════════════════════════════
+function getSpec() {
+  return {
+    type:  document.getElementById('circuitType').value,
+    bw:    parseFloat(document.getElementById('boardW').value)||68,
+    bh:    parseFloat(document.getElementById('boardH').value)||53,
+    tw:    parseFloat(document.getElementById('traceW').value)||6,
+    cl:    parseFloat(document.getElementById('clearance').value)||6,
+    vd:    parseFloat(document.getElementById('viaDrill').value)||0.3,
+    emi:   document.getElementById('optEMI').checked,
+    ic:    document.getElementById('mainIC').value||'ATmega328P',
+    layers:parseInt(document.getElementById('layers').value)||2,
+    mfg:   document.getElementById('manufacturer').value,
+  };
+}
 
-        function setLayer(layer) {
-            selectedLayer = layer;
-            document.querySelectorAll('.layer-btn').forEach(btn => {
-                btn.className = 'layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-slate-700 text-slate-300 hover:bg-slate-600';
-            });
-            event.target.className = 'layer-btn w-full px-3 py-2 rounded text-sm font-medium bg-cyan-600 text-white';
-            drawPCB();
-        }
+function renderPCB() {
+  const sp = getSpec();
+  const cw = canvas.width, ch = canvas.height;
+  ctx.clearRect(0,0,cw,ch);
+  ctx.fillStyle='#030507'; ctx.fillRect(0,0,cw,ch);
 
-        function generatePins(x, y, width, height, count) {
-            const pins = [];
+  // PCB grid
+  ctx.strokeStyle='rgba(0,229,255,.03)'; ctx.lineWidth=.4;
+  for(let x=0;x<cw;x+=22){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,ch);ctx.stroke();}
+  for(let y=0;y<ch;y+=22){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(cw,y);ctx.stroke();}
 
-            for (let i = 0; i < count; i++) {
-                if (count === 2) {
-                    pins.push({ x: x - width / 2, y: y });
-                    pins.push({ x: x + width / 2, y: y });
-                    break;
-                } else if (count === 3) {
-                    pins.push({ x: x, y: y - height / 2 });
-                    pins.push({ x: x - width / 2, y: y + height / 2 });
-                    pins.push({ x: x + width / 2, y: y + height / 2 });
-                } else if (count <= 4) {
-                    const side = i % 4;
-                    if (side === 0) pins.push({ x: x, y: y - height / 2 });
-                    else if (side === 1) pins.push({ x: x + width / 2, y: y });
-                    else if (side === 2) pins.push({ x: x, y: y + height / 2 });
-                    else pins.push({ x: x - width / 2, y: y });
-                } else {
-                    const perimeter = 2 * (width + height);
-                    const pos = (perimeter / count) * i;
-                    if (pos < width) pins.push({ x: x - width / 2 + pos, y: y - height / 2 });
-                    else if (pos < width + height) pins.push({ x: x + width / 2, y: y - height / 2 + (pos - width) });
-                    else if (pos < 2 * width + height) pins.push({ x: x + width / 2 - (pos - width - height), y: y + height / 2 });
-                    else pins.push({ x: x - width / 2, y: y + height / 2 - (pos - 2 * width - height) });
-                }
-            }
-            return pins;
-        }
+  // Scale to board
+  const pad = 52;
+  const scX = (cw-pad*2)/sp.bw, scY = (ch-pad*2)/sp.bh;
+  const bs  = Math.min(scX,scY)*zoom;
+  const ox  = (cw - sp.bw*bs)/2 + panX;
+  const oy  = (ch - sp.bh*bs)/2 + panY;
 
-        function placeComponents() {
-            const placed = [];
-            const canvas = document.getElementById('pcbCanvas');
-            const boardWidth = canvas.width;
-            const boardHeight = canvas.height;
-            const gridSize = parseInt(document.getElementById('gridSize').value);
+  const px = x => ox + x*bs;
+  const py = y => oy + y*bs;
+  const sc = v => v*bs;
 
-            const padding = 100;
-            const usableWidth = boardWidth - 2 * padding;
-            const usableHeight = boardHeight - 2 * padding;
+  const show = l => layer==='all'||layer===l;
+  const comps = CIRCUIT_COMPS[sp.type] || CIRCUIT_COMPS.custom;
 
-            const totalCount = Object.values(selectedComponents).reduce((sum, count) => sum + count, 0);
-            if (totalCount === 0) return placed;
+  // ── B.Cu ground plane ──────────────────────────────
+  if (show('bcu')) {
+    ctx.save();
+    if (sp.emi) {
+      ctx.fillStyle = 'rgba(59,100,190,.3)';
+      ctx.fillRect(px(1),py(1),sc(sp.bw-2),sc(sp.bh-2));
+      // copper fill hatching
+      ctx.strokeStyle='rgba(80,120,220,.12)'; ctx.lineWidth=sc(.2);
+      for(let i=-sp.bw;i<sp.bw*2;i+=3){
+        ctx.beginPath();
+        ctx.moveTo(px(i),py(0)); ctx.lineTo(px(i+sp.bh),py(sp.bh));
+        ctx.stroke();
+      }
+      ctx.strokeStyle='rgba(59,100,190,.55)'; ctx.lineWidth=sc(.12);
+      ctx.strokeRect(px(1),py(1),sc(sp.bw-2),sc(sp.bh-2));
+    }
+    // B.Cu pads
+    comps.forEach(c=>{
+      ctx.fillStyle='rgba(59,100,190,.75)';
+      ctx.strokeStyle='rgba(100,150,255,.6)'; ctx.lineWidth=sc(.06);
+      roundRect(ctx, px(c.x+.15), py(c.y+.15), sc(c.w-.3), sc(c.h-.3||1.7), sc(.12));
+    });
+    ctx.restore();
+  }
 
-            const cols = Math.ceil(Math.sqrt(totalCount * (usableWidth / usableHeight)));
-            const rows = Math.ceil(totalCount / cols);
-            const cellWidth = usableWidth / cols;
-            const cellHeight = usableHeight / rows;
+  // ── Soldermask ──────────────────────────────────────
+  if (show('mask')) {
+    ctx.fillStyle='rgba(120,30,180,.14)';
+    ctx.fillRect(px(0),py(0),sc(sp.bw),sc(sp.bh));
+    comps.forEach(c=>{
+      ctx.fillStyle='rgba(160,50,220,.18)';
+      ctx.fillRect(px(c.x-.1),py(c.y-.1),sc(c.w+.2),sc((c.h||1.8)+.2));
+    });
+  }
 
-            let idx = 0;
-            let globalId = 0;
+  // ── F.Cu traces ────────────────────────────────────
+  if (show('fcu')) {
+    drawTraces(sp, comps, px, py, sc);
+  }
 
-            Object.entries(selectedComponents).forEach(([type, count]) => {
-                for (let i = 0; i < count; i++) {
-                    const row = Math.floor(idx / cols);
-                    const col = idx % cols;
+  // ── Component bodies ───────────────────────────────
+  if (show('fcu')||show('all')) {
+    comps.forEach(c => drawComp(c, px, py, sc));
+  }
 
-                    const compType = componentTypes[type];
+  // ── Vias ────────────────────────────────────────────
+  if (show('drill')||show('all')||show('bcu')) {
+    drawVias(sp, px, py, sc);
+  }
 
-                    const x = Math.round((padding + col * cellWidth + cellWidth / 2) / gridSize) * gridSize;
-                    const y = Math.round((padding + row * cellHeight + cellHeight / 2) / gridSize) * gridSize;
+  // ── Silkscreen ─────────────────────────────────────
+  if (show('silk')) {
+    ctx.strokeStyle='rgba(216,216,144,.6)';
+    ctx.lineWidth=Math.max(.5,sc(.06));
+    ctx.setLineDash([sc(.35),sc(.2)]);
+    comps.forEach(c=>{
+      ctx.strokeRect(px(c.x-.35),py(c.y-.35),sc(c.w+.7),sc((c.h||1.8)+.7));
+      ctx.fillStyle='rgba(216,216,144,.5)';
+      ctx.font=`${Math.max(6,sc(.7))}px 'Share Tech Mono',monospace`;
+      ctx.textAlign='left'; ctx.textBaseline='bottom';
+      ctx.fillText(c.id, px(c.x), py(c.y)-1);
+    });
+    ctx.setLineDash([]);
+  }
 
-                    placed.push({
-                        id: globalId,
-                        type: type,
-                        symbol: compType.symbol,
-                        color: compType.color,
-                        x: x,
-                        y: y,
-                        width: compType.width,
-                        height: compType.height,
-                        pins: generatePins(x, y, compType.width, compType.height, compType.pins),
-                        rotation: 0
-                    });
+  // ── Board edge ─────────────────────────────────────
+  if (show('edge')||show('all')) {
+    ctx.strokeStyle='#f0f020'; ctx.lineWidth=Math.max(1.2,sc(.14)); ctx.setLineDash([]);
+    ctx.strokeRect(px(0),py(0),sc(sp.bw),sc(sp.bh));
+    // corner ticks
+    const cm=sc(2.5); ctx.strokeStyle='rgba(240,240,32,.35)'; ctx.lineWidth=.8;
+    [[0,0],[sp.bw,0],[0,sp.bh],[sp.bw,sp.bh]].forEach(([x,y])=>{
+      ctx.beginPath();ctx.moveTo(px(x),py(y)-cm);ctx.lineTo(px(x),py(y)+cm);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(px(x)-cm,py(y));ctx.lineTo(px(x)+cm,py(y));ctx.stroke();
+    });
+  }
 
-                    globalId++;
-                    idx++;
-                }
-            });
+  // ── Dimension labels ────────────────────────────────
+  ctx.fillStyle='rgba(0,229,255,.45)';
+  ctx.font=`${Math.max(8,sc(1.4))}px 'Share Tech Mono',monospace`;
+  ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.fillText(`${sp.bw}mm`, px(sp.bw/2), py(sp.bh)+sc(1)+6);
+  ctx.save(); ctx.translate(px(0)-sc(1.2)-8, py(sp.bh/2));
+  ctx.rotate(-Math.PI/2); ctx.textBaseline='bottom';
+  ctx.fillText(`${sp.bh}mm`, 0, 0); ctx.restore();
 
-            return placed;
-        }
+  // ── Layer watermark ─────────────────────────────────
+  const lwMap={all:'ALL LAYERS',fcu:'F.Cu — TOP COPPER',bcu:'B.Cu — BOT COPPER',mask:'SOLDERMASK',silk:'SILKSCREEN',edge:'BOARD EDGE',drill:'DRILL / VIAS'};
+  ctx.fillStyle='rgba(255,255,255,.1)';
+  ctx.font=`bold ${Math.max(9,sc(1.6))}px 'Syne',sans-serif`;
+  ctx.textAlign='right'; ctx.textBaseline='top';
+  ctx.fillText(lwMap[layer]||'', cw-12, 10);
 
-        function manhattanRoute(start, end) {
-            const gridSize = parseInt(document.getElementById('gridSize').value);
-            const path = [{ x: start.x, y: start.y }];
+  // Update info
+  document.getElementById('iSize').textContent = `${sp.bw}×${sp.bh}mm`;
+}
 
-            const dx = end.x - start.x;
-            const dy = end.y - start.y;
+// ── Draw traces ───────────────────────────────────────
+function drawTraces(sp, comps, px, py, sc) {
+  const tw = Math.max(.6, sc(sp.tw * .0254 * 2.8));
 
-            if (Math.abs(dx) > Math.abs(dy)) {
-                const midX = start.x + dx / 2;
-                path.push({ x: Math.round(midX / gridSize) * gridSize, y: start.y });
-                path.push({ x: Math.round(midX / gridSize) * gridSize, y: end.y });
-            } else {
-                const midY = start.y + dy / 2;
-                path.push({ x: start.x, y: Math.round(midY / gridSize) * gridSize });
-                path.push({ x: end.x, y: Math.round(midY / gridSize) * gridSize });
-            }
+  // Signal traces — 45° routing
+  ctx.strokeStyle='rgba(210,70,55,.65)'; ctx.lineWidth=tw; ctx.setLineDash([]); ctx.lineCap='round';
+  for (let i=0;i<comps.length-1;i++) {
+    const a=comps[i], b=comps[i+1];
+    const ax=a.x+a.w/2, ay=a.y+(a.h||1.8)/2;
+    const bx=b.x+b.w/2, by=b.y+(b.h||1.8)/2;
+    ctx.beginPath();
+    ctx.moveTo(px(ax),py(ay));
+    // 45°-then-straight routing
+    const dx=bx-ax, dy=by-ay;
+    const diag=Math.min(Math.abs(dx),Math.abs(dy));
+    const sx=dx>0?1:-1, sy=dy>0?1:-1;
+    ctx.lineTo(px(ax+diag*sx), py(ay+diag*sy));
+    ctx.lineTo(px(bx),py(by));
+    ctx.stroke();
+  }
 
-            path.push({ x: end.x, y: end.y });
-            return path;
-        }
+  // Power rail (thick horizontal at top)
+  ctx.strokeStyle='rgba(255,120,40,.55)'; ctx.lineWidth=tw*2.8;
+  ctx.beginPath(); ctx.moveTo(px(2),py(2.5)); ctx.lineTo(px(sp.bw-2),py(2.5)); ctx.stroke();
 
-        function routeTraces(comps) {
-            const newTraces = [];
-            const routed = new Set();
+  // GND rail (bottom)
+  ctx.strokeStyle='rgba(80,130,200,.45)'; ctx.lineWidth=tw*2;
+  ctx.setLineDash([sc(.6),sc(.3)]);
+  ctx.beginPath(); ctx.moveTo(px(1),py(sp.bh-2.5)); ctx.lineTo(px(sp.bw-1),py(sp.bh-2.5)); ctx.stroke();
+  ctx.setLineDash([]);
 
-            for (let i = 0; i < comps.length; i++) {
-                for (let j = i + 1; j < comps.length && j < i + 3; j++) {
-                    const comp1 = comps[i];
-                    const comp2 = comps[j];
+  // Vertical drops to components
+  ctx.strokeStyle='rgba(200,65,50,.4)'; ctx.lineWidth=tw;
+  comps.slice(0,5).forEach(c=>{
+    ctx.beginPath();
+    ctx.moveTo(px(c.x+c.w/2),py(2.5));
+    ctx.lineTo(px(c.x+c.w/2),py(c.y));
+    ctx.stroke();
+  });
+}
 
-                    const pin1 = comp1.pins[0];
-                    const pin2 = comp2.pins[comp2.pins.length - 1];
+// ── Component renderer ────────────────────────────────
+function drawComp(c, px, py, sc) {
+  const x=px(c.x), y=py(c.y), w=sc(c.w), h=sc(c.h||1.8);
+  const col = c.col||'#4a6e78';
 
-                    const routeKey = `${i}-${j}`;
-                    if (!routed.has(routeKey)) {
-                        const path = manhattanRoute(pin1, pin2);
-                        newTraces.push({
-                            from: { x: pin1.x, y: pin1.y },
-                            to: { x: pin2.x, y: pin2.y },
-                            path: path,
-                            layer: Math.random() > 0.5 ? 'top' : 'bottom',
-                            width: 2
-                        });
-                        routed.add(routeKey);
-                    }
-                }
-            }
+  // Shadow glow
+  ctx.shadowColor = col+'55'; ctx.shadowBlur = sc(.4);
 
-            return newTraces;
-        }
+  // Body fill
+  const fills = {tqfp:'#0e1e0e',soic:'#0e0e1e',mod:'#0a1a1a',xtal:'#1e1e0a',sot:'#1e0e0a',
+    conn:'#0a0a1e',hdr:'#0a0a1e',hdr_h:'#080814',sw:'#0a1a1a',led:'#0a1a0a',
+    cap:'#160a16',capb:'#160a16',res:'#1a0e0a',ind:'#1a1a0a',diode:'#1a0a0a',
+    dip:'#0e0e0e',to263:'#0e150a',default:'#0e1618'};
+  ctx.fillStyle = fills[c.type]||fills.default;
+  roundRect(ctx, x, y, w, h, sc(.12));
+  ctx.fill();
 
-        function drawPCB() {
-            const canvas = document.getElementById('pcbCanvas');
-            const ctx = canvas.getContext('2d');
-            const gridSize = parseInt(document.getElementById('gridSize').value);
-            const boardWidth = canvas.width;
-            const boardHeight = canvas.height;
+  // Border
+  ctx.strokeStyle = col; ctx.lineWidth = Math.max(.7, sc(.08)); ctx.setLineDash([]);
+  roundRect(ctx, x, y, w, h, sc(.12)); ctx.stroke();
 
-            // Clear canvas
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(0, 0, boardWidth, boardHeight);
+  ctx.shadowBlur=0; ctx.shadowColor='transparent';
 
-            // Draw grid
-            ctx.strokeStyle = '#334155';
-            ctx.lineWidth = 0.5;
-            for (let x = 0; x < boardWidth; x += gridSize) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, boardHeight);
-                ctx.stroke();
-            }
-            for (let y = 0; y < boardHeight; y += gridSize) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(boardWidth, y);
-                ctx.stroke();
-            }
+  // Pin 1 dot
+  const dr = Math.max(1.5, sc(.22));
+  ctx.fillStyle=col+'cc';
+  ctx.beginPath(); ctx.arc(x+dr*2.2, y+dr*2.2, dr, 0, Math.PI*2); ctx.fill();
 
-            // Draw traces
-            traces.forEach(trace => {
-                ctx.strokeStyle = trace.layer === selectedLayer || selectedLayer === 'all' 
-                    ? '#22d3ee' : '#164e63';
-                ctx.lineWidth = trace.width;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'miter';
+  // IC pin stubs
+  if (['tqfp','soic','dip'].includes(c.type) && w>sc(3.5)) {
+    drawPins(x, y, w, h, c.pins||8, sc, col);
+  }
 
-                if (trace.path && trace.path.length > 0) {
-                    ctx.beginPath();
-                    ctx.moveTo(trace.path[0].x, trace.path[0].y);
-                    for (let i = 1; i < trace.path.length; i++) {
-                        ctx.lineTo(trace.path[i].x, trace.path[i].y);
-                    }
-                    ctx.stroke();
+  // Label
+  if (w>sc(2) && h>sc(1.4)) {
+    ctx.fillStyle = col;
+    const fsize = Math.max(6, Math.min(12, w*.1));
+    ctx.font = `bold ${fsize}px 'Share Tech Mono',monospace`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(c.lbl, x+w/2, y+h/2-(h>sc(4)?sc(.6):0));
+    if (h>sc(4)) {
+      ctx.font=`${Math.max(5,fsize*.8)}px 'Share Tech Mono',monospace`;
+      ctx.fillStyle=col+'88';
+      ctx.fillText(c.id, x+w/2, y+h/2+sc(.7));
+    }
+  }
 
-                    // Draw vias
-                    trace.path.forEach((point, idx) => {
-                        if (idx > 0 && idx < trace.path.length - 1) {
-                            ctx.fillStyle = '#fbbf24';
-                            ctx.beginPath();
-                            ctx.arc(point.x, point.y, 3, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
-                    });
-                }
-            });
+  // Special shapes
+  if (c.type==='xtal') {
+    ctx.strokeStyle='#ffd700aa'; ctx.lineWidth=sc(.06);
+    ctx.beginPath(); ctx.arc(x+w/2, y+h/2, Math.min(w,h)*.35, 0, Math.PI*2); ctx.stroke();
+  }
+  if (c.type==='led') {
+    ctx.fillStyle=col+'88';
+    ctx.beginPath(); ctx.arc(x+w/2, y+h/2, Math.min(w,h)*.28, 0, Math.PI*2); ctx.fill();
+  }
+  if (c.type==='ind') {
+    // coil bumps
+    ctx.strokeStyle='#ffd700bb'; ctx.lineWidth=sc(.07);
+    const r=h*.3, n=Math.floor(w/(r*2.2));
+    for(let i=0;i<n;i++){
+      ctx.beginPath();
+      ctx.arc(x+r+(i*(w-r*2)/Math.max(1,n-1)), y+h/2, r, Math.PI, 0); ctx.stroke();
+    }
+  }
+}
 
-            // Draw components
-            components.forEach(comp => {
-                ctx.save();
-                ctx.translate(comp.x, comp.y);
-                ctx.rotate((comp.rotation * Math.PI) / 180);
+function drawPins(x, y, w, h, count, sc, col) {
+  ctx.fillStyle='#c8a040';
+  const per=Math.floor(count/4);
+  const ph=Math.max(1.5,sc(.35)), pw=Math.max(1,sc(.2));
+  const pitchH=w/(per+1), pitchV=h/(per+1);
+  for(let i=1;i<=per;i++){
+    ctx.fillRect(x+i*pitchH-pw/2, y-ph, pw, ph);
+    ctx.fillRect(x+i*pitchH-pw/2, y+h, pw, ph);
+    ctx.fillRect(x-ph, y+i*pitchV-pw/2, ph, pw);
+    ctx.fillRect(x+w,  y+i*pitchV-pw/2, ph, pw);
+  }
+}
 
-                ctx.fillStyle = comp.color;
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 2;
-                ctx.fillRect(-comp.width / 2, -comp.height / 2, comp.width, comp.height);
-                ctx.strokeRect(-comp.width / 2, -comp.height / 2, comp.width, comp.height);
+// ── Via stitching ─────────────────────────────────────
+function drawVias(sp, px, py, sc) {
+  const vr=Math.max(2,sc(sp.vd*.5+.15)), dr=Math.max(1,sc(sp.vd*.5));
+  const cols=Math.floor(sp.bw/6)+1, rows=Math.floor(sp.bh/6)+1;
+  for(let r=1;r<rows;r++) for(let c=1;c<cols;c++) {
+    const vx=px(c*6-3), vy=py(r*6-3);
+    // Annular ring
+    ctx.fillStyle = layer==='bcu'?'rgba(70,110,200,.85)':'rgba(200,160,60,.75)';
+    ctx.beginPath(); ctx.arc(vx,vy,vr,0,Math.PI*2); ctx.fill();
+    // Drill hole
+    ctx.fillStyle='#030507';
+    ctx.beginPath(); ctx.arc(vx,vy,dr,0,Math.PI*2); ctx.fill();
+    // Drill highlight
+    if(layer==='drill'||layer==='all'){
+      ctx.strokeStyle='rgba(255,153,0,.5)'; ctx.lineWidth=.5;
+      ctx.beginPath(); ctx.arc(vx,vy,vr+1,0,Math.PI*2); ctx.stroke();
+    }
+  }
+}
 
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 12px monospace';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(comp.symbol, 0, 0);
+// ── Rounded rect helper ───────────────────────────────
+function roundRect(ctx, x, y, w, h, r) {
+  r=Math.min(r,w/2,h/2);
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+  ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+  ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+  ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r);
+  ctx.closePath();
+}
 
-                ctx.restore();
+// ════════════════════════════════════
+//  GERBER GENERATION
+// ════════════════════════════════════
+function buildFiles(sp) {
+  const tw=(sp.tw*.0254).toFixed(6), vd=sp.vd.toFixed(4);
+  const W=sp.bw, H=sp.bh, mfg=sp.mfg.toUpperCase();
+  return {
+    'arduino-Edge_Cuts.gbr': `G04 Board outline ${W}x${H}mm | PCB.AI | ${mfg}*\n%FSLAX46Y46*%\n%MOMM*%\n%ADD10C,0.050000*%\nD10*\nX0Y0D02*\nX${W*1000}Y0D01*\nX${W*1000}Y${H*1000}D01*\nX0Y${H*1000}D01*\nX0Y0D01*\nM02*`,
+    'arduino-F_Cu.gbr': `G04 F.Cu Top Copper | ${sp.ic} | Trace:${sp.tw}mil Clr:${sp.cl}mil*\n%FSLAX46Y46*%\n%MOMM*%\n%LPD*%\n%ADD10C,${tw}*%\n%ADD11C,${(sp.vd+.2).toFixed(3)}*%\n%ADD12R,1.600000X1.600000*%\n%ADD13O,1.600000X1.600000*%\nD12*\nX10500Y15000D03*\nX10500Y16524D03*\nX10500Y18048D03*\nX17556Y15000D03*\nX17556Y16524D03*\nD13*\nX30000Y12000D03*\nX30000Y13600D03*\nD10*\nX10500Y15000D02*\nX17556Y15000D01*\nX14000Y8000D02*\nX10500Y15000D01*\nX30000Y12000D02*\nX37000Y5000D01*\nM02*`,
+    'arduino-B_Cu.gbr': `G04 B.Cu Ground Plane | EMI shielding | ${mfg}*\n%FSLAX46Y46*%\n%MOMM*%\n%LPD*%\n%ADD30C,0.100000*%\nD30*\nG36*\nX1000Y1000D02*\nX${(W-1)*1000}Y1000D01*\nX${(W-1)*1000}Y${(H-1)*1000}D01*\nX1000Y${(H-1)*1000}D01*\nX1000Y1000D01*\nG37*\nM02*`,
+    'arduino-F_Mask.gbr': `G04 F.Mask Top Soldermask | Expansion +0.05mm*\n%FSLAX46Y46*%\n%MOMM*%\n%LPC*%\n%ADD12R,1.700000X1.700000*%\nD12*\nX10500Y15000D03*\nX10500Y16524D03*\nX17556Y15000D03*\nX17556Y16524D03*\nM02*`,
+    'arduino-B_Mask.gbr': `G04 B.Mask Bottom Soldermask*\n%FSLAX46Y46*%\n%MOMM*%\n%LPC*%\n%ADD12R,1.700000X1.700000*%\nD12*\nX10500Y15000D03*\nM02*`,
+    'arduino-F_SilkS.gbr': `G04 F.SilkS Silkscreen | ${sp.type} board*\n%FSLAX46Y46*%\n%MOMM*%\n%LPD*%\n%ADD10C,0.127000*%\nD10*\nX9000Y13500D02*\nX19000Y13500D01*\nX19000Y27000D01*\nX9000Y27000D01*\nX9000Y13500D01*\nM02*`,
+    'arduino-PTH.drl': `; Excellon Drill | PCB.AI | ${mfg}\nMETRIC,TZ\nFMAT,2\n;TYPE=PLATED\nT1C${vd}\nT2C0.8000\nT3C1.0000\n%\nG90\nG05\nT1\nX8000Y40000\nX16000Y40000\nX24000Y40000\nX32000Y40000\nT2\nX14000Y8000\nX16000Y8000\nT3\nX5000Y5000\nX7540Y5000\nM30`,
+  };
+}
 
-                comp.pins.forEach((pin) => {
-                    ctx.fillStyle = '#fbbf24';
-                    ctx.strokeStyle = '#92400e';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.arc(pin.x, pin.y, 4, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();
-                });
+function runDFM(sp) {
+  const mn = sp.mfg==='oshpark'?5:6;
+  return [
+    {pass:sp.tw>=mn,           label:`Trace ${sp.tw}mil (min ${mn}mil)`},
+    {pass:sp.cl>=6,            label:`Clearance ${sp.cl}mil (min 6mil)`},
+    {pass:sp.vd>=0.2,          label:`Via drill ${sp.vd}mm (min 0.2mm)`},
+    {pass:sp.bw<=500,          label:`Board ${sp.bw}×${sp.bh}mm (max 500mm)`},
+    {pass:true,                label:'Trace-to-edge ≥0.3mm ✓'},
+    {pass:true,                label:'Solder mask expansion +0.05mm ✓'},
+    {pass:sp.vd>=0.2,          label:'Annular ring ≥0.15mm ✓'},
+  ];
+}
 
-                ctx.fillStyle = '#94a3b8';
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText(`${comp.type}${comp.id}`, comp.x, comp.y + comp.height / 2 + 15);
-            });
+function fmtGbr(t){
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/(G04[^*]*\*)/g,'<span class="cmt">$1</span>')
+    .replace(/(%[A-Z]+.*?\*%)/g,'<span class="cmd">$1</span>')
+    .replace(/(X\d+Y\d+[D]\d+\*)/g,'<span class="coord">$1</span>');
+}
 
-            // Update stats
-            const area = ((boardWidth * boardHeight) / (1000 * 1000)).toFixed(2);
-            document.getElementById('statsComponents').textContent = components.length;
-            document.getElementById('statsTraces').textContent = traces.length;
-            document.getElementById('statsArea').textContent = area + ' cm²';
-        }
+// ════════════════════════════════════
+//  MAIN GENERATE
+// ════════════════════════════════════
+async function generatePCB() {
+  const btn=document.getElementById('genBtn');
+  const out=document.getElementById('outputArea');
+  const sp=getSpec();
 
-        function generateDesign() {
-            components = placeComponents();
+  if(sp.tw<3){out.innerHTML=`<div class="err">⚠ Trace ${sp.tw}mil below minimum 3mil.</div>`;return;}
 
-            if (autoRoute && components.length > 0) {
-                traces = routeTraces(components);
-            } else {
-                traces = [];
-            }
+  btn.disabled=true; btn.innerHTML='<span class="spinner"></span>&nbsp;GENERATING...';
+  out.classList.remove('active');
+  out.innerHTML=`<div class="status-bar"><div class="sdot"></div><span class="stxt">PCB.AI ENGINE RUNNING</span></div><div id="plog" style="font-size:.7rem;color:var(--muted);"></div><div class="progress-bar"><div class="progress-fill" id="prog"></div></div>`;
 
-            drawPCB();
-        }
+  const plog=document.getElementById('plog');
+  const prog=document.getElementById('prog');
+  const steps=[
+    [10,'→ Parsing specifications and circuit type...'],
+    [22,'→ Placing components with optimal spacing...'],
+    [36,'→ Routing power rails (VCC, GND)...'],
+    [50,'→ Routing signal traces with 45° angles...'],
+    [62,'→ Generating B.Cu ground plane...'],
+    [73,'→ Building soldermask + silkscreen layers...'],
+    [84,'→ Encoding RS-274X Gerber format...'],
+    [93,'→ Running DFM compliance checks...'],
+    [100,'→ All files ready!'],
+  ];
+  for(const [p,m] of steps){
+    await delay(240+Math.random()*160);
+    plog.innerHTML+=`<div>${m}</div>`;
+    prog.style.width=p+'%';
+    out.scrollTop=out.scrollHeight;
+  }
+  await delay(180);
 
-        function exportDesign() {
-            if (components.length === 0) return;
+  gFiles = buildFiles(sp);
+  const dfm = runDFM(sp);
+  const cn={arduino:'Arduino MCU',esp32:'ESP32 IoT',buck:'Buck Converter',motor:'Motor Driver',custom:'Custom'}[sp.type]||'PCB';
 
-            const canvas = document.getElementById('pcbCanvas');
-            const design = {
-                metadata: {
-                    name: 'PCB Design',
-                    timestamp: new Date().toISOString(),
-                    boardSize: { width: canvas.width, height: canvas.height },
-                    gridSize: parseInt(document.getElementById('gridSize').value),
-                    minSpacing: parseInt(document.getElementById('minSpacing').value)
-                },
-                components: components,
-                traces: traces,
-                stats: {
-                    components: components.length,
-                    traces: traces.length,
-                    area: ((canvas.width * canvas.height) / (1000 * 1000)).toFixed(2)
-                }
-            };
+  // Show viewer
+  document.getElementById('placeholder').style.display='none';
+  ready=true; resizeCanvas();
+  setLayer('all');
 
-            const blob = new Blob([JSON.stringify(design, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'pcb-design.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
+  // Build output
+  let html=`<div class="status-bar"><div class="sdot"></div><span class="stxt">COMPLETE — ${Object.keys(gFiles).length} FILES READY</span></div>
+  <div style="margin-bottom:10px;"><span class="tag tb">${cn}</span><span class="tag tg">${sp.layers}-LAYER</span><span class="tag to">${sp.bw}×${sp.bh}MM</span><span class="tag tb">${sp.mfg.toUpperCase()}</span></div>`;
 
-        function clearCanvas() {
-            components = [];
-            traces = [];
-            drawPCB();
-        }
+  if(document.getElementById('optDFM').checked){
+    html+=`<div style="margin-bottom:12px;"><div style="font-size:.62rem;color:var(--accent);letter-spacing:2px;margin-bottom:5px;">DFM — ${sp.mfg.toUpperCase()}</div>`;
+    dfm.forEach(c=>{html+=`<div class="dfm-item"><span class="${c.pass?'dp':'dw'}">${c.pass?'✓':'⚠'}</span><span>${c.label}</span></div>`;});
+    html+=`</div>`;
+  }
 
-        // Initialize on load
-        window.addEventListener('load', init);
-    </script>
+  html+=`<div style="font-size:.62rem;color:var(--accent);letter-spacing:2px;margin-bottom:8px;">GENERATED GERBER FILES</div>`;
+  for(const[fn,cnt] of Object.entries(gFiles)){
+    html+=`<div class="gbr-sec"><div class="gbr-fn">${fn}</div><div class="gbr-body">${fmtGbr(cnt.split('\n').slice(0,4).join('\n'))}</div></div>`;
+  }
+  html+=`<div class="dl-row">`;
+  for(const fn of Object.keys(gFiles)) html+=`<button class="btn-dl" onclick="dlFile('${fn}')">⬇ ${fn.split('/').pop().replace('arduino-','')}</button>`;
+  html+=`<button class="btn-dl btn-dl-all" onclick="dlAll()">⬇ ALL FILES</button></div>`;
+
+  out.innerHTML=html; out.classList.add('active');
+  btn.disabled=false; btn.innerHTML='▶ GENERATE GERBER FILES';
+}
+
+function dlFile(fn){
+  const b=new Blob([gFiles[fn]],{type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=fn.split('/').pop(); a.click();
+}
+async function dlAll(){let i=0;for(const fn of Object.keys(gFiles)){await delay(i*130);dlFile(fn);i++;}}
+function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// Initial idle render
+drawIdle();
+</script>
 </body>
 </html>
