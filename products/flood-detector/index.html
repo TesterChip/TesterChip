@@ -1,118 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Flood Detector Project</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Navigation Styles */
-    .nav-header {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .nav-header a {
-      color: white;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      margin: 0 4px;
-      background: rgba(255,255,255,0.1);
-      transition: all 0.3s;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .nav-header a:hover {
-      background: rgba(255,255,255,0.2);
-      transform: translateY(-2px);
-    }
-    .nav-header-links {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    @media (max-width: 768px) {
-      .nav-header {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .nav-header-links {
-        width: 100%;
-      }
-      .nav-header a {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flood Detector — TesterChip</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<nav class="nav-header">
-  <div class="nav-header-links">
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="../../index.html">
+    <div class="dot"></div>
+    Tester<span>Chip</span>
+  </a>
+  <div class="nav-links">
     <a href="../../index.html">Home</a>
     <a href="../index.html">Products</a>
     <a href="../html-editor/index.html">HTML Editor</a>
     <a href="../python-editor/index.html">Python Editor</a>
-    <a href="../flood-detector/index.html" style="background: rgba(255,255,255,0.3);">Flood Detector</a>
+    <a href="../flood-detector/index.html" class="active">Flood Detector</a>
     <a href="../pcb-generator/index.html">PCB Generator</a>
     <a href="https://github.com/TesterChip" target="_blank">GitHub</a>
   </div>
+  <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
 </nav>
 
-<header>
-  <h1>Flood Detector</h1>
-  <p>Arduino + Ultrasonic Sensor + LCD + Buzzer</p>
-</header>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../../index.html"><i class="fa-solid fa-house"></i>Home</a>
+  <a href="../index.html"><i class="fa-solid fa-box"></i>Products</a>
+  <a href="../html-editor/index.html"><i class="fa-solid fa-file-code"></i>HTML Editor</a>
+  <a href="../python-editor/index.html"><i class="fa-brands fa-python"></i>Python Editor</a>
+  <a href="../flood-detector/index.html"><i class="fa-solid fa-water"></i>Flood Detector</a>
+  <a href="../pcb-generator/index.html"><i class="fa-solid fa-microchip"></i>PCB Generator</a>
+  <a href="https://github.com/TesterChip" target="_blank"><i class="fa-brands fa-github"></i>GitHub</a>
+</div>
 
-<div class="container">
-  <div class="hero-card" role="region" aria-label="Live preview">
-    <div class="hero-left">
-      <h2 style="margin:0 0 6px 0;">Live Preview</h2>
-      <p style="margin:0 0 10px 0;color:#23475b">Simulated water-level preview. This visual helps you understand what your sensor+Arduino will report; the blue gauge animates and flips to an alert state when level is high.</p>
+<!-- ══ HERO ══ -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
 
-      <div class="status" id="statusRow" style="margin-top:12px">
-        <div class="dot" aria-hidden="true"></div>
-        <div id="statusText">Status: Normal</div>
+  <div class="hero-badge reveal">
+    <i class="fa-solid fa-circle" style="font-size:6px"></i>
+    Hardware Project
+  </div>
+
+  <h1 class="hero-title reveal">
+    Flood <span class="acc">Detector</span>
+    <span style="display:block;font-size:.45em;color:var(--a2);margin-top:4px">Arduino + Ultrasonic Sensor + LCD + Buzzer</span>
+  </h1>
+
+  <p class="hero-sub reveal">
+    A real-world flood detection system that measures water levels using an ultrasonic sensor, displays readings on an I2C LCD, and triggers a buzzer alert when flooding is detected.
+  </p>
+
+  <div class="hero-pills reveal">
+    <span class="pill pill-blue"><i class="fa-solid fa-microchip"></i> &nbsp;Arduino</span>
+    <span class="pill pill-teal"><i class="fa-solid fa-wave-square"></i> &nbsp;Ultrasonic</span>
+    <span class="pill pill-gold"><i class="fa-solid fa-display"></i> &nbsp;I2C LCD</span>
+    <span class="pill pill-red"><i class="fa-solid fa-bell"></i> &nbsp;Buzzer Alert</span>
+  </div>
+
+  <!-- Live Preview -->
+  <div class="preview-card">
+    <div class="preview-left">
+      <h3><i class="fa-solid fa-circle-play" style="color:var(--a2)"></i> &nbsp;Live Preview</h3>
+      <p>Simulated water-level preview. The gauge animates and switches to an alert state when level is high — matching exactly what your Arduino and sensor will report.</p>
+      <div class="status-row">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText" style="font-size:12px">Status: Normal</span>
       </div>
-      <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
-        <button id="randomBtn" style="padding:8px 12px;border-radius:8px;border:0;background:#0077cc;color:#fff;cursor:pointer">Randomize</button>
-        <button id="alertBtn" style="padding:8px 12px;border-radius:8px;border:0;background:#ff6b5f;color:#fff;cursor:pointer">Trigger Alert</button>
-        <small style="color:#556068">(Demo controls)</small>
+      <div class="demo-btns">
+        <button class="demo-btn demo-btn-rand" id="randomBtn">
+          <i class="fa-solid fa-shuffle"></i> Randomize
+        </button>
+        <button class="demo-btn demo-btn-alert" id="alertBtn">
+          <i class="fa-solid fa-triangle-exclamation"></i> Trigger Alert
+        </button>
+        <span style="font-family:var(--mono);font-size:10px;color:var(--muted);align-self:center">(demo controls)</span>
       </div>
     </div>
-
-    <div class="hero-right">
-      <div class="gauge" role="img" aria-label="Water level gauge">
-        <div class="label">Water</div>
-        <div class="water" id="water" style="--level:30%">30%</div>
+    <div class="preview-right">
+      <div class="gauge">
+        <div class="gauge-label">Water</div>
+        <div class="gauge-water" id="gaugeWater" style="height:30%">
+          <span class="gauge-pct" id="gaugePct">30%</span>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-  <section>
-    <h2>About the Project</h2>
-    <p>
-      This project uses an ultrasonic sensor to measure water levels, displays them on an LCD,
-      and triggers a buzzer alert when flooding is detected. It's a practical safety tool
-      designed with clarity and user-friendly alerts.
-    </p>
-  </section>
+<hr class="divider"/>
 
+<!-- ══ 01 — ABOUT ══ -->
+<div class="wrap" id="about">
+  <div class="sec-label reveal">// 01 — About</div>
+  <h2 class="sec-title reveal d1">About the <span class="acc">Project</span></h2>
+  <p class="sec-desc reveal d2">
+    This project uses an ultrasonic sensor to measure water levels, displays them on an LCD, and triggers a buzzer alert when flooding is detected. It's a practical safety tool designed with clarity and user-friendly alerts.
+  </p>
+  <div class="explain-grid">
+    <div class="explain-card reveal d1">
+      <div class="ec-icon"><i class="fa-solid fa-ruler-vertical"></i></div>
+      <div class="ec-title">Ultrasonic Sensing</div>
+      <div class="ec-desc">Sends a pulse and measures the time to bounce back. Averages 5 readings for stable, accurate distance measurement.</div>
+    </div>
+    <div class="explain-card v-teal reveal d2">
+      <div class="ec-icon"><i class="fa-solid fa-display"></i></div>
+      <div class="ec-title">LCD Display</div>
+      <div class="ec-desc">Shows water level in cm with custom directional arrows — rising, falling, or stable — directly on a 16×2 I2C screen.</div>
+    </div>
+    <div class="explain-card v-red reveal d3">
+      <div class="ec-icon"><i class="fa-solid fa-bell"></i></div>
+      <div class="ec-title">Buzzer Alert</div>
+      <div class="ec-desc">Intermittent 1 kHz beep (200 ms on/off) activates automatically when distance drops below the flood threshold.</div>
+    </div>
+    <div class="explain-card v-gold reveal d4">
+      <div class="ec-icon"><i class="fa-solid fa-trophy"></i></div>
+      <div class="ec-title">Gold Medal Winner</div>
+      <div class="ec-desc">Awarded a Gold Medal at the STEM Project Exhibition for outstanding innovation and engineering excellence.</div>
+    </div>
+  </div>
+</div>
 
-<section>
-  <h2>Complete Arduino Code</h2>
-  <pre>
-#include &lt;Wire.h&gt;
+<hr class="divider"/>
+
+<!-- ══ 02 — ARDUINO CODE ══ -->
+<div class="wrap" id="code">
+  <div class="sec-label reveal">// 02 — Source Code</div>
+  <h2 class="sec-title reveal d1">Complete <span class="acc2">Arduino Code</span></h2>
+  <p class="sec-desc reveal d2">Full production-ready sketch. Copy, paste into your Arduino IDE, and upload.</p>
+  <div class="code-wrap reveal d3">
+    <div class="code-header">
+      <div class="code-dots">
+        <span class="cd1"></span>
+        <span class="cd2"></span>
+        <span class="cd3"></span>
+      </div>
+      <span class="code-lang"><i class="fa-solid fa-microchip"></i> &nbsp;FloodDetector.ino</span>
+      <button class="copy-btn" id="copyBtn"><i class="fa-regular fa-copy"></i> &nbsp;Copy</button>
+    </div>
+<pre id="codeBlock">#include &lt;Wire.h&gt;
 #include &lt;LiquidCrystal_I2C.h&gt;
 
 LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C LCD address and size
@@ -124,36 +157,21 @@ const int buzzerPin = 8;   // Buzzer → D8
 const int maxDepth = 100;      // distance from sensor to bottom
 const int floodThreshold = 10; // ALERT if distance &lt;= 10 cm
 
-int prevWaterLevel = -1; // start with invalid value to force first update
+int prevWaterLevel = -1;
 
-// Custom characters
-byte upArrow[8] = {
-  0b00100, 0b01110, 0b10101, 0b00100,
-  0b00100, 0b00100, 0b00100, 0b00000
-};
-
-byte downArrow[8] = {
-  0b00100, 0b00100, 0b00100, 0b00100,
-  0b10101, 0b01110, 0b00100, 0b00000
-};
-
-byte equalSign[8] = {
-  0b00000, 0b11111, 0b00000, 0b11111,
-  0b00000, 0b00000, 0b00000, 0b00000
-};
+byte upArrow[8]   = { 0b00100,0b01110,0b10101,0b00100,0b00100,0b00100,0b00100,0b00000 };
+byte downArrow[8] = { 0b00100,0b00100,0b00100,0b00100,0b10101,0b01110,0b00100,0b00000 };
+byte equalSign[8] = { 0b00000,0b11111,0b00000,0b11111,0b00000,0b00000,0b00000,0b00000 };
 
 void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(buzzerPin, OUTPUT);
-
   lcd.init();
   lcd.backlight();
-
   lcd.createChar(0, upArrow);
   lcd.createChar(1, downArrow);
   lcd.createChar(2, equalSign);
-
   lcd.setCursor(0,0);
   lcd.print("Flood Detector");
   delay(2000);
@@ -168,245 +186,307 @@ long getDistance() {
     digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
-
-    long duration = pulseIn(echoPin, HIGH, 20000); // 20ms timeout
-    long distance = duration * 0.034 / 2; // cm
+    long duration = pulseIn(echoPin, HIGH, 20000);
+    long distance = duration * 0.034 / 2;
     sum += distance;
     delay(10);
   }
-  return sum / 5; // average
+  return sum / 5;
 }
 
 void loop() {
   long distance = getDistance();
   int waterLevel = maxDepth - distance;
 
-  // Clear rows before writing new values
-  lcd.setCursor(0,0);
-  lcd.print("Water Level:   ");
-  lcd.setCursor(0,1);
-  lcd.print("                ");
+  lcd.setCursor(0,0); lcd.print("Water Level:   ");
+  lcd.setCursor(0,1); lcd.print("                ");
 
   if (distance &lt;= 30) {
-    lcd.setCursor(0,0);
-    lcd.print("Water Level:");
-
-    lcd.setCursor(0,1);
-    lcd.print(waterLevel);
-    lcd.print(" cm ");
-
-    if (distance &lt;= floodThreshold) {
-      lcd.print("ALERT ");
-    }
-
+    lcd.setCursor(0,0); lcd.print("Water Level:");
+    lcd.setCursor(0,1); lcd.print(waterLevel); lcd.print(" cm ");
+    if (distance &lt;= floodThreshold) lcd.print("ALERT ");
     if (prevWaterLevel != -1) {
-      if (waterLevel > prevWaterLevel) {
-        lcd.write(byte(0)); // Up arrow
-      } else if (waterLevel < prevWaterLevel) {
-        lcd.write(byte(1)); // Down arrow
-      } else {
-        lcd.write(byte(2)); // Equal sign
-      }
+      if      (waterLevel &gt; prevWaterLevel) lcd.write(byte(0));
+      else if (waterLevel &lt; prevWaterLevel) lcd.write(byte(1));
+      else                                   lcd.write(byte(2));
     }
   }
 
-  // Buzzer logic: intermittent beep if flood
   if (distance &lt;= floodThreshold) {
-    tone(buzzerPin, 1000); // 1kHz tone
-    delay(200);
-    noTone(buzzerPin);
-    delay(200);
+    tone(buzzerPin, 1000); delay(200);
+    noTone(buzzerPin);     delay(200);
   } else {
-    noTone(buzzerPin);
-    delay(1000);
+    noTone(buzzerPin);     delay(1000);
   }
 
   prevWaterLevel = waterLevel;
-}
-  </pre>
-</section>
+}</pre>
+  </div>
+</div>
 
-<section>
-  <h2>Code Explanation</h2>
-  <h3>Key Parameters</h3>
-  <ul>
-    <li><strong>maxDepth = 100 cm:</strong> Maximum water depth your sensor can detect (adjust based on your tank size).</li>
-    <li><strong>floodThreshold = 10 cm:</strong> Water level at which the alert triggers. When detected distance ≤ 10 cm, buzzer sounds.</li>
-    <li><strong>I2C Address 0x27:</strong> Standard address for 16x2 LCD modules. If your LCD doesn't respond, use an I2C scanner to find the correct address.</li>
+<hr class="divider"/>
+
+<!-- ══ 03 — CODE EXPLANATION ══ -->
+<div class="wrap" id="explanation">
+  <div class="sec-label reveal">// 03 — Explanation</div>
+  <h2 class="sec-title reveal d1">Code <span class="acc">Explanation</span></h2>
+  <p class="sec-desc reveal d2">A breakdown of how every part of the sketch works.</p>
+
+  <h3 class="reveal d2" style="font-family:var(--head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em">
+    <i class="fa-solid fa-sliders" style="color:var(--accent)"></i> &nbsp;Key Parameters
+  </h3>
+  <ul class="styled-list reveal d3">
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>maxDepth = 100 cm</strong> — Maximum water depth your sensor can detect. Adjust based on your tank or container size.</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>floodThreshold = 10 cm</strong> — Water level at which the alert triggers. When detected distance ≤ 10 cm, buzzer sounds.</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>I2C Address 0x27</strong> — Standard address for 16×2 LCD modules. If your LCD doesn't respond, use an I2C scanner to find the correct address.</span></li>
   </ul>
 
-  <h3>How It Works</h3>
-  <div style="background:#f0f7ff;padding:16px;border-radius:8px;border-left:4px solid #0077cc;margin-top:12px;">
-    <p><strong>1. Sensor Reading (getDistance)</strong><br/>
-    Sends an ultrasonic pulse and measures the time it takes to bounce back. Averages 5 readings for stability.</p>
-    
-    <p><strong>2. Water Level Calculation</strong><br/>
-    <code style="background:#222;color:#0f0;padding:4px 8px;border-radius:4px;">waterLevel = maxDepth - distance</code><br/>
-    If the sensor is 10 cm above water, distance = 90 cm → waterLevel = 10 cm.</p>
-    
-    <p><strong>3. LCD Display</strong><br/>
-    Shows water level in cm with directional arrows (↑ rising, ↓ falling, = stable) and ALERT text when flooding detected.</p>
-    
-    <p><strong>4. Buzzer Alert</strong><br/>
-    Intermittent beep (200ms on/off) when distance ≤ 10 cm. Helps you respond quickly to flooding.</p>
+  <h3 class="reveal d2" style="font-family:var(--head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em">
+    <i class="fa-solid fa-gears" style="color:var(--a2)"></i> &nbsp;How It Works
+  </h3>
+  <div class="explain-grid">
+    <div class="explain-card reveal d1">
+      <div class="ec-icon"><i class="fa-solid fa-wave-square"></i></div>
+      <div class="ec-title">1. Sensor Reading</div>
+      <div class="ec-desc">Sends an ultrasonic pulse and measures the time it takes to bounce back. Averages 5 readings for stability.</div>
+    </div>
+    <div class="explain-card v-teal reveal d2">
+      <div class="ec-icon"><i class="fa-solid fa-calculator"></i></div>
+      <div class="ec-title">2. Water Level Calc</div>
+      <div class="ec-desc"><code>waterLevel = maxDepth - distance</code><br/>If sensor is 10 cm above water, distance = 90 cm → waterLevel = 10 cm.</div>
+    </div>
+    <div class="explain-card v-gold reveal d3">
+      <div class="ec-icon"><i class="fa-solid fa-display"></i></div>
+      <div class="ec-title">3. LCD Display</div>
+      <div class="ec-desc">Shows water level in cm with directional arrows (↑ rising, ↓ falling, = stable) and ALERT text when flooding is detected.</div>
+    </div>
+    <div class="explain-card v-red reveal d4">
+      <div class="ec-icon"><i class="fa-solid fa-bell"></i></div>
+      <div class="ec-title">4. Buzzer Alert</div>
+      <div class="ec-desc">Intermittent beep (200 ms on/off) when distance ≤ 10 cm. Helps you respond quickly to a flooding event.</div>
+    </div>
   </div>
 
-  <h3>Custom Characters</h3>
-  <p>The LCD displays three custom 5×8 pixel characters:</p>
-  <ul>
-    <li><strong>upArrow (0):</strong> Shows water is rising</li>
-    <li><strong>downArrow (1):</strong> Shows water is falling</li>
-    <li><strong>equalSign (2):</strong> Shows water level is stable</li>
+  <h3 class="reveal" style="font-family:var(--head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em">
+    <i class="fa-solid fa-font" style="color:var(--a5)"></i> &nbsp;Custom Characters
+  </h3>
+  <ul class="styled-list reveal">
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>upArrow (0)</strong> — Displayed when water level is rising</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>downArrow (1)</strong> — Displayed when water level is falling</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>equalSign (2)</strong> — Displayed when water level is stable</span></li>
   </ul>
 
-  <h3>Tuning Tips</h3>
-  <ul>
-    <li>If buzzer triggers too early/late, adjust <code>floodThreshold</code></li>
-    <li>For more stable readings, increase the loop count in <code>getDistance()</code> from 5 to 10</li>
-    <li>If LCD doesn't initialize, try 0x3F as the I2C address instead of 0x27</li>
-    <li>Sensor placement: Mount ultrasonic sensor pointing downward into the water container</li>
+  <h3 class="reveal" style="font-family:var(--head);font-size:18px;font-weight:700;color:#fff;margin-bottom:16px;text-transform:uppercase;letter-spacing:.06em">
+    <i class="fa-solid fa-wrench" style="color:var(--accent)"></i> &nbsp;Tuning Tips
+  </h3>
+  <ul class="styled-list reveal">
+    <li><i class="fa-solid fa-chevron-right"></i><span>If buzzer triggers too early or too late, adjust <code>floodThreshold</code></span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span>For more stable readings, increase the loop count in <code>getDistance()</code> from 5 to 10</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span>If LCD doesn't initialize, try <code>0x3F</code> as the I2C address instead of <code>0x27</code></span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span>Mount the ultrasonic sensor pointing downward into the water container for accurate readings</span></li>
   </ul>
-</section>
+</div>
 
-<section>
-  <h2>Setup Guide</h2>
-  <ul>
-    <li><strong>Wire.h</strong> — built into Arduino IDE.</li>
-    <li><strong>LiquidCrystal_I2C.h</strong> — install via Library Manager or manually.</li>
+<hr class="divider"/>
+
+<!-- ══ 04 — SETUP GUIDE ══ -->
+<div class="wrap" id="setup">
+  <div class="sec-label reveal">// 04 — Setup</div>
+  <h2 class="sec-title reveal d1">Setup <span class="acc2">Guide</span></h2>
+  <p class="sec-desc reveal d2">Libraries required and where to get them.</p>
+  <ul class="styled-list reveal d3">
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>Wire.h</strong> — Built into Arduino IDE. No installation needed.</span></li>
+    <li><i class="fa-solid fa-chevron-right"></i><span><strong>LiquidCrystal_I2C.h</strong> — Install via Library Manager or download manually from the links below.</span></li>
   </ul>
-  <h3>Download Links</h3>
-  <div class="download-grid" style="margin-top:12px;">
-    <div class="download-card">
-      <div class="file-meta">
-        <div class="file-name">📚 LiquidCrystal_I2C <span class="badge">official</span></div>
-        <div class="file-desc">Official documentation and API reference for the LCD library.</div>
-        <div class="tiny">Arduino Docs</div>
-      </div>
-      <div class="dl-actions">
-        <a class="btn" href="https://docs.arduino.cc/libraries/liquidcrystal-i2c" target="_blank" rel="noopener noreferrer">View Docs</a>
-      </div>
-    </div>
-
-    <div class="download-card">
-      <div class="file-meta">
-        <div class="file-name">🔗 GitHub Repository <span class="badge">source</span></div>
-        <div class="file-desc">Source code repository and community contributions for LiquidCrystal_I2C.</div>
-        <div class="tiny">GitHub / marcoschwartz</div>
-      </div>
-      <div class="dl-actions">
-        <a class="btn secondary" href="https://github.com/marcoschwartz/LiquidCrystal_I2C" target="_blank" rel="noopener noreferrer">Go to Repo</a>
+  <div class="dl-grid reveal d4">
+    <div class="dl-card">
+      <div class="dl-name"><i class="fa-solid fa-book" style="color:var(--accent)"></i> &nbsp;LiquidCrystal_I2C</div>
+      <div class="dl-meta">Official docs &nbsp;·&nbsp; Arduino</div>
+      <div class="dl-desc">Official documentation and API reference for the LCD library used in this project.</div>
+      <div class="dl-btns">
+        <a class="dl-btn dl-btn-p" href="https://docs.arduino.cc/libraries/liquidcrystal-i2c" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> View Docs
+        </a>
       </div>
     </div>
-
-    <div class="download-card">
-      <div class="file-meta">
-        <div class="file-name">⚙️ Wire Library Docs <span class="badge">core</span></div>
-        <div class="file-desc">Official Arduino Wire library documentation for I2C communication.</div>
-        <div class="tiny">Arduino Language Reference</div>
+    <div class="dl-card">
+      <div class="dl-name"><i class="fa-brands fa-github" style="color:var(--a4)"></i> &nbsp;GitHub Repository</div>
+      <div class="dl-meta">Source code &nbsp;·&nbsp; marcoschwartz</div>
+      <div class="dl-desc">Source code repository and community contributions for LiquidCrystal_I2C.</div>
+      <div class="dl-btns">
+        <a class="dl-btn dl-btn-g" href="https://github.com/marcoschwartz/LiquidCrystal_I2C" target="_blank" rel="noopener">
+          <i class="fa-brands fa-github"></i> Go to Repo
+        </a>
       </div>
-      <div class="dl-actions">
-        <a class="btn ghost" href="https://docs.arduino.cc/language-reference/en/functions/communication/wire/" target="_blank" rel="noopener noreferrer">Learn More</a>
+    </div>
+    <div class="dl-card">
+      <div class="dl-name"><i class="fa-solid fa-link" style="color:var(--a2)"></i> &nbsp;Wire Library Docs</div>
+      <div class="dl-meta">Core library &nbsp;·&nbsp; Arduino</div>
+      <div class="dl-desc">Official Arduino Wire library documentation for I2C communication protocols.</div>
+      <div class="dl-btns">
+        <a class="dl-btn dl-btn-s" href="https://docs.arduino.cc/language-reference/en/functions/communication/wire/" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Learn More
+        </a>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Connections</h2>
-  <ul>
-    
-    <li><strong>Ultrasonic Sensor:</strong> VCC → 5V, GND → GND, TRIG → D9, ECHO → D10</li>
-    <li><strong>LCD (I2C):</strong> VCC → 5V, GND → GND, SDA → A4, SCL → A5</li>
-    <li><strong>Buzzer:</strong> + → D8, – → GND</li>
-  </ul>
-</section>
+<hr class="divider"/>
 
-<section>
-  <h2>Gallery</h2>
-  <p>Here is the actual flood detector circuit setup:</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start">
-    <!-- Keep only the single image required by the project -->
-    <figure style="margin:0">
-      <img src="images/image.png" alt="Flood Detector Wiring (connection image)" style="max-width:720px"/>
-      <figcaption style="font-size:13px;color:#556068;margin-top:6px">Wiring / connection image (single reference file)</figcaption>
-    </figure>
+<!-- ══ 05 — CONNECTIONS ══ -->
+<div class="wrap" id="connections">
+  <div class="sec-label reveal">// 05 — Wiring</div>
+  <h2 class="sec-title reveal d1">Connections <span class="acc">&amp; Wiring</span></h2>
+  <p class="sec-desc reveal d2">Wire your components exactly as shown below.</p>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;overflow:hidden" class="reveal d3">
+    <table class="conn-table">
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-microchip"></i> &nbsp;Component</th>
+          <th><i class="fa-solid fa-plug"></i> &nbsp;Component Pin</th>
+          <th><i class="fa-solid fa-arrow-right"></i></th>
+          <th><i class="fa-solid fa-bolt"></i> &nbsp;Arduino Pin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="ct-comp">Ultrasonic Sensor</td><td>VCC</td><td style="color:var(--muted)">→</td><td class="ct-pin">5V</td></tr>
+        <tr><td class="ct-comp">Ultrasonic Sensor</td><td>GND</td><td style="color:var(--muted)">→</td><td class="ct-pin">GND</td></tr>
+        <tr><td class="ct-comp">Ultrasonic Sensor</td><td>TRIG</td><td style="color:var(--muted)">→</td><td class="ct-pin">D9</td></tr>
+        <tr><td class="ct-comp">Ultrasonic Sensor</td><td>ECHO</td><td style="color:var(--muted)">→</td><td class="ct-pin">D10</td></tr>
+        <tr><td class="ct-comp">LCD (I2C)</td><td>VCC</td><td style="color:var(--muted)">→</td><td class="ct-pin">5V</td></tr>
+        <tr><td class="ct-comp">LCD (I2C)</td><td>GND</td><td style="color:var(--muted)">→</td><td class="ct-pin">GND</td></tr>
+        <tr><td class="ct-comp">LCD (I2C)</td><td>SDA</td><td style="color:var(--muted)">→</td><td class="ct-pin">A4</td></tr>
+        <tr><td class="ct-comp">LCD (I2C)</td><td>SCL</td><td style="color:var(--muted)">→</td><td class="ct-pin">A5</td></tr>
+        <tr><td class="ct-comp">Buzzer</td><td>+ (positive)</td><td style="color:var(--muted)">→</td><td class="ct-pin">D8</td></tr>
+        <tr><td class="ct-comp">Buzzer</td><td>− (negative)</td><td style="color:var(--muted)">→</td><td class="ct-pin">GND</td></tr>
+      </tbody>
+    </table>
   </div>
-</section>
+</div>
 
-<section>
-  <h2>🏆 Prateek Priyadarshi Certificate</h2>
-  <div class="award-section">
-    <div class="award-title">
-      🥇 STEM Project Exhibition - Gold Medal Award
-    </div>
-    <div class="certificate-container">
-      <div class="certificate-image">
-        <img src="images/Prateek_Priyadarshi_Certificate.jpg" alt="Prateek Priyadarshi STEM Exhibition Gold Medal Certificate" draggable="false" oncontextmenu="return false;" />
-      </div>
-      <div class="certificate-info">
-        <p><strong>Achievement:</strong> Recipient of Gold Medal at the STEM Project Exhibition for outstanding innovation and engineering excellence.</p>
-        <p><strong>Project:</strong> Flood Detector System - An intelligent water level detection and alert system using Arduino and ultrasonic sensors.</p>
-        <p><strong>Recognition:</strong> This certificate recognizes exceptional performance in Science, Technology, Engineering, and Mathematics (STEM) and the development of practical solutions that address real-world problems.</p>
-        <p style="margin-top:20px;font-weight:700;color:#d4af37;">🌟 Congratulations on this outstanding achievement!</p>
-      </div>
-    </div>
-  </div>
-</section>
+<hr class="divider"/>
 
-<section>
-  <h2>Downloads</h2>
-  <p>You can download the project files below. If the downloads/ copy is missing the page will fall back to the images/ copy.</p>
-
-  <div class="download-grid" id="downloadGrid">
-    <div class="download-card">
-      <div class="file-meta">
-        <div class="file-name">FloodDetector.ino <span class="tiny">(.ino)</span></div>
-        <div class="file-desc">Complete Arduino sketch for the Flood Detector.</div>
-        <div class="tiny">Estimated: ~8 KB</div>
-      </div>
-      <div class="dl-actions">
-        <!-- Point directly to the .ino file in the root folder (where it is) -->
-        <a class="btn" href="FloodDetector.ino" download="FloodDetector.ino" aria-label="Download Arduino sketch">Download</a>
-      </div>
-    </div>
-
-    <div class="download-card">
-      <div class="file-meta">
-        <div class="file-name">image.png <span class="tiny">(.png)</span></div>
-        <div class="file-desc">Single wiring/connection image used in the Gallery (also the download target).</div>
-        <div class="tiny">Image: reference wiring</div>
-      </div>
-      <div class="dl-actions">
-        <!-- Point directly to images/image.png (the file that exists) -->
-        <a class="btn secondary" href="images/image.png" download="image.png" aria-label="Download wiring image">Download</a>
+<!-- ══ 06 — GALLERY ══ -->
+<div class="wrap" id="gallery">
+  <div class="sec-label reveal">// 06 — Gallery</div>
+  <h2 class="sec-title reveal d1">Project <span class="acc2">Gallery</span></h2>
+  <p class="sec-desc reveal d2">The actual flood detector circuit setup.</p>
+  <div class="gallery-wrap reveal d3">
+    <div class="gallery-img">
+      <img src="images/image.png" alt="Flood Detector Wiring — connection image"/>
+      <div class="gallery-cap">
+        <i class="fa-solid fa-image" style="color:var(--a2)"></i> &nbsp;Wiring / connection reference image
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<section>
-  <h2>Features</h2>
-  <div class="features">
-    <div class="feature">
-      <h3>📊 LCD Display</h3>
-      <p>Shows water level with rising/falling/stable indicators.</p>
+<hr class="divider"/>
+
+<!-- ══ 07 — CERTIFICATE ══ -->
+<div class="wrap" id="certificate">
+  <div class="sec-label reveal">// 07 — Award</div>
+  <h2 class="sec-title reveal d1">STEM Exhibition <span class="acc">Certificate</span></h2>
+  <p class="sec-desc reveal d2">Recognised for outstanding innovation and engineering excellence.</p>
+  <div class="cert-wrap reveal d3">
+    <div class="cert-img-col">
+      <img
+        src="images/Prateek_Priyadarshi_Certificate.jpg"
+        alt="Prateek Priyadarshi STEM Exhibition Gold Medal Certificate"
+        draggable="false"
+        oncontextmenu="return false;"
+      />
     </div>
-    <div class="feature">
-      <h3>🔔 Buzzer Alert</h3>
-      <p>Triggers when water level crosses flood threshold.</p>
-    </div>
-    <div class="feature">
-      <h3>⚡ Smart Logic</h3>
-      <p>Custom characters make alerts intuitive and clear.</p>
+    <div class="cert-info">
+      <div class="cert-badge"><i class="fa-solid fa-trophy"></i> Gold Medal Award</div>
+      <div class="cert-title">STEM Project Exhibition</div>
+      <div class="cert-detail"><strong>Achievement:</strong> Recipient of Gold Medal at the STEM Project Exhibition for outstanding innovation and engineering excellence.</div>
+      <div class="cert-detail"><strong>Project:</strong> Flood Detector System — an intelligent water level detection and alert system using Arduino and ultrasonic sensors.</div>
+      <div class="cert-detail"><strong>Recognition:</strong> This certificate recognises exceptional performance in Science, Technology, Engineering, and Mathematics and the development of practical solutions that address real-world problems.</div>
+      <div class="cert-congrats"><i class="fa-solid fa-star"></i> Congratulations on this outstanding achievement!</div>
     </div>
   </div>
-</section>
+</div>
 
+<hr class="divider"/>
+
+<!-- ══ 08 — DOWNLOADS ══ -->
+<div class="wrap" id="downloads">
+  <div class="sec-label reveal">// 08 — Downloads</div>
+  <h2 class="sec-title reveal d1">Project <span class="acc">Downloads</span></h2>
+  <p class="sec-desc reveal d2">Download the Arduino sketch and wiring image for offline use.</p>
+  <div class="dl-grid reveal d3">
+    <div class="dl-card">
+      <div class="dl-name"><i class="fa-solid fa-file-code" style="color:var(--a2)"></i> &nbsp;FloodDetector.ino</div>
+      <div class="dl-meta">.ino &nbsp;·&nbsp; ~8 KB</div>
+      <div class="dl-desc">Complete Arduino sketch for the Flood Detector. Open directly in Arduino IDE and upload to your board.</div>
+      <div class="dl-btns">
+        <a class="dl-btn dl-btn-p" href="FloodDetector.ino" download="FloodDetector.ino">
+          <i class="fa-solid fa-download"></i> Download
+        </a>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-name"><i class="fa-solid fa-image" style="color:var(--a4)"></i> &nbsp;image.png</div>
+      <div class="dl-meta">.png &nbsp;·&nbsp; Wiring reference</div>
+      <div class="dl-desc">Single wiring and connection reference image used in the Gallery section.</div>
+      <div class="dl-btns">
+        <a class="dl-btn dl-btn-g" href="images/image.png" download="image.png">
+          <i class="fa-solid fa-download"></i> Download
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ══ 09 — FEATURES ══ -->
+<div class="wrap" id="features">
+  <div class="sec-label reveal">// 09 — Features</div>
+  <h2 class="sec-title reveal d1">Key <span class="acc2">Features</span></h2>
+  <p class="sec-desc reveal d2">Everything that makes this flood detector smart and reliable.</p>
+  <div class="feat-grid">
+    <div class="feat-card reveal d1">
+      <i class="feat-icon fa-solid fa-display"></i>
+      <div class="feat-title">LCD Display</div>
+      <div class="feat-desc">Shows water level in centimetres with rising, falling, and stable indicator arrows in real time.</div>
+    </div>
+    <div class="feat-card reveal d2">
+      <i class="feat-icon fa-solid fa-bell"></i>
+      <div class="feat-title">Buzzer Alert</div>
+      <div class="feat-desc">Triggers an intermittent 1 kHz beep automatically when water level crosses the flood threshold.</div>
+    </div>
+    <div class="feat-card reveal d3">
+      <i class="feat-icon fa-solid fa-bolt"></i>
+      <div class="feat-title">Smart Logic</div>
+      <div class="feat-desc">Custom 5×8 pixel characters make alerts intuitive, clear, and immediately actionable at a glance.</div>
+    </div>
+    <div class="feat-card reveal d4">
+      <i class="feat-icon fa-solid fa-wave-square"></i>
+      <div class="feat-title">Averaged Readings</div>
+      <div class="feat-desc">Samples the sensor 5 times per cycle and averages results to eliminate noise and false triggers.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
 <footer>
-  <p>Created by Prateek Priyadarshi | Solo-working coder & founder of <a href="https://testerchip.com/">TesterChip</a></p>
-  <p>🏆 Gold Medal Award Winner - STEM Project Exhibition | For more such content follow <a href="https://testerchip.com/">TesterChip.com</a></p>
+  <div>
+    <i class="fa-solid fa-microchip" style="color:var(--a2)"></i>
+    &nbsp;Created by Prateek Priyadarshi &nbsp;·&nbsp;
+    <a href="../../index.html">TesterChip</a>
+  </div>
+  <div>
+    <i class="fa-solid fa-trophy" style="color:var(--accent)"></i>
+    &nbsp;Gold Medal — STEM Project Exhibition &nbsp;·&nbsp;
+    <a href="https://testerchip.com/">TesterChip.com</a>
+  </div>
 </footer>
 
+<!-- JavaScript loaded last -->
 <script src="script.js"></script>
+
 </body>
 </html>
