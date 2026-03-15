@@ -1,92 +1,79 @@
-// Small demo script to animate the gauge and show alert styling.
-(function(){
-  const waterEl   = document.getElementById('water');
-  const statusRow = document.getElementById('statusRow');
-  const statusText= document.getElementById('statusText');
-  const randomBtn = document.getElementById('randomBtn');
-  const alertBtn  = document.getElementById('alertBtn');
-  const gauge     = document.querySelector('.gauge');
+/* ══════════════════════════════════════
+   TesterChip — Flood Detector
+   script.js
+════════════════════════════════════════ */
 
-  // unified setLevel function
-  function setLevel(percent){
-    percent = Math.max(0, Math.min(100, percent));
-    waterEl.style.setProperty('--level', percent + '%');
-    waterEl.textContent = percent + '%';
-    updateStatus(percent);
-    applyGaugeClass(percent);
+/* ── MOBILE MENU ── */
+const menuBtn    = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+
+menuBtn.addEventListener('click', () => {
+  mobileMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', e => {
+  if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+    mobileMenu.classList.remove('open');
   }
-  window.setLevel = setLevel; // expose globally for other scripts
+});
 
-  function updateStatus(p){
-    const threshold = 70; // demo threshold for alert
-    if (p >= threshold) {
-      statusRow.classList.add('alert');
-      statusText.textContent = 'Status: Flood ALERT';
-    } else if (p >= 45) {
-      statusRow.classList.remove('alert');
-      statusText.textContent = 'Status: High';
-    } else {
-      statusRow.classList.remove('alert');
-      statusText.textContent = 'Status: Normal';
+/* ── GAUGE / LIVE PREVIEW ── */
+function setLevel(pct, isAlert) {
+  const water  = document.getElementById('gaugeWater');
+  const pctEl  = document.getElementById('gaugePct');
+  const dot    = document.getElementById('statusDot');
+  const stText = document.getElementById('statusText');
+
+  water.style.height = pct + '%';
+  pctEl.textContent  = pct + '%';
+
+  if (isAlert) {
+    water.classList.add('alert-water');
+    dot.classList.add('alert');
+    stText.textContent  = 'Status: ⚠ FLOOD ALERT';
+    stText.style.color  = 'var(--a3)';
+  } else {
+    water.classList.remove('alert-water');
+    dot.classList.remove('alert');
+    stText.textContent  = 'Status: Normal';
+    stText.style.color  = 'var(--a2)';
+  }
+}
+
+document.getElementById('randomBtn').addEventListener('click', () => {
+  const pct = Math.floor(Math.random() * 80) + 10;
+  setLevel(pct, pct >= 75);
+});
+
+document.getElementById('alertBtn').addEventListener('click', () => {
+  setLevel(92, true);
+});
+
+/* ── COPY CODE BUTTON ── */
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const raw = document.getElementById('codeBlock').innerText;
+
+  navigator.clipboard.writeText(raw).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.innerHTML      = '<i class="fa-solid fa-check"></i> &nbsp;Copied!';
+    btn.style.color    = 'var(--a2)';
+    btn.style.borderColor = 'var(--a2)';
+
+    setTimeout(() => {
+      btn.innerHTML         = '<i class="fa-regular fa-copy"></i> &nbsp;Copy';
+      btn.style.color       = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+});
+
+/* ── SCROLL REVEAL ── */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('on');
     }
-  }
-
-  function applyGaugeClass(p){
-    gauge.classList.remove('alert','high');
-    if (p >= 75) gauge.classList.add('alert');
-    else if (p >= 50) gauge.classList.add('high');
-  }
-
-  // demo animation loop
-  let current = 30;
-  setLevel(current);
-  setInterval(()=>{
-    current += (Math.random()*14 - 7);
-    current = Math.round(current);
-    current = Math.max(0, Math.min(100, current));
-    setLevel(current);
-  }, 2200);
-
-  randomBtn.addEventListener('click', ()=>{
-    const r = Math.floor(Math.random()*101);
-    setLevel(r);
   });
-  alertBtn.addEventListener('click', ()=>{
-    setLevel(85);
-  });
+}, { threshold: 0.1 });
 
-  // observe text changes as fallback
-  const observer = new MutationObserver(muts=>{
-    muts.forEach(m=>{
-      if (m.target === waterEl) {
-        const txt = (m.target.textContent||'').replace('%','').trim();
-        const val = parseInt(txt,10);
-        if (!isNaN(val)) applyGaugeClass(val);
-      }
-    });
-  });
-  observer.observe(waterEl,{ characterData:true, subtree:true, childList:true });
-
-  // small click feedback for download buttons
-  document.querySelectorAll('.download-grid a[download]').forEach(a=>{
-    a.addEventListener('click', ()=>{
-      a.style.opacity = 0.7;
-      setTimeout(()=> a.style.opacity = 1, 400);
-    });
-  });
-})();
-
-// Smooth scroll for anchor links
-(function(){
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-})();
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
