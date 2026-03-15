@@ -1,128 +1,588 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TesterChip | Python Live Editor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    .nav-header {
-      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #06b6d4 100%);
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .nav-header a {
-      color: white;
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: rgba(0,0,0,0.2);
-      transition: all 0.3s;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .nav-header a:hover {
-      background: rgba(0,0,0,0.35);
-      transform: translateY(-2px);
-    }
-    .nav-header-links {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    @media (max-width: 768px) {
-      .nav-header {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .nav-header-links {
-        width: 100%;
-        justify-content: center;
-      }
-      .nav-header a {
-        font-size: 0.9rem;
-        padding: 6px 12px;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>TesterChip — Python Live Editor</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:      #080c10;
+  --surface: #0d1117;
+  --card:    #111820;
+  --border:  #1e2a38;
+  --accent:  #e8b84b;
+  --a2:      #4be8c8;
+  --a3:      #e84b6b;
+  --a4:      #4b8be8;
+  --a5:      #a04be8;
+  --a6:      #4be870;
+  --py:      #ffd43b;
+  --text:    #c8d6e8;
+  --muted:   #526070;
+  --mono:    'Share Tech Mono', monospace;
+  --head:    'Barlow Condensed', sans-serif;
+  --body:    'Barlow', sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── NAV ── */
+.tc-nav{
+  flex-shrink:0;height:48px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;
+  background:rgba(8,12,16,.97);
+  border-bottom:1px solid var(--border);
+  z-index:200;
+}
+.tc-logo{
+  font-family:var(--mono);font-size:13px;color:var(--accent);
+  letter-spacing:.08em;display:flex;align-items:center;gap:9px;
+  text-decoration:none;
+}
+.tc-logo .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
+.tc-logo span{color:var(--text)}
+.tc-links{display:flex;gap:6px;flex-wrap:wrap}
+.tc-links a{
+  font-family:var(--head);font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;
+  padding:5px 12px;border-radius:2px;
+  border:1px solid transparent;transition:all .2s;
+}
+.tc-links a:hover{color:var(--accent);border-color:rgba(232,184,75,.3);background:rgba(232,184,75,.06)}
+.tc-links a.active-link{color:var(--py);border-color:rgba(255,212,59,.3);background:rgba(255,212,59,.08)}
+
+/* ── EDITOR HEADER ── */
+.editor-header{
+  flex-shrink:0;height:52px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  gap:12px;
+}
+.header-left{display:flex;align-items:center;gap:12px}
+.logo-box{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.header-title{font-family:var(--head);font-size:16px;font-weight:700;color:#fff;letter-spacing:.04em}
+.header-sub{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em}
+
+.header-btns{display:flex;gap:6px;flex-wrap:wrap}
+.hbtn{
+  font-family:var(--head);font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 14px;border:none;border-radius:2px;
+  cursor:pointer;display:flex;align-items:center;gap:6px;
+  transition:all .2s;
+}
+.hbtn-upload  {background:rgba(75,139,232,.15);border:1px solid rgba(75,139,232,.3);color:var(--a4)}
+.hbtn-upload:hover{background:rgba(75,139,232,.28)}
+.hbtn-download{background:rgba(160,75,232,.15);border:1px solid rgba(160,75,232,.3);color:var(--a5)}
+.hbtn-download:hover{background:rgba(160,75,232,.28)}
+.hbtn-copy{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
+.hbtn-copy:hover{border-color:var(--muted);color:var(--text)}
+.hbtn-reset{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted)}
+.hbtn-reset:hover{border-color:var(--a3);color:var(--a3)}
+.hbtn-run{background:rgba(75,232,112,.15);border:1px solid rgba(75,232,112,.3);color:var(--a6)}
+.hbtn-run:hover{background:rgba(75,232,112,.28);transform:translateY(-1px)}
+.hbtn-run:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── MAIN ── */
+.main-content{display:flex;flex:1;overflow:hidden;min-height:0}
+
+/* editor side */
+.editor-section{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border);min-width:0}
+.panel-header{
+  flex-shrink:0;height:38px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+}
+.panel-title{
+  font-family:var(--head);font-size:13px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;
+  display:flex;align-items:center;gap:8px;
+}
+.panel-title.py{color:var(--py)}
+.panel-title.out{color:var(--a2)}
+.panel-stats{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em}
+
+#editor{
+  flex:1;
+  background:var(--bg);color:var(--text);
+  border:none;border-left:3px solid var(--py);
+  padding:16px;
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+  resize:none;outline:none;tab-size:4;
+  min-height:0;
+}
+#editor:focus{background:#0a0f16}
+#editor::placeholder{color:var(--muted)}
+
+/* output side */
+.output-section{flex:1;display:flex;flex-direction:column;min-width:0}
+
+/* ── THE TERMINAL OUTPUT ──
+   This is the key fix — output renders like a real terminal,
+   not a logger. Raw text in a <pre>, colour coded by block type.  */
+#output{
+  flex:1;
+  background:#050810;
+  padding:0;
+  overflow:auto;
+  min-height:0;
+  font-family:var(--mono);font-size:13px;line-height:1.65;
+}
+#output::-webkit-scrollbar{width:4px}
+#output::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* run block = one execution session */
+.run-block{border-bottom:1px solid var(--border)}
+
+.run-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 16px;
+  background:var(--surface);
+  border-bottom:1px dashed var(--border);
+  font-size:11px;
+}
+.run-header-left{display:flex;align-items:center;gap:10px}
+.run-label{
+  font-family:var(--head);font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--a6);
+}
+.run-time{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.run-elapsed{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+/* stdout block - raw white text like a real terminal */
+.out-stdout{
+  padding:10px 16px;
+  color:var(--text);
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+/* stderr / traceback - red, exactly as Python prints it */
+.out-stderr{
+  padding:10px 16px;
+  color:#ff8090;
+  white-space:pre-wrap;
+  word-break:break-word;
+  background:rgba(232,75,107,.04);
+  border-left:3px solid var(--a3);
+}
+
+/* no output message */
+.out-empty{
+  padding:10px 16px;
+  color:var(--muted);
+  font-style:italic;
+}
+
+/* success footer */
+.out-footer{
+  padding:6px 16px;
+  font-size:11px;color:var(--a2);
+  font-family:var(--mono);letter-spacing:.06em;
+  border-top:1px dashed var(--border);
+}
+.out-footer.has-error{color:var(--a3)}
+
+/* runtime badge */
+.runtime-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:10px;
+  padding:2px 8px;border-radius:2px;letter-spacing:.1em;
+}
+.runtime-badge.loading{background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.25);color:var(--accent)}
+.runtime-badge.ready  {background:rgba(75,232,112,.1);border:1px solid rgba(75,232,112,.25);color:var(--a6)}
+.runtime-badge.error  {background:rgba(232,75,107,.1);border:1px solid rgba(232,75,107,.25);color:var(--a3)}
+
+/* clear button */
+.clear-btn{
+  font-family:var(--head);font-size:10px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid rgba(232,75,107,.3);
+  border-radius:2px;background:rgba(232,75,107,.1);color:var(--a3);
+  cursor:pointer;transition:all .2s;
+}
+.clear-btn:hover{background:rgba(232,75,107,.22)}
+
+/* welcome message in output */
+.out-welcome{
+  padding:14px 16px;
+  color:var(--muted);
+  font-family:var(--mono);font-size:12px;
+  border-bottom:1px solid var(--border);
+  white-space:pre;
+}
+.out-welcome .hl{color:var(--py)}
+
+/* STATUS BAR */
+.status-bar{
+  flex-shrink:0;height:22px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  letter-spacing:.1em;
+}
+.status-left{display:flex;gap:20px}
+.status-right{color:var(--py)}
+
+/* ANIMATIONS */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .8s linear infinite;display:inline-block}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .main-content{flex-direction:column}
+  .editor-section,.output-section{flex:none;height:50%}
+  .tc-links{display:none}
+  .header-btns{gap:4px}
+  .hbtn{padding:6px 10px;font-size:10px}
+}
+</style>
 </head>
-<body class="bg-gray-800 text-white flex flex-col h-screen">
+<body>
 
-  <nav class="nav-header">
-    <div class="nav-header-links">
-      <a href="../../index.html">Home</a>
-      <a href="../index.html">Products</a>
-      <a href="../html-editor/index.html">HTML Editor</a>
-      <a href="../python-editor/index.html" style="background: rgba(0,0,0,0.35);">Python Editor</a>
-      <a href="../flood-detector/index.html">Flood Detector</a>
-      <a href="../pcb-generator/index.html">PCB Generator</a>
+<!-- NAV -->
+<nav class="tc-nav">
+  <a class="tc-logo" href="../../index.html">
+    <div class="dot"></div>
+    Tester<span>Chip</span>
+  </a>
+  <div class="tc-links">
+    <a href="../../index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="../index.html"><i class="fa-solid fa-box"></i> Products</a>
+    <a href="../html-editor/index.html"><i class="fa-solid fa-file-code"></i> HTML Editor</a>
+    <a href="../python-editor/index.html" class="active-link"><i class="fa-brands fa-python"></i> Python Editor</a>
+    <a href="../flood-detector/index.html"><i class="fa-solid fa-water"></i> Flood Detector</a>
+    <a href="../pcb-generator/index.html"><i class="fa-solid fa-microchip"></i> PCB Generator</a>
+  </div>
+</nav>
+
+<!-- EDITOR HEADER -->
+<div class="editor-header">
+  <div class="header-left">
+    <div class="logo-box">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none">
+        <defs>
+          <linearGradient id="pyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#3776ab"/>
+            <stop offset="50%"  stop-color="#4b8bbe"/>
+            <stop offset="100%" stop-color="#ffd43b"/>
+          </linearGradient>
+        </defs>
+        <rect x="4"  y="4"  width="8" height="8" rx="2" fill="url(#pyGrad)"/>
+        <rect x="20" y="4"  width="8" height="8" rx="2" fill="url(#pyGrad)"/>
+        <rect x="4"  y="20" width="8" height="8" rx="2" fill="url(#pyGrad)"/>
+        <rect x="20" y="20" width="8" height="8" rx="2" fill="url(#pyGrad)"/>
+        <circle cx="16" cy="16" r="4" fill="url(#pyGrad)"/>
+      </svg>
     </div>
-  </nav>
-
-  <!-- Header -->
-  <header class="bg-gray-900 border-b border-gray-700 px-4 py-3">
-    <div class="flex items-center justify-between flex-wrap gap-3">
-      <div class="flex items-center gap-3">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <defs>
-            <linearGradient id="chipGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#3776ab" />
-              <stop offset="50%" stop-color="#4b8bbe" />
-              <stop offset="100%" stop-color="#ffd43b" />
-            </linearGradient>
-          </defs>
-          <rect x="4" y="4" width="8" height="8" rx="2" fill="url(#chipGradient)" />
-          <rect x="20" y="4" width="8" height="8" rx="2" fill="url(#chipGradient)" />
-          <rect x="4" y="20" width="8" height="8" rx="2" fill="url(#chipGradient)" />
-          <rect x="20" y="20" width="8" height="8" rx="2" fill="url(#chipGradient)" />
-          <circle cx="16" cy="16" r="4" fill="url(#chipGradient)" />
-        </svg>
-        <div>
-          <h1 class="text-xl font-bold">TesterChip</h1>
-          <p class="text-xs text-gray-400">Python Live Editor</p>
-        </div>
-      </div>
-
-      <div class="flex gap-2 flex-wrap">
-        <input id="fileInput" type="file" accept=".py,.json" class="hidden">
-        <button id="uploadBtn" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-sm flex items-center gap-1.5">
-          <i data-lucide="upload"></i> Upload
-        </button>
-        <button id="downloadBtn" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 rounded text-sm flex items-center gap-1.5">
-          <i data-lucide="download"></i> Download
-        </button>
-        <button id="copyBtn" class="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 rounded text-sm flex items-center gap-1.5">
-          <i data-lucide="copy"></i> Copy
-        </button>
-        <button id="resetBtn" class="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 rounded text-sm flex items-center gap-1.5">
-          <i data-lucide="rotate-ccw"></i> Reset
-        </button>
-        <button id="runBtn" class="px-4 py-1.5 bg-green-600 hover:bg-green-700 rounded text-sm flex items-center gap-1.5 font-semibold">
-          <i data-lucide="play"></i> Run
-        </button>
-      </div>
+    <div>
+      <div class="header-title">TesterChip</div>
+      <div class="header-sub">Python Live Editor</div>
     </div>
-  </header>
+  </div>
 
-  <!-- Main -->
-  <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
-    <!-- Editor -->
-    <div class="flex-1 flex flex-col border-r border-gray-700">
-      <div class="bg-gray-900 px-4 py-2 border-b border-gray-700 flex justify-between">
-        <span class="text-sm font-semibold text-blue-400">Python Code Editor</span>
-        <span id="stats" class="text-xs text-gray-400"></span>
+  <div class="header-btns">
+    <button class="hbtn hbtn-upload"   id="uploadBtn">  <i class="fa-solid fa-upload"></i>       Upload   </button>
+    <button class="hbtn hbtn-download" id="downloadBtn"><i class="fa-solid fa-download"></i>     Download </button>
+    <button class="hbtn hbtn-copy"     id="copyBtn">    <i class="fa-regular fa-copy"></i>       Copy     </button>
+    <button class="hbtn hbtn-reset"    id="resetBtn">   <i class="fa-solid fa-rotate-left"></i>  Reset    </button>
+    <button class="hbtn hbtn-run"      id="runBtn">     <i class="fa-solid fa-play"></i>         Run      </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-content">
+
+  <!-- EDITOR -->
+  <div class="editor-section">
+    <div class="panel-header">
+      <div class="panel-title py">
+        <i class="fa-brands fa-python"></i> Python Code Editor
       </div>
-      <textarea id="editor" spellcheck="false" class="flex-1 bg-gray-700 text-white p-4 font-mono text-sm resize-none focus:outline-none">
+      <span class="panel-stats" id="stats"></span>
+    </div>
+    <textarea id="editor" spellcheck="false" placeholder="Write your Python code here...">
 # Welcome to TesterChip Python Editor!
-# Write your Python code here and click "Run" to execute
+# Write your Python code here and click Run (or press Ctrl+Enter)
+
+def greet(name):
+    """Simple greeting function"""
+    return f"Hello, {name}! 👋"
+
+message = greet("Developer")
+print(message)
+print("\n✨ Ready to code in Python!")
+
+import math
+print(f"π ≈ {math.pi:.4f}")
+</textarea>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output-section">
+    <div class="panel-header">
+      <div class="panel-title out">
+        <i class="fa-solid fa-terminal"></i> Terminal Output
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="runtimeBadge" class="runtime-badge loading">
+          <i class="fa-solid fa-circle-notch spin"></i> Loading...
+        </span>
+        <button class="clear-btn" id="clearOutputBtn">
+          <i class="fa-solid fa-trash"></i> Clear
+        </button>
+      </div>
+    </div>
+
+    <div id="output">
+      <!-- welcome block shown before first run -->
+      <div class="out-welcome" id="welcomeMsg"><span class="hl">TesterChip Python Editor</span>  —  Powered by Pyodide
+Python 3.11 · Browser Runtime
+─────────────────────────────────────────
+Press <span class="hl">Run</span> or <span class="hl">Ctrl + Enter</span> to execute your code.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-left">
+    <span>Python 3.11</span>
+    <span id="statusLines">Lines: —</span>
+    <span id="statusChars">Chars: —</span>
+    <span>Ctrl+Enter → Run</span>
+  </div>
+  <div class="status-right" id="statusRight">Powered by Pyodide</div>
+</div>
+
+<input id="fileInput" type="file" accept=".py,.json" style="display:none"/>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+<script>
+/* ════════════════════════════════════════════
+   PYTHON EDITOR — FIXED INTERPRETER BEHAVIOUR
+   Key fixes vs old version:
+   1. stdout/stderr captured as a single buffer,
+      not per-line with timestamps
+   2. Output rendered in a <pre>-like block —
+      exactly as a real terminal would show it
+   3. Each run gets its own "run block" — old
+      runs stay visible so you can scroll back
+   4. Proper Python tracebacks in stderr (red)
+   5. No timestamps on every output line
+   6. runBtn disabled while executing
+════════════════════════════════════════════ */
+
+const editor       = document.getElementById('editor');
+const output       = document.getElementById('output');
+const stats        = document.getElementById('stats');
+const fileInput    = document.getElementById('fileInput');
+const runtimeBadge = document.getElementById('runtimeBadge');
+const runBtn       = document.getElementById('runBtn');
+const statusRight  = document.getElementById('statusRight');
+
+let pyodideReady = false;
+let pyodide;
+let runCount = 0;
+
+/* ── STATS ── */
+function updateStats() {
+  const lines = editor.value.split('\n').length;
+  const chars = editor.value.length;
+  stats.textContent = `${lines} lines · ${chars} chars`;
+  document.getElementById('statusLines').textContent = 'Lines: ' + lines;
+  document.getElementById('statusChars').textContent = 'Chars: ' + chars;
+}
+
+/* ── LOAD PYODIDE ── */
+async function loadPyodideRuntime() {
+  statusRight.textContent = 'Loading runtime...';
+  try {
+    pyodide = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' });
+
+    /* redirect sys.stdout and sys.stderr to our JS buffers */
+    await pyodide.runPythonAsync(`
+import sys, io
+class _JsWriter(io.TextIOBase):
+    def __init__(self, cb):
+        self._cb = cb
+    def write(self, s):
+        self._cb(s)
+        return len(s)
+`);
+
+    pyodideReady = true;
+    runtimeBadge.className   = 'runtime-badge ready';
+    runtimeBadge.innerHTML   = '<i class="fa-solid fa-circle-check"></i> Python Ready';
+    statusRight.textContent  = 'Python 3.11 · Ready';
+
+    /* update welcome */
+    const wm = document.getElementById('welcomeMsg');
+    if (wm) wm.querySelector('.hl:last-child') && (wm.innerHTML = wm.innerHTML.replace('Loading…', ''));
+
+  } catch (err) {
+    runtimeBadge.className  = 'runtime-badge error';
+    runtimeBadge.innerHTML  = '<i class="fa-solid fa-circle-xmark"></i> Load Failed';
+    statusRight.textContent = 'Runtime error';
+    appendSystemMsg('Failed to load Python runtime: ' + err.message, true);
+  }
+}
+
+/* ── SYSTEM MESSAGE (not regular output) ── */
+function appendSystemMsg(text, isError = false) {
+  const div = document.createElement('div');
+  div.style.cssText = `padding:8px 16px;font-family:var(--mono);font-size:12px;color:${isError ? 'var(--a3)' : 'var(--muted)'};border-bottom:1px solid var(--border)`;
+  div.textContent = text;
+  output.appendChild(div);
+  output.scrollTop = output.scrollHeight;
+}
+
+/* ══════════════════════════════════════
+   RUN PYTHON  —  the main fix
+   Captures stdout + stderr separately,
+   renders them as raw terminal output.
+══════════════════════════════════════ */
+async function runPython() {
+  if (!pyodideReady) {
+    appendSystemMsg('⚠ Python runtime still loading — please wait.', false);
+    return;
+  }
+
+  /* disable run button during execution */
+  runBtn.disabled = true;
+  runBtn.innerHTML = '<i class="fa-solid fa-circle-notch spin"></i> Running...';
+
+  /* hide welcome message after first run */
+  const wm = document.getElementById('welcomeMsg');
+  if (wm) { wm.style.display = 'none'; }
+
+  const code  = editor.value;
+  const start = performance.now();
+  runCount++;
+  const thisRun = runCount;
+
+  let stdoutBuf = '';
+  let stderrBuf = '';
+
+  /* ── redirect stdout / stderr via Pyodide's API ── */
+  pyodide.setStdout({ batched: (s) => { stdoutBuf += s + '\n'; } });
+  pyodide.setStderr({ batched: (s) => { stderrBuf += s + '\n'; } });
+
+  let hasError = false;
+
+  try {
+    /* 10-second timeout */
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Execution timed out after 10 seconds')), 10000)
+    );
+    await Promise.race([pyodide.runPythonAsync(code), timeout]);
+  } catch (err) {
+    /* append to stderr so it shows in the right panel */
+    stderrBuf += err.message + '\n';
+    hasError = true;
+  }
+
+  const elapsed = ((performance.now() - start) / 1000).toFixed(3);
+
+  /* ── build a "run block" ── */
+  const block = document.createElement('div');
+  block.className = 'run-block';
+
+  /* header row */
+  const header = document.createElement('div');
+  header.className = 'run-header';
+  header.innerHTML = `
+    <div class="run-header-left">
+      <span class="run-label">Run #${thisRun}</span>
+      <span class="run-time">${new Date().toLocaleTimeString()}</span>
+    </div>
+    <span class="run-elapsed">${elapsed}s</span>`;
+  block.appendChild(header);
+
+  /* stdout output — raw, exactly as Python would print */
+  if (stdoutBuf.trim()) {
+    const pre = document.createElement('div');
+    pre.className   = 'out-stdout';
+    /* strip the trailing newline that batched mode adds */
+    pre.textContent = stdoutBuf.replace(/\n$/, '');
+    block.appendChild(pre);
+  } else if (!hasError) {
+    const empty = document.createElement('div');
+    empty.className   = 'out-empty';
+    empty.textContent = '(No output)';
+    block.appendChild(empty);
+  }
+
+  /* stderr / traceback — red, raw, exactly as Python would show */
+  if (stderrBuf.trim()) {
+    const err = document.createElement('div');
+    err.className   = 'out-stderr';
+    err.textContent = stderrBuf.replace(/\n$/, '');
+    block.appendChild(err);
+  }
+
+  /* footer */
+  const footer = document.createElement('div');
+  footer.className = 'out-footer' + (hasError ? ' has-error' : '');
+  footer.textContent = hasError
+    ? `✗ Exited with error  ·  ${elapsed}s`
+    : `✓ Finished  ·  ${elapsed}s`;
+  block.appendChild(footer);
+
+  output.appendChild(block);
+  output.scrollTop = output.scrollHeight;
+
+  /* re-enable run button */
+  runBtn.disabled = false;
+  runBtn.innerHTML = '<i class="fa-solid fa-play"></i> Run';
+}
+
+/* ── CLEAR ── */
+document.getElementById('clearOutputBtn').onclick = () => {
+  output.innerHTML = '';
+  runCount = 0;
+};
+
+/* ── COPY ── */
+document.getElementById('copyBtn').onclick = async () => {
+  await navigator.clipboard.writeText(editor.value);
+  const btn = document.getElementById('copyBtn');
+  btn.innerHTML         = '<i class="fa-solid fa-check"></i> Copied!';
+  btn.style.color       = 'var(--a2)';
+  btn.style.borderColor = 'var(--a2)';
+  setTimeout(() => {
+    btn.innerHTML         = '<i class="fa-regular fa-copy"></i> Copy';
+    btn.style.color       = '';
+    btn.style.borderColor = '';
+  }, 2000);
+};
+
+/* ── RESET ── */
+document.getElementById('resetBtn').onclick = () => {
+  if (!confirm('Reset code to the default template?')) return;
+  editor.value = `# Welcome to TesterChip Python Editor!
+# Write your Python code here and click Run (or press Ctrl+Enter)
 
 def greet(name):
     """Simple greeting function"""
@@ -134,148 +594,77 @@ print("\\n✨ Ready to code in Python!")
 
 import math
 print(f"π ≈ {math.pi:.4f}")
-</textarea>
-    </div>
+`;
+  updateStats();
+};
 
-    <!-- Output -->
-    <div class="flex-1 flex flex-col">
-      <div class="bg-gray-900 px-4 py-2 border-b border-gray-700 flex justify-between items-center">
-        <div class="flex gap-3 items-center">
-          <span class="text-sm font-semibold text-yellow-400">Output</span>
-          <span id="execTime" class="text-xs text-gray-400"></span>
-        </div>
-        <button id="clearOutputBtn" class="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-xs flex items-center gap-1">
-          <i data-lucide="trash-2"></i> Clear
-        </button>
-      </div>
-      <div id="output" class="flex-1 bg-gray-800 p-4 font-mono text-sm overflow-auto"></div>
-    </div>
-  </div>
+/* ── UPLOAD ── */
+document.getElementById('uploadBtn').onclick = () => fileInput.click();
 
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-  <script>
-    lucide.createIcons();
-
-    const editor = document.getElementById("editor");
-    const output = document.getElementById("output");
-    const stats = document.getElementById("stats");
-    const execTime = document.getElementById("execTime");
-    const fileInput = document.getElementById("fileInput");
-
-    let pyodideReady = false;
-    let pyodide;
-
-    function logOutput(text, type="info") {
-      const color = {
-        info: "text-white",
-        success: "text-green-400",
-        error: "text-red-400",
-        warning: "text-yellow-400"
-      }[type] || "text-white";
-
-      const div = document.createElement("div");
-      div.className = `${color} mb-1`;
-      div.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
-      output.appendChild(div);
-      output.scrollTop = output.scrollHeight;
-    }
-
-    function updateStats() {
-      stats.textContent = `${editor.value.split("\\n").length} lines • ${editor.value.length} chars`;
-    }
-
-    async function loadPyodideRuntime() {
-      logOutput("⏳ Loading Python runtime...");
-      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-      pyodideReady = true;
-      logOutput("✅ Python runtime loaded successfully!", "success");
-    }
-
-    loadPyodideRuntime();
-
-    async function runPython() {
-      if (!pyodideReady) return logOutput("⚠️ Python runtime still loading...", "warning");
-
-      output.innerHTML = "";
-      const code = editor.value;
-      const start = performance.now();
-      try {
-        let stdout = "";
-        pyodide.setStdout({ batched: (text) => { stdout += text; } });
-        pyodide.setStderr({ batched: (text) => { stdout += text; } });
-
-        const timeout = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error("Execution timed out after 5 seconds")), 5000)
-        );
-        const exec = pyodide.runPythonAsync(code);
-        await Promise.race([exec, timeout]);
-
-        const end = performance.now();
-        execTime.textContent = `Last run: ${((end - start) / 1000).toFixed(3)}s`;
-
-        logOutput(stdout.trim() || "(No output)");
-        logOutput("✓ Execution completed", "success");
-      } catch (err) {
-        logOutput("Error: " + err.message, "error");
+fileInput.onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const content = ev.target.result;
+      if (file.name.endsWith('.json')) {
+        const data = JSON.parse(content);
+        if (data.code) editor.value = data.code;
+      } else {
+        editor.value = content;
       }
-    }
-
-    document.getElementById("runBtn").onclick = runPython;
-    document.getElementById("clearOutputBtn").onclick = () => (output.innerHTML = "");
-    document.getElementById("copyBtn").onclick = async () => {
-      await navigator.clipboard.writeText(editor.value);
-      logOutput("✅ Code copied to clipboard!", "success");
-    };
-
-    document.getElementById("resetBtn").onclick = () => {
-      if (confirm("Reset code to default template?")) location.reload();
-    };
-
-    document.getElementById("uploadBtn").onclick = () => fileInput.click();
-    fileInput.onchange = (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        try {
-          const content = ev.target.result;
-          if (file.name.endsWith(".json")) {
-            const data = JSON.parse(content);
-            if (data.code) editor.value = data.code;
-          } else editor.value = content;
-          updateStats();
-          logOutput(`✅ Loaded ${file.name}`, "success");
-        } catch (err) {
-          logOutput("❌ " + err.message, "error");
-        }
-      };
-      reader.readAsText(file);
-    };
-
-    document.getElementById("downloadBtn").onclick = () => {
-      const data = { code: editor.value, timestamp: new Date().toISOString() };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = `testerchip-python-${Date.now()}.json`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-      logOutput("✅ Project downloaded successfully!", "success");
-    };
-
-    editor.addEventListener("keydown", (e) => {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const start = e.target.selectionStart;
-        const end = e.target.selectionEnd;
-        editor.value = editor.value.substring(0, start) + "    " + editor.value.substring(end);
-        e.target.selectionStart = e.target.selectionEnd = start + 4;
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") runPython();
       updateStats();
-    });
+      appendSystemMsg('✓ Loaded: ' + file.name);
+    } catch (err) {
+      appendSystemMsg('✗ ' + err.message, true);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+};
 
+/* ── DOWNLOAD ── */
+document.getElementById('downloadBtn').onclick = () => {
+  const data = { code: editor.value, timestamp: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `testerchip-python-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  appendSystemMsg('✓ Downloaded project JSON');
+};
+
+/* ── RUN BUTTON ── */
+runBtn.onclick = runPython;
+
+/* ── KEYBOARD SHORTCUTS ── */
+editor.addEventListener('keydown', (e) => {
+  /* Tab → 4 spaces */
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const s = e.target.selectionStart;
+    const end = e.target.selectionEnd;
+    editor.value = editor.value.substring(0, s) + '    ' + editor.value.substring(end);
+    e.target.selectionStart = e.target.selectionEnd = s + 4;
     updateStats();
-  </script>
+    return;
+  }
+  /* Ctrl/Cmd + Enter → run */
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    runPython();
+    return;
+  }
+  updateStats();
+});
+
+editor.addEventListener('input', updateStats);
+
+/* ── INIT ── */
+updateStats();
+loadPyodideRuntime();
+</script>
 </body>
 </html>
