@@ -7,219 +7,138 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css"/>
 <style>
-/* ── TOKENS ── */
-:root {
-  --bg:      #080c10;
-  --surface: #0d1117;
-  --card:    #111820;
-  --border:  #1e2a38;
-  --accent:  #e8b84b;
-  --a2:      #4be8c8;
-  --a3:      #e84b6b;
-  --a4:      #4b8be8;
-  --text:    #c8d6e8;
-  --muted:   #526070;
-  --mono:    'Share Tech Mono', monospace;
-  --head:    'Barlow Condensed', sans-serif;
-  --body:    'Barlow', sans-serif;
-}
-
+:root{--bg:#080c10;--surface:#0d1117;--card:#111820;--border:#1e2a38;--accent:#e8b84b;--a2:#4be8c8;--a3:#e84b6b;--a4:#4b8be8;--text:#c8d6e8;--muted:#526070;--mono:'Share Tech Mono',monospace;--head:'Barlow Condensed',sans-serif;--body:'Barlow',sans-serif}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:15px;line-height:1.6;overflow-x:hidden}
-
-/* noise */
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");background-size:180px;pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--muted)}
-
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;height:56px;
-  background:rgba(8,12,16,.92);backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-}
-.nav-logo{
-  font-family:var(--mono);font-size:13px;color:var(--accent);
-  letter-spacing:.08em;display:flex;align-items:center;gap:10px;
-}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;background:rgba(8,12,16,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.08em;display:flex;align-items:center;gap:10px}
 .nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
 .nav-logo span{color:#fff}
 .nav-links{display:flex;gap:28px}
 .nav-links a{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--accent)}
 
-/* ── HERO ── */
-.hero{
-  position:relative;min-height:100vh;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:100px 24px 60px;text-align:center;overflow:hidden;
-}
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(232,184,75,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,184,75,.04) 1px,transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
-}
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 60px;text-align:center;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,184,75,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(232,184,75,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%)}
 .hero-glow{position:absolute;width:700px;height:700px;background:radial-gradient(circle,rgba(232,184,75,.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
-
-.hero-badge{
-  font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;
-  background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);
-  padding:5px 16px;border-radius:2px;margin-bottom:28px;display:inline-flex;align-items:center;gap:8px;
-}
+.hero-badge{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;background:rgba(232,184,75,.08);border:1px solid rgba(232,184,75,.25);padding:5px 16px;border-radius:2px;margin-bottom:28px;display:inline-flex;align-items:center;gap:8px}
 .hero-badge .bdot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
-
-.logo-shield{
-  width:72px;height:72px;background:rgba(232,184,75,.12);border:1px solid rgba(232,184,75,.3);
-  border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
-  font-size:32px;margin-bottom:24px;transform:rotate(-4deg);
-  box-shadow:0 0 40px rgba(232,184,75,.15);
-  animation:fadeUp .5s ease both;
-}
-
-h1.hero-title{
-  font-family:var(--head);font-size:clamp(50px,9vw,106px);font-weight:900;
-  line-height:.92;letter-spacing:-.02em;color:#fff;text-transform:uppercase;
-  margin-bottom:8px;
-}
+.logo-shield{width:72px;height:72px;background:rgba(232,184,75,.12);border:1px solid rgba(232,184,75,.3);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:24px;transform:rotate(-4deg);box-shadow:0 0 40px rgba(232,184,75,.15)}
+h1.hero-title{font-family:var(--head);font-size:clamp(50px,9vw,106px);font-weight:900;line-height:.92;letter-spacing:-.02em;color:#fff;text-transform:uppercase;margin-bottom:8px}
 h1.hero-title .acc{color:var(--accent)}
 h1.hero-title .acc2{color:var(--a2)}
-
 .hero-sub{font-size:15px;color:var(--muted);max-width:500px;margin:18px auto 40px;font-weight:300;line-height:1.7}
-
-/* quickjump pills */
 .quickjump{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:8px}
-.qj{
-  font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--border);color:var(--muted);
-  padding:7px 18px;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .2s;
-}
+.qj{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 18px;border-radius:2px;cursor:pointer;text-decoration:none;transition:all .2s}
 .qj:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.06)}
-
 .hero-stats{display:flex;gap:36px;margin-top:44px;font-family:var(--mono);font-size:11px;color:var(--muted)}
 .hero-stats span b{color:var(--accent);font-size:20px;font-family:var(--head);font-weight:700;display:block}
 
-/* ── SECTION COMMONS ── */
+/* SECTIONS */
 .wrap{position:relative;z-index:1;padding:80px 40px;max-width:1240px;margin:0 auto}
 .divider{border:none;border-top:1px solid var(--border);position:relative;z-index:1}
-
 .sec-label{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .sec-title{font-family:var(--head);font-size:clamp(30px,5vw,50px);font-weight:700;text-transform:uppercase;color:#fff;margin-bottom:12px;line-height:1}
 .sec-desc{color:var(--muted);font-size:14px;font-weight:300;max-width:540px;line-height:1.7;margin-bottom:44px}
 
-/* ── CRYPTO TOOL SELECTOR ── */
-.crypto-selector{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;
-  margin-bottom:28px;
-}
-.cs-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:18px 16px;cursor:pointer;transition:all .22s;
-  display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;
-}
+/* CRYPTO SELECTOR */
+.crypto-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:28px}
+.cs-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:18px 16px;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
 .cs-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .cs-card:hover,.cs-card.active{border-color:rgba(232,184,75,.45);background:#161f2a;box-shadow:0 6px 24px rgba(0,0,0,.4)}
 .cs-card:hover::before,.cs-card.active::before{transform:scaleX(1)}
 .cs-card .cs-icon{font-size:20px;margin-bottom:2px;color:var(--accent)}
-.cs-card .cs-icon i{font-size:20px}
 .cs-card h3{font-family:var(--head);font-size:15px;font-weight:700;color:#fff;letter-spacing:.02em}
 .cs-card p{font-family:var(--mono);font-size:10px;color:var(--muted)}
+/* GitHub finder card */
+.cs-card.gh-finder-card::before{background:var(--a4)}
+.cs-card.gh-finder-card:hover,.cs-card.gh-finder-card.active{border-color:rgba(75,139,232,.45)}
+.cs-card.gh-finder-card .cs-icon{color:var(--a4)}
 
-/* ── CRYPTO TOOL PANEL ── */
-.crypto-panel{
-  display:none;background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:32px;animation:fadeUp .3s ease;
-}
+/* CRYPTO PANEL */
+.crypto-panel{display:none;background:var(--card);border:1px solid var(--border);border-radius:4px;padding:32px;animation:fadeUp .3s ease}
 .crypto-panel.active{display:block}
-
-.panel-title{
-  font-family:var(--head);font-size:26px;font-weight:700;color:#fff;
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:24px;
-  display:flex;align-items:center;gap:12px;
-}
+.panel-title{font-family:var(--head);font-size:26px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em;margin-bottom:24px;display:flex;align-items:center;gap:12px}
 .panel-title .pt-line{flex:1;height:1px;background:var(--border)}
-
 .inp-label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
-
-.inp-field{
-  width:100%;background:var(--surface);border:1px solid var(--border);
-  color:var(--text);font-family:var(--mono);font-size:13px;
-  padding:12px 14px;border-radius:3px;outline:none;transition:border-color .2s,box-shadow .2s;
-  resize:vertical;
-}
+.inp-field{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:13px;padding:12px 14px;border-radius:3px;outline:none;transition:border-color .2s,box-shadow .2s;resize:vertical}
 .inp-field::placeholder{color:var(--muted)}
 .inp-field:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,184,75,.1)}
-
 .inp-group{margin-bottom:20px}
-
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
-
-.btn{
-  font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  padding:10px 20px;border:none;border-radius:3px;cursor:pointer;transition:all .2s;
-}
-.btn-p{background:var(--accent);color:#080c10}
-.btn-p:hover{background:#f0c860;transform:translateY(-1px)}
-.btn-s{background:transparent;border:1px solid var(--border);color:var(--muted)}
-.btn-s:hover{border-color:var(--muted);color:var(--text)}
-
-/* one-way badge */
+.btn{font-family:var(--head);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 20px;border:none;border-radius:3px;cursor:pointer;transition:all .2s}
+.btn-p{background:var(--accent);color:#080c10}.btn-p:hover{background:#f0c860;transform:translateY(-1px)}
+.btn-s{background:transparent;border:1px solid var(--border);color:var(--muted)}.btn-s:hover{border-color:var(--muted);color:var(--text)}
+.btn-blue{background:var(--a4);color:#fff}.btn-blue:hover{background:#6aa8f5;transform:translateY(-1px)}
 .oneway-note{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;color:#e84b6b;background:rgba(232,75,107,.1);border:1px solid rgba(232,75,107,.25);padding:6px 14px;border-radius:2px;margin-bottom:18px}
-.oneway-note i{font-size:12px}
-.result-area{
-  margin-top:20px;background:var(--surface);border:1px solid var(--border);
-  border-radius:3px;padding:18px;display:none;
-}
+.result-area{margin-top:20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:18px;display:none}
 .result-area.show{display:block}
 .result-label{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.result-content{
-  font-family:var(--mono);font-size:13px;color:var(--a2);word-break:break-all;
-  background:rgba(75,232,200,.04);border:1px solid rgba(75,232,200,.1);
-  padding:12px;border-radius:2px;line-height:1.6;
-}
+.result-content{font-family:var(--mono);font-size:13px;color:var(--a2);word-break:break-all;background:rgba(75,232,200,.04);border:1px solid rgba(75,232,200,.1);padding:12px;border-radius:2px;line-height:1.6}
 
-/* ── FILTER BTNS ── */
+/* GITHUB FINDER PROFILE */
+.gh-finder-result{margin-top:24px}
+.gh-profile-card{background:var(--surface);border:1px solid rgba(75,139,232,.3);border-radius:6px;padding:28px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;position:relative;overflow:hidden}
+.gh-profile-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--a4),var(--a2))}
+.gh-avatar-wrap{flex-shrink:0}
+.gh-avatar-wrap img{width:88px;height:88px;border-radius:50%;border:2px solid rgba(75,139,232,.4);display:block}
+.gh-avatar-placeholder{width:88px;height:88px;border-radius:50%;border:2px solid rgba(75,139,232,.4);background:rgba(75,139,232,.1);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--a4)}
+.gh-info{flex:1;min-width:220px}
+.gh-profile-name{font-family:var(--head);font-size:28px;font-weight:700;color:#fff;letter-spacing:.02em;margin-bottom:2px}
+.gh-profile-login{font-family:var(--mono);font-size:12px;color:var(--a4);letter-spacing:.1em;margin-bottom:10px}
+.gh-profile-bio{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:14px;max-width:480px}
+.gh-stat-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+.gh-stat{text-align:center}
+.gh-stat-val{font-family:var(--head);font-size:22px;font-weight:700;color:var(--accent);display:block}
+.gh-stat-key{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.gh-meta-row{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.gh-meta-row span{display:flex;align-items:center;gap:6px}
+.gh-meta-row i{color:var(--a4);font-size:12px}
+.gh-profile-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:var(--head);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--a4);color:#fff;text-decoration:none;padding:9px 20px;border-radius:3px;transition:all .2s}
+.gh-profile-btn:hover{background:#6aa8f5;transform:translateY(-1px)}
+.gh-repos-title{font-family:var(--head);font-size:16px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.06em;margin:22px 0 12px;display:flex;align-items:center;gap:10px}
+.gh-repos-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.gh-repos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.gh-repo-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:14px 16px;text-decoration:none;display:block;transition:all .2s}
+.gh-repo-card:hover{border-color:rgba(75,139,232,.4);transform:translateY(-2px)}
+.gh-repo-name{font-family:var(--mono);font-size:12px;color:var(--a4);margin-bottom:5px}
+.gh-repo-desc{font-size:12px;color:var(--muted);font-weight:300;line-height:1.5;margin-bottom:8px}
+.gh-repo-meta{display:flex;gap:12px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.gh-repo-meta span{display:flex;align-items:center;gap:4px}
+.gh-repo-meta i{font-size:10px;color:var(--accent)}
+/* states */
+.gh-loading{display:none;font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em;padding:14px 0;text-align:center}
+.gh-loading.show{display:block}
+@keyframes ellipsis{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+.gh-loading::after{content:'';animation:ellipsis 1.2s infinite}
+.gh-error{align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--a3);background:rgba(232,75,107,.07);border:1px solid rgba(232,75,107,.25);border-radius:3px;padding:14px 18px;display:none}
+.gh-error.show{display:flex}
+
+/* FILTERS */
 .filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
-.filter-btn{
-  font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--border);color:var(--muted);
-  padding:6px 16px;border-radius:2px;cursor:pointer;transition:all .2s;
-}
+.filter-btn{font-family:var(--head);font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--muted);padding:6px 16px;border-radius:2px;cursor:pointer;transition:all .2s}
 .filter-btn:hover{border-color:var(--muted);color:var(--text)}
 .filter-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(232,184,75,.07)}
 
-/* ── OSINT TOOL CARDS ── */
+/* OSINT CARDS */
 .osint-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
-.osint-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:20px;display:flex;flex-direction:column;gap:9px;
-  transition:border-color .25s,transform .2s,box-shadow .25s;
-  text-decoration:none;position:relative;overflow:hidden;
-}
+.osint-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:20px;display:flex;flex-direction:column;gap:9px;transition:border-color .25s,transform .2s,box-shadow .25s;text-decoration:none;position:relative;overflow:hidden}
 .osint-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
 .osint-card:hover{border-color:rgba(232,184,75,.4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4)}
 .osint-card:hover::before{transform:scaleX(1)}
-.osint-card[data-cat="recon"]::before{background:var(--accent)}
-.osint-card[data-cat="recon"]:hover{border-color:rgba(232,184,75,.4)}
-.osint-card[data-cat="social"]::before{background:var(--a3)}
-.osint-card[data-cat="social"]:hover{border-color:rgba(232,75,107,.4)}
-.osint-card[data-cat="network"]::before{background:var(--a4)}
-.osint-card[data-cat="network"]:hover{border-color:rgba(75,139,232,.4)}
-.osint-card[data-cat="email"]::before{background:var(--a2)}
-.osint-card[data-cat="email"]:hover{border-color:rgba(75,232,200,.4)}
-.osint-card[data-cat="geo"]::before{background:#e88c4b}
-.osint-card[data-cat="geo"]:hover{border-color:rgba(232,140,75,.4)}
-.osint-card[data-cat="metadata"]::before{background:#a04be8}
-.osint-card[data-cat="metadata"]:hover{border-color:rgba(160,75,232,.4)}
-.osint-card[data-cat="framework"]::before{background:#e8dc4b}
-.osint-card[data-cat="framework"]:hover{border-color:rgba(232,220,75,.4)}
-
+.osint-card[data-cat="recon"]::before{background:var(--accent)}.osint-card[data-cat="recon"]:hover{border-color:rgba(232,184,75,.4)}
+.osint-card[data-cat="social"]::before{background:var(--a3)}.osint-card[data-cat="social"]:hover{border-color:rgba(232,75,107,.4)}
+.osint-card[data-cat="network"]::before{background:var(--a4)}.osint-card[data-cat="network"]:hover{border-color:rgba(75,139,232,.4)}
+.osint-card[data-cat="email"]::before{background:var(--a2)}.osint-card[data-cat="email"]:hover{border-color:rgba(75,232,200,.4)}
+.osint-card[data-cat="geo"]::before{background:#e88c4b}.osint-card[data-cat="geo"]:hover{border-color:rgba(232,140,75,.4)}
+.osint-card[data-cat="metadata"]::before{background:#a04be8}.osint-card[data-cat="metadata"]:hover{border-color:rgba(160,75,232,.4)}
+.osint-card[data-cat="framework"]::before{background:#e8dc4b}.osint-card[data-cat="framework"]:hover{border-color:rgba(232,220,75,.4)}
 .oc-head{display:flex;justify-content:space-between;align-items:flex-start}
 .oc-icon{width:34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:rgba(232,184,75,.1);border:1px solid rgba(232,184,75,.2);color:var(--accent)}
 .oc-tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:3px 8px;border-radius:2px}
@@ -229,37 +148,27 @@ h1.hero-title .acc2{color:var(--a2)}
 .oc-pill{font-family:var(--mono);font-size:10px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:3px 8px;border-radius:2px}
 .oc-link{font-family:var(--mono);font-size:11px;color:var(--accent);text-decoration:none;margin-left:auto;white-space:nowrap;opacity:0;transition:opacity .2s}
 .osint-card:hover .oc-link{opacity:1}
-
-/* no results */
 .no-results{text-align:center;padding:50px 0;font-family:var(--mono);font-size:13px;color:var(--muted);display:none}
 .no-results.visible{display:block}
 
-/* ── PRACTICE CARDS ── */
+/* PRACTICE */
 .practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
-.practice-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:26px;text-decoration:none;display:block;transition:all .25s;position:relative;overflow:hidden;
-}
+.practice-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:26px;text-decoration:none;display:block;transition:all .25s;position:relative;overflow:hidden}
 .practice-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--a2),var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .practice-card:hover{border-color:rgba(75,232,200,.3);transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.45)}
 .practice-card:hover::after{transform:scaleX(1)}
-
 .plevel{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;display:inline-block;padding:3px 10px;border-radius:2px}
 .l-beg{background:rgba(75,232,200,.1);color:var(--a2);border:1px solid rgba(75,232,200,.2)}
 .l-int{background:rgba(232,184,75,.1);color:var(--accent);border:1px solid rgba(232,184,75,.2)}
 .l-adv{background:rgba(232,75,107,.1);color:var(--a3);border:1px solid rgba(232,75,107,.2)}
-
 .practice-title{font-family:var(--head);font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}
 .practice-desc{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:14px}
 .practice-meta{display:flex;gap:16px;font-family:var(--mono);font-size:11px;color:var(--muted)}
 .practice-meta i{color:var(--accent);margin-right:4px}
 
-/* ── GITHUB CARDS ── */
+/* GITHUB PROJECTS */
 .github-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
-.github-card{
-  background:var(--card);border:1px solid var(--border);border-radius:4px;
-  padding:22px;text-decoration:none;display:flex;flex-direction:column;gap:11px;transition:all .25s;
-}
+.github-card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:22px;text-decoration:none;display:flex;flex-direction:column;gap:11px;transition:all .25s}
 .github-card:hover{border-color:rgba(75,139,232,.4);box-shadow:0 8px 28px rgba(0,0,0,.4)}
 .gh-head{display:flex;align-items:center;gap:12px}
 .gh-av{width:38px;height:38px;border-radius:6px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;color:var(--a4)}
@@ -270,15 +179,14 @@ h1.hero-title .acc2{color:var(--a2)}
 .ldot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:3px}
 .gh-topic{color:var(--muted);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:2px 7px;border-radius:2px;font-size:10px}
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:32px 40px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--muted);position:relative;z-index:1;flex-wrap:wrap;gap:14px}
 footer a{color:var(--muted);text-decoration:none}
 footer a:hover{color:var(--accent)}
 
-/* ── ANIMATIONS ── */
+/* ANIMATIONS */
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
 .logo-shield{animation:fadeUp .4s ease both}
 .hero-badge{animation:fadeUp .5s .05s ease both}
 h1.hero-title{animation:fadeUp .55s .12s ease both}
@@ -286,24 +194,14 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
 .quickjump{animation:fadeUp .55s .28s ease both}
 .hero-stats{animation:fadeUp .55s .36s ease both}
 
-/* ── RESPONSIVE ── */
-@media(max-width:720px){
-  nav{padding:0 20px}
-  .nav-links{display:none}
-  .wrap{padding:56px 20px}
-  footer{padding:24px 20px}
-  .hero-stats{gap:20px}
-}
+@media(max-width:720px){nav{padding:0 20px}.nav-links{display:none}.wrap{padding:56px 20px}footer{padding:24px 20px}.hero-stats{gap:20px}}
 </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <div class="dot"></div>
-    Tester<span>Chip</span>
-  </div>
+  <div class="nav-logo"><div class="dot"></div>Tester<span>Chip</span></div>
   <div class="nav-links">
     <a href="#crypto">Crypto</a>
     <a href="#osint">OSINT</a>
@@ -312,36 +210,22 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
   </div>
 </nav>
 
-<!-- ── HERO ── -->
+<!-- HERO -->
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-
   <div class="logo-shield"><i class="fas fa-shield-alt"></i></div>
-
-  <div class="hero-badge">
-    <span class="bdot"></span>
-    Crypto &amp; Open Source Intelligence — All-in-One
-  </div>
-
-  <h1 class="hero-title">
-    Tester<span class="acc">Chip</span><br>
-    <span class="acc2">Hub</span>
-  </h1>
-
-  <p class="hero-sub">
-    Cryptography tools to encode, decode &amp; hash — combined with a full OSINT directory of tools, practice platforms, and open-source projects.
-  </p>
-
+  <div class="hero-badge"><span class="bdot"></span>Crypto &amp; Open Source Intelligence — All-in-One</div>
+  <h1 class="hero-title">Tester<span class="acc">Chip</span><br><span class="acc2">Hub</span></h1>
+  <p class="hero-sub">Cryptography tools to encode, decode &amp; hash — combined with a full OSINT directory of tools, practice platforms, and open-source projects.</p>
   <div class="quickjump">
-    <a class="qj" href="#crypto"><i class="fa-solid fa-lock" style="color: rgb(255, 212, 59);"></i> Crypto Tools</a>
-    <a class="qj" href="#osint"><i class="fa-solid fa-binoculars" style="color: rgb(59, 255, 92);"></i> OSINT Tools</a>
-    <a class="qj" href="#practice"><i class="fa-solid fa-computer" style="color: rgb(99, 230, 190);"></i> Practice</a>
-    <a class="qj" href="#projects"><i class="fa-brands fa-github" style="color: rgb(177, 151, 252);"></i> GitHub</a>
+    <a class="qj" href="#crypto"><i class="fa-solid fa-lock" style="color:rgb(255,212,59)"></i> Crypto Tools</a>
+    <a class="qj" href="#osint"><i class="fa-solid fa-binoculars" style="color:rgb(59,255,92)"></i> OSINT Tools</a>
+    <a class="qj" href="#practice"><i class="fa-solid fa-computer" style="color:rgb(99,230,190)"></i> Practice</a>
+    <a class="qj" href="#projects"><i class="fa-brands fa-github" style="color:rgb(177,151,252)"></i> GitHub</a>
   </div>
-
   <div class="hero-stats">
-    <span><b>11</b>Crypto Tools</span>
+    <span><b>12</b>Crypto Tools</span>
     <span><b>30</b>OSINT Tools</span>
     <span><b>8</b>Platforms</span>
     <span><b>12</b>Projects</span>
@@ -350,297 +234,210 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
 
 <hr class="divider"/>
 
-<!-- ══════════════════════════════════════════
-     SECTION 1 — CRYPTO TOOLKIT
-════════════════════════════════════════════ -->
+<!-- SECTION 1 — CRYPTO + GITHUB FINDER -->
 <section class="wrap" id="crypto">
   <div class="sec-label">// 01 — Crypto Toolkit</div>
   <h2 class="sec-title">Cryptography Tools</h2>
   <p class="sec-desc">Encode, decode, cipher and hash right in the browser — no data leaves your machine.</p>
 
-  <!-- selector grid -->
   <div class="crypto-selector">
-    <div class="cs-card" onclick="openTool('caesar')" id="cs-caesar">
-      <div class="cs-icon"><i class="fas fa-arrows-rotate"></i></div>
-      <h3>Caesar Cipher</h3>
-      <p>shift-based encryption</p>
-    </div>
-    <div class="cs-card" onclick="openTool('morse')" id="cs-morse">
-      <div class="cs-icon"><i class="fas fa-tower-broadcast"></i></div>
-      <h3>Morse Code</h3>
-      <p>encode &amp; decode morse</p>
-    </div>
-    <div class="cs-card" onclick="openTool('base64')" id="cs-base64">
-      <div class="cs-icon"><i class="fas fa-code"></i></div>
-      <h3>Base64</h3>
-      <p>encode &amp; decode</p>
-    </div>
-    <div class="cs-card" onclick="openTool('hash')" id="cs-hash">
-      <div class="cs-icon"><i class="fas fa-calculator"></i></div>
-      <h3>Hash Generator</h3>
-      <p>one-way fingerprint</p>
-    </div>
-    <div class="cs-card" onclick="openTool('rot13')" id="cs-rot13">
-      <div class="cs-icon"><i class="fas fa-repeat"></i></div>
-      <h3>ROT13</h3>
-      <p>encode &amp; decode</p>
-    </div>
-    <div class="cs-card" onclick="openTool('binary')" id="cs-binary">
-      <div class="cs-icon"><i class="fas fa-laptop-code"></i></div>
-      <h3>Binary</h3>
-      <p>text ↔ binary</p>
-    </div>
-    <div class="cs-card" onclick="openTool('vigenere')" id="cs-vigenere">
-      <div class="cs-icon"><i class="fas fa-key"></i></div>
-      <h3>Vigenère</h3>
-      <p>keyword cipher</p>
-    </div>
-    <div class="cs-card" onclick="openTool('atbash')" id="cs-atbash">
-      <div class="cs-icon"><i class="fas fa-left-right"></i></div>
-      <h3>Atbash</h3>
-      <p>mirror alphabet</p>
-    </div>
-    <div class="cs-card" onclick="openTool('railfence')" id="cs-railfence">
-      <div class="cs-icon"><i class="fas fa-wave-square"></i></div>
-      <h3>Rail Fence</h3>
-      <p>zigzag transposition</p>
-    </div>
-    <div class="cs-card" onclick="openTool('a1z26')" id="cs-a1z26">
-      <div class="cs-icon"><i class="fas fa-hashtag"></i></div>
-      <h3>A1Z26</h3>
-      <p>letters ↔ numbers</p>
-    </div>
-    <div class="cs-card" onclick="openTool('hex')" id="cs-hex">
-      <div class="cs-icon"><i class="fas fa-terminal"></i></div>
-      <h3>Hex Encoder</h3>
-      <p>text ↔ hexadecimal</p>
+    <div class="cs-card" onclick="openTool('caesar')" id="cs-caesar"><div class="cs-icon"><i class="fas fa-arrows-rotate"></i></div><h3>Caesar Cipher</h3><p>shift-based encryption</p></div>
+    <div class="cs-card" onclick="openTool('morse')" id="cs-morse"><div class="cs-icon"><i class="fas fa-tower-broadcast"></i></div><h3>Morse Code</h3><p>encode &amp; decode morse</p></div>
+    <div class="cs-card" onclick="openTool('base64')" id="cs-base64"><div class="cs-icon"><i class="fas fa-code"></i></div><h3>Base64</h3><p>encode &amp; decode</p></div>
+    <div class="cs-card" onclick="openTool('hash')" id="cs-hash"><div class="cs-icon"><i class="fas fa-calculator"></i></div><h3>Hash Generator</h3><p>one-way fingerprint</p></div>
+    <div class="cs-card" onclick="openTool('rot13')" id="cs-rot13"><div class="cs-icon"><i class="fas fa-repeat"></i></div><h3>ROT13</h3><p>encode &amp; decode</p></div>
+    <div class="cs-card" onclick="openTool('binary')" id="cs-binary"><div class="cs-icon"><i class="fas fa-laptop-code"></i></div><h3>Binary</h3><p>text ↔ binary</p></div>
+    <div class="cs-card" onclick="openTool('vigenere')" id="cs-vigenere"><div class="cs-icon"><i class="fas fa-key"></i></div><h3>Vigenère</h3><p>keyword cipher</p></div>
+    <div class="cs-card" onclick="openTool('atbash')" id="cs-atbash"><div class="cs-icon"><i class="fas fa-left-right"></i></div><h3>Atbash</h3><p>mirror alphabet</p></div>
+    <div class="cs-card" onclick="openTool('railfence')" id="cs-railfence"><div class="cs-icon"><i class="fas fa-wave-square"></i></div><h3>Rail Fence</h3><p>zigzag transposition</p></div>
+    <div class="cs-card" onclick="openTool('a1z26')" id="cs-a1z26"><div class="cs-icon"><i class="fas fa-hashtag"></i></div><h3>A1Z26</h3><p>letters ↔ numbers</p></div>
+    <div class="cs-card" onclick="openTool('hex')" id="cs-hex"><div class="cs-icon"><i class="fas fa-terminal"></i></div><h3>Hex Encoder</h3><p>text ↔ hexadecimal</p></div>
+    <!-- NEW GITHUB FINDER CARD -->
+    <div class="cs-card gh-finder-card" onclick="openTool('github')" id="cs-github">
+      <div class="cs-icon"><i class="fa-brands fa-github"></i></div>
+      <h3>GitHub Finder</h3>
+      <p>search any user</p>
     </div>
   </div>
 
-  <!-- Caesar Panel -->
+  <!-- Caesar -->
   <div id="panel-caesar" class="crypto-panel">
     <div class="panel-title">Caesar Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="caesarInput" rows="4" placeholder="Enter text to encrypt or decrypt…"></textarea>
-    </div>
-    <div class="inp-group">
-      <label class="inp-label">Shift Value (1–25)</label>
-      <input class="inp-field" type="number" id="caesarShift" min="1" max="25" value="3" style="max-width:180px"/>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="caesarEncrypt()">Encrypt</button>
-      <button class="btn btn-p" onclick="caesarDecrypt()">Decrypt</button>
-      <button class="btn btn-s" onclick="clearPanel('caesar')">Clear</button>
-    </div>
-    <div class="result-area" id="res-caesar">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-caesar"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="caesarInput" rows="4" placeholder="Enter text to encrypt or decrypt…"></textarea></div>
+    <div class="inp-group"><label class="inp-label">Shift Value (1–25)</label><input class="inp-field" type="number" id="caesarShift" min="1" max="25" value="3" style="max-width:180px"/></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="caesarEncrypt()">Encrypt</button><button class="btn btn-p" onclick="caesarDecrypt()">Decrypt</button><button class="btn btn-s" onclick="clearPanel('caesar')">Clear</button></div>
+    <div class="result-area" id="res-caesar"><div class="result-label">// Output</div><div class="result-content" id="out-caesar"></div></div>
   </div>
 
-  <!-- Morse Panel -->
+  <!-- Morse -->
   <div id="panel-morse" class="crypto-panel">
     <div class="panel-title">Morse Code <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text or Morse (use spaces between letters, / between words)</label>
-      <textarea class="inp-field" id="morseInput" rows="4" placeholder="Hello World  OR  .... . .-.. .-.. --- / .-- --- .-. .-.. -.."></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="morseEncode()">Text → Morse</button>
-      <button class="btn btn-p" onclick="morseDecode()">Morse → Text</button>
-      <button class="btn btn-s" onclick="clearPanel('morse')">Clear</button>
-    </div>
-    <div class="result-area" id="res-morse">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-morse"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text or Morse (spaces between letters, / between words)</label><textarea class="inp-field" id="morseInput" rows="4" placeholder="Hello World  OR  .... . .-.. .-.. --- / .-- --- .-. .-.. -.."></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="morseEncode()">Text → Morse</button><button class="btn btn-p" onclick="morseDecode()">Morse → Text</button><button class="btn btn-s" onclick="clearPanel('morse')">Clear</button></div>
+    <div class="result-area" id="res-morse"><div class="result-label">// Output</div><div class="result-content" id="out-morse"></div></div>
   </div>
 
-  <!-- Base64 Panel -->
+  <!-- Base64 -->
   <div id="panel-base64" class="crypto-panel">
     <div class="panel-title">Base64 Encoder / Decoder <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input</label>
-      <textarea class="inp-field" id="base64Input" rows="4" placeholder="Enter plain text or Base64 string…"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="b64Encode()">Encode</button>
-      <button class="btn btn-p" onclick="b64Decode()">Decode</button>
-      <button class="btn btn-s" onclick="clearPanel('base64')">Clear</button>
-    </div>
-    <div class="result-area" id="res-base64">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-base64"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input</label><textarea class="inp-field" id="base64Input" rows="4" placeholder="Enter plain text or Base64 string…"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="b64Encode()">Encode</button><button class="btn btn-p" onclick="b64Decode()">Decode</button><button class="btn btn-s" onclick="clearPanel('base64')">Clear</button></div>
+    <div class="result-area" id="res-base64"><div class="result-label">// Output</div><div class="result-content" id="out-base64"></div></div>
   </div>
 
-  <!-- Hash Panel -->
+  <!-- Hash -->
   <div id="panel-hash" class="crypto-panel">
     <div class="panel-title">Hash Generator <div class="pt-line"></div></div>
-    <div class="oneway-note"><i class="fas fa-triangle-exclamation"></i> One-way function — hashes cannot be reversed back to original text</div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="hashInput" rows="4" placeholder="Enter text to hash…"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="generateHash('md5')">MD5</button>
-      <button class="btn btn-p" onclick="generateHash('sha256')">SHA-256</button>
-      <button class="btn btn-s" onclick="clearPanel('hash')">Clear</button>
-    </div>
-    <div class="result-area" id="res-hash">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-hash"></div>
-    </div>
+    <div class="oneway-note"><i class="fas fa-triangle-exclamation"></i> One-way function — hashes cannot be reversed</div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="hashInput" rows="4" placeholder="Enter text to hash…"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="generateHash('md5')">MD5</button><button class="btn btn-p" onclick="generateHash('sha256')">SHA-256</button><button class="btn btn-s" onclick="clearPanel('hash')">Clear</button></div>
+    <div class="result-area" id="res-hash"><div class="result-label">// Output</div><div class="result-content" id="out-hash"></div></div>
   </div>
 
-  <!-- ROT13 Panel -->
+  <!-- ROT13 -->
   <div id="panel-rot13" class="crypto-panel">
     <div class="panel-title">ROT13 Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="rot13Input" rows="4" placeholder="Enter text to encode or decode…"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="rot13Convert()">Encode</button>
-      <button class="btn btn-p" onclick="rot13Convert()">Decode</button>
-      <button class="btn btn-s" onclick="clearPanel('rot13')">Clear</button>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="rot13Input" rows="4" placeholder="Enter text to encode or decode…"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="rot13Convert()">Encode</button><button class="btn btn-p" onclick="rot13Convert()">Decode</button><button class="btn btn-s" onclick="clearPanel('rot13')">Clear</button></div>
     <p style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px"><i class="fas fa-circle-info" style="color:var(--accent)"></i>&nbsp; ROT13 is its own inverse — encoding and decoding use the same operation.</p>
-    <div class="result-area" id="res-rot13">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-rot13"></div>
-    </div>
+    <div class="result-area" id="res-rot13"><div class="result-label">// Output</div><div class="result-content" id="out-rot13"></div></div>
   </div>
 
-  <!-- Binary Panel -->
+  <!-- Binary -->
   <div id="panel-binary" class="crypto-panel">
     <div class="panel-title">Binary Converter <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text or Binary (space-separated bytes)</label>
-      <textarea class="inp-field" id="binaryInput" rows="4" placeholder="Hello  OR  01001000 01100101 01101100 01101100 01101111"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="textToBinary()">Text → Binary</button>
-      <button class="btn btn-p" onclick="binaryToText()">Binary → Text</button>
-      <button class="btn btn-s" onclick="clearPanel('binary')">Clear</button>
-    </div>
-    <div class="result-area" id="res-binary">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-binary"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text or Binary (space-separated bytes)</label><textarea class="inp-field" id="binaryInput" rows="4" placeholder="Hello  OR  01001000 01100101 01101100 01101100 01101111"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="textToBinary()">Text → Binary</button><button class="btn btn-p" onclick="binaryToText()">Binary → Text</button><button class="btn btn-s" onclick="clearPanel('binary')">Clear</button></div>
+    <div class="result-area" id="res-binary"><div class="result-label">// Output</div><div class="result-content" id="out-binary"></div></div>
   </div>
 
-  <!-- Vigenère Panel -->
+  <!-- Vigenère -->
   <div id="panel-vigenere" class="crypto-panel">
     <div class="panel-title">Vigenère Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="vigenereInput" rows="4" placeholder="Enter plain text or ciphertext…"></textarea>
-    </div>
-    <div class="inp-group">
-      <label class="inp-label">Keyword (letters only)</label>
-      <input class="inp-field" type="text" id="vigenereKey" placeholder="e.g. SECRET" style="max-width:260px"/>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="vigenereEncrypt()">Encrypt</button>
-      <button class="btn btn-p" onclick="vigenereDecrypt()">Decrypt</button>
-      <button class="btn btn-s" onclick="clearPanel('vigenere')">Clear</button>
-    </div>
-    <div class="result-area" id="res-vigenere">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-vigenere"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="vigenereInput" rows="4" placeholder="Enter plain text or ciphertext…"></textarea></div>
+    <div class="inp-group"><label class="inp-label">Keyword (letters only)</label><input class="inp-field" type="text" id="vigenereKey" placeholder="e.g. SECRET" style="max-width:260px"/></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="vigenereEncrypt()">Encrypt</button><button class="btn btn-p" onclick="vigenereDecrypt()">Decrypt</button><button class="btn btn-s" onclick="clearPanel('vigenere')">Clear</button></div>
+    <div class="result-area" id="res-vigenere"><div class="result-label">// Output</div><div class="result-content" id="out-vigenere"></div></div>
   </div>
 
-  <!-- Atbash Panel -->
+  <!-- Atbash -->
   <div id="panel-atbash" class="crypto-panel">
     <div class="panel-title">Atbash Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="atbashInput" rows="4" placeholder="Enter text (A↔Z, B↔Y, C↔X …)"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="atbashConvert()">Encode</button>
-      <button class="btn btn-p" onclick="atbashConvert()">Decode</button>
-      <button class="btn btn-s" onclick="clearPanel('atbash')">Clear</button>
-    </div>
-    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px"><i class="fas fa-circle-info" style="color:var(--accent)"></i>&nbsp; Atbash mirrors the alphabet (A↔Z). Applying it twice restores the original text.</p>
-    <div class="result-area" id="res-atbash">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-atbash"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="atbashInput" rows="4" placeholder="Enter text (A↔Z, B↔Y, C↔X …)"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="atbashConvert()">Encode</button><button class="btn btn-p" onclick="atbashConvert()">Decode</button><button class="btn btn-s" onclick="clearPanel('atbash')">Clear</button></div>
+    <p style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px"><i class="fas fa-circle-info" style="color:var(--accent)"></i>&nbsp; Atbash mirrors the alphabet. Applying it twice restores the original text.</p>
+    <div class="result-area" id="res-atbash"><div class="result-label">// Output</div><div class="result-content" id="out-atbash"></div></div>
   </div>
 
-  <!-- Rail Fence Panel -->
+  <!-- Rail Fence -->
   <div id="panel-railfence" class="crypto-panel">
     <div class="panel-title">Rail Fence Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input Text</label>
-      <textarea class="inp-field" id="railfenceInput" rows="4" placeholder="Enter text to encrypt or decrypt…"></textarea>
-    </div>
-    <div class="inp-group">
-      <label class="inp-label">Number of Rails (2–10)</label>
-      <input class="inp-field" type="number" id="railfenceRails" min="2" max="10" value="3" style="max-width:180px"/>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="railFenceEncrypt()">Encrypt</button>
-      <button class="btn btn-p" onclick="railFenceDecrypt()">Decrypt</button>
-      <button class="btn btn-s" onclick="clearPanel('railfence')">Clear</button>
-    </div>
-    <div class="result-area" id="res-railfence">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-railfence"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input Text</label><textarea class="inp-field" id="railfenceInput" rows="4" placeholder="Enter text to encrypt or decrypt…"></textarea></div>
+    <div class="inp-group"><label class="inp-label">Number of Rails (2–10)</label><input class="inp-field" type="number" id="railfenceRails" min="2" max="10" value="3" style="max-width:180px"/></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="railFenceEncrypt()">Encrypt</button><button class="btn btn-p" onclick="railFenceDecrypt()">Decrypt</button><button class="btn btn-s" onclick="clearPanel('railfence')">Clear</button></div>
+    <div class="result-area" id="res-railfence"><div class="result-label">// Output</div><div class="result-content" id="out-railfence"></div></div>
   </div>
 
-  <!-- A1Z26 Panel -->
+  <!-- A1Z26 -->
   <div id="panel-a1z26" class="crypto-panel">
     <div class="panel-title">A1Z26 Cipher <div class="pt-line"></div></div>
-    <div class="inp-group">
-      <label class="inp-label">Input — plain text or numbers separated by dashes (e.g. 8-5-12-12-15)</label>
-      <textarea class="inp-field" id="a1z26Input" rows="4" placeholder="HELLO  OR  8-5-12-12-15"></textarea>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="a1z26Encode()">Text → Numbers</button>
-      <button class="btn btn-p" onclick="a1z26Decode()">Numbers → Text</button>
-      <button class="btn btn-s" onclick="clearPanel('a1z26')">Clear</button>
-    </div>
-    <div class="result-area" id="res-a1z26">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-a1z26"></div>
-    </div>
+    <div class="inp-group"><label class="inp-label">Input — plain text or numbers separated by dashes (e.g. 8-5-12-12-15)</label><textarea class="inp-field" id="a1z26Input" rows="4" placeholder="HELLO  OR  8-5-12-12-15"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="a1z26Encode()">Text → Numbers</button><button class="btn btn-p" onclick="a1z26Decode()">Numbers → Text</button><button class="btn btn-s" onclick="clearPanel('a1z26')">Clear</button></div>
+    <div class="result-area" id="res-a1z26"><div class="result-label">// Output</div><div class="result-content" id="out-a1z26"></div></div>
   </div>
 
-  <!-- Hex Panel -->
+  <!-- Hex -->
   <div id="panel-hex" class="crypto-panel">
     <div class="panel-title">Hex Encoder / Decoder <div class="pt-line"></div></div>
+    <div class="inp-group"><label class="inp-label">Input — plain text or hex string (e.g. 48 65 6c 6c 6f)</label><textarea class="inp-field" id="hexInput" rows="4" placeholder="Hello  OR  48 65 6c 6c 6f"></textarea></div>
+    <div class="btn-row"><button class="btn btn-p" onclick="hexEncode()">Text → Hex</button><button class="btn btn-p" onclick="hexDecode()">Hex → Text</button><button class="btn btn-s" onclick="clearPanel('hex')">Clear</button></div>
+    <div class="result-area" id="res-hex"><div class="result-label">// Output</div><div class="result-content" id="out-hex"></div></div>
+  </div>
+
+  <!-- ══ GITHUB USER FINDER PANEL ══ -->
+  <div id="panel-github" class="crypto-panel">
+    <div class="panel-title">
+      <i class="fa-brands fa-github" style="color:var(--a4);font-size:22px"></i>
+      GitHub User Finder
+      <div class="pt-line"></div>
+    </div>
+
+    <p style="font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:22px">
+      <i class="fas fa-circle-info" style="color:var(--a4)"></i>&nbsp;
+      Uses the <strong style="color:var(--a4)">public GitHub API</strong> — no login required. Shows profile, stats, location, and top public repositories.
+    </p>
+
     <div class="inp-group">
-      <label class="inp-label">Input — plain text or hex string (e.g. 48 65 6c 6c 6f)</label>
-      <textarea class="inp-field" id="hexInput" rows="4" placeholder="Hello  OR  48 65 6c 6c 6f"></textarea>
+      <label class="inp-label">GitHub Username</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <input class="inp-field" type="text" id="ghUsername"
+               placeholder="e.g. TesterChip or torvalds"
+               style="max-width:320px"
+               onkeydown="if(event.key==='Enter') findGitHubUser()"/>
+        <button class="btn btn-blue" onclick="findGitHubUser()">
+          <i class="fa-solid fa-magnifying-glass"></i>&nbsp; Search
+        </button>
+        <button class="btn btn-s" onclick="clearGitHub()">Clear</button>
+      </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-p" onclick="hexEncode()">Text → Hex</button>
-      <button class="btn btn-p" onclick="hexDecode()">Hex → Text</button>
-      <button class="btn btn-s" onclick="clearPanel('hex')">Clear</button>
+
+    <!-- loading / error states -->
+    <div class="gh-loading" id="gh-loading">Fetching from GitHub API</div>
+    <div class="gh-error" id="gh-error">
+      <i class="fas fa-triangle-exclamation"></i>
+      <span id="gh-error-msg">User not found.</span>
     </div>
-    <div class="result-area" id="res-hex">
-      <div class="result-label">// Output</div>
-      <div class="result-content" id="out-hex"></div>
+
+    <!-- profile result -->
+    <div id="gh-result" style="display:none">
+
+      <div class="gh-profile-card">
+        <div class="gh-avatar-wrap">
+          <img id="gh-avatar" src="" alt="avatar"
+               onerror="this.style.display='none';document.getElementById('gh-avatar-fb').style.display='flex'"/>
+          <div class="gh-avatar-placeholder" id="gh-avatar-fb" style="display:none">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+
+        <div class="gh-info">
+          <div class="gh-profile-name" id="gh-display-name"></div>
+          <div class="gh-profile-login" id="gh-login-handle"></div>
+          <div class="gh-profile-bio"  id="gh-bio"></div>
+
+          <div class="gh-stat-row">
+            <div class="gh-stat"><span class="gh-stat-val" id="gh-stat-repos">0</span><span class="gh-stat-key">Repos</span></div>
+            <div class="gh-stat"><span class="gh-stat-val" id="gh-stat-followers">0</span><span class="gh-stat-key">Followers</span></div>
+            <div class="gh-stat"><span class="gh-stat-val" id="gh-stat-following">0</span><span class="gh-stat-key">Following</span></div>
+            <div class="gh-stat"><span class="gh-stat-val" id="gh-stat-gists">0</span><span class="gh-stat-key">Gists</span></div>
+          </div>
+
+          <div class="gh-meta-row" id="gh-meta-row"></div>
+
+          <a class="gh-profile-btn" id="gh-profile-link" href="#" target="_blank" rel="noopener">
+            <i class="fa-brands fa-github"></i> View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div id="gh-repos-section" style="display:none">
+        <div class="gh-repos-title">Top Public Repositories</div>
+        <div class="gh-repos-grid" id="gh-repos-grid"></div>
+      </div>
+
     </div>
   </div>
+  <!-- end GitHub finder panel -->
+
 </section>
 
 <hr class="divider"/>
 
-<!-- ══════════════════════════════════════════
-     SECTION 2 — OSINT TOOLS
-════════════════════════════════════════════ -->
+<!-- SECTION 2 — OSINT TOOLS -->
 <section class="wrap" id="osint">
   <div class="sec-label">// 02 — Tools</div>
   <h2 class="sec-title">OSINT Tools</h2>
   <p class="sec-desc">Production-ready open-source tools used by security researchers, investigators, and analysts worldwide.</p>
-
   <div class="filters" id="osintFilters">
     <button class="filter-btn active" data-filter="all">All</button>
     <button class="filter-btn" data-filter="recon">Recon</button>
@@ -651,16 +448,13 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
     <button class="filter-btn" data-filter="geo">Geo</button>
     <button class="filter-btn" data-filter="framework">Framework</button>
   </div>
-
   <div class="osint-grid" id="osintGrid"></div>
   <div class="no-results" id="osintNone">No tools match your search.</div>
 </section>
 
 <hr class="divider"/>
 
-<!-- ══════════════════════════════════════════
-     SECTION 3 — PRACTICE
-════════════════════════════════════════════ -->
+<!-- SECTION 3 — PRACTICE -->
 <section class="wrap" id="practice">
   <div class="sec-label">// 03 — Practice</div>
   <h2 class="sec-title">Practice Platforms</h2>
@@ -670,9 +464,7 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
 
 <hr class="divider"/>
 
-<!-- ══════════════════════════════════════════
-     SECTION 4 — GITHUB PROJECTS
-════════════════════════════════════════════ -->
+<!-- SECTION 4 — GITHUB PROJECTS -->
 <section class="wrap" id="projects">
   <div class="sec-label">// 04 — Open Source</div>
   <h2 class="sec-title">GitHub Projects</h2>
@@ -680,7 +472,7 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
   <div class="github-grid" id="githubGrid"></div>
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- FOOTER -->
 <footer>
   <div>TesterChip Hub — For lawful, ethical intelligence &amp; cryptography use only. Always verify local laws.</div>
   <div>
@@ -689,17 +481,14 @@ h1.hero-title{animation:fadeUp .55s .12s ease both}
   </div>
 </footer>
 
-<!-- ══ SCRIPT ══════════════════════════════════ -->
 <script>
-/* ── MORSE TABLE ── */
-const M = {'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.', ' ':'/'};
-const RM = Object.fromEntries(Object.entries(M).map(([k,v])=>[v,k]));
+/* MORSE */
+const M={'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.',' ':'/'};
+const RM=Object.fromEntries(Object.entries(M).map(([k,v])=>[v,k]));
 
-/* ── CRYPTO PANEL LOGIC ── */
-let activeTool = null;
-
+/* PANEL TOGGLE */
+let activeTool=null;
 function openTool(name){
-  // deactivate old
   document.querySelectorAll('.crypto-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.cs-card').forEach(c=>c.classList.remove('active'));
   if(activeTool===name){activeTool=null;return}
@@ -708,39 +497,170 @@ function openTool(name){
   document.getElementById('panel-'+name).scrollIntoView({behavior:'smooth',block:'nearest'});
   activeTool=name;
 }
+function clearPanel(n){document.getElementById(n+'Input').value='';document.getElementById('res-'+n).classList.remove('show')}
+function showResult(n,v){document.getElementById('out-'+n).textContent=v;document.getElementById('res-'+n).classList.add('show')}
 
-function clearPanel(name){
-  document.getElementById(name+'Input').value='';
-  document.getElementById('res-'+name).classList.remove('show');
-}
-
-function showResult(name,val){
-  document.getElementById('out-'+name).textContent=val;
-  document.getElementById('res-'+name).classList.add('show');
-}
-
+/* CRYPTO */
 function caesarCipher(t,s){return t.replace(/[a-zA-Z]/g,c=>{const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+s)%26+b)})}
 function caesarEncrypt(){showResult('caesar',caesarCipher(document.getElementById('caesarInput').value,parseInt(document.getElementById('caesarShift').value)))}
 function caesarDecrypt(){showResult('caesar',caesarCipher(document.getElementById('caesarInput').value,26-parseInt(document.getElementById('caesarShift').value)))}
-
 function morseEncode(){showResult('morse',document.getElementById('morseInput').value.toUpperCase().split('').map(c=>M[c]||c).join(' '))}
 function morseDecode(){showResult('morse',document.getElementById('morseInput').value.split(' ').map(c=>RM[c]||c).join(''))}
-
 function b64Encode(){showResult('base64',btoa(document.getElementById('base64Input').value))}
 function b64Decode(){try{showResult('base64',atob(document.getElementById('base64Input').value))}catch(e){showResult('base64','⚠ Invalid Base64 string')}}
-
 async function generateHash(type){
   const t=document.getElementById('hashInput').value;
   if(type==='md5'){let h=0;for(let i=0;i<t.length;i++){const c=t.charCodeAt(i);h=((h<<5)-h)+c;h=h&h}showResult('hash',Math.abs(h).toString(16).padStart(32,'0').substring(0,32)+' [simplified MD5]')}
-  else if(type==='sha256'){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));showResult('hash',Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''))}
+  else{const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));showResult('hash',Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''))}
 }
-
 function rot13Convert(){showResult('rot13',document.getElementById('rot13Input').value.replace(/[a-zA-Z]/g,c=>{const b=c<='Z'?65:97;return String.fromCharCode((c.charCodeAt(0)-b+13)%26+b)}))}
-
 function textToBinary(){showResult('binary',document.getElementById('binaryInput').value.split('').map(c=>c.charCodeAt(0).toString(2).padStart(8,'0')).join(' '))}
 function binaryToText(){try{showResult('binary',document.getElementById('binaryInput').value.split(' ').map(b=>String.fromCharCode(parseInt(b,2))).join(''))}catch(e){showResult('binary','⚠ Invalid binary string')}}
+function vigenereEncrypt(){
+  const t=document.getElementById('vigenereInput').value,k=document.getElementById('vigenereKey').value.toUpperCase().replace(/[^A-Z]/g,'');
+  if(!k){showResult('vigenere','⚠ Please enter a keyword');return}
+  let out='',ki=0;for(let i=0;i<t.length;i++){const c=t[i];if(/[a-zA-Z]/.test(c)){const b=c<='Z'?65:97;out+=String.fromCharCode((c.charCodeAt(0)-b+k.charCodeAt(ki%k.length)-65+26)%26+b);ki++}else{out+=c}}
+  showResult('vigenere',out);
+}
+function vigenereDecrypt(){
+  const t=document.getElementById('vigenereInput').value,k=document.getElementById('vigenereKey').value.toUpperCase().replace(/[^A-Z]/g,'');
+  if(!k){showResult('vigenere','⚠ Please enter a keyword');return}
+  let out='',ki=0;for(let i=0;i<t.length;i++){const c=t[i];if(/[a-zA-Z]/.test(c)){const b=c<='Z'?65:97;out+=String.fromCharCode((c.charCodeAt(0)-b-(k.charCodeAt(ki%k.length)-65)+26)%26+b);ki++}else{out+=c}}
+  showResult('vigenere',out);
+}
+function atbashConvert(){showResult('atbash',document.getElementById('atbashInput').value.replace(/[a-zA-Z]/g,c=>{const b=c<='Z'?65:97;return String.fromCharCode(b+25-(c.charCodeAt(0)-b))}))}
+function railFenceEncrypt(){
+  const t=document.getElementById('railfenceInput').value,rails=parseInt(document.getElementById('railfenceRails').value)||3;
+  if(rails<2){showResult('railfence','⚠ Minimum 2 rails');return}
+  const fence=Array.from({length:rails},()=>[]);let r=0,dir=1;
+  for(const c of t){fence[r].push(c);if(r===0)dir=1;else if(r===rails-1)dir=-1;r+=dir}
+  showResult('railfence',fence.map(row=>row.join('')).join(''));
+}
+function railFenceDecrypt(){
+  const t=document.getElementById('railfenceInput').value,rails=parseInt(document.getElementById('railfenceRails').value)||3;
+  if(rails<2){showResult('railfence','⚠ Minimum 2 rails');return}
+  const n=t.length,pattern=[];let r=0,dir=1;
+  for(let i=0;i<n;i++){pattern.push(r);if(r===0)dir=1;else if(r===rails-1)dir=-1;r+=dir}
+  const lengths=Array(rails).fill(0);pattern.forEach(r=>lengths[r]++);
+  const rows=[];let pos=0;for(let i=0;i<rails;i++){rows.push(t.slice(pos,pos+lengths[i]).split(''));pos+=lengths[i]}
+  const ptrs=Array(rails).fill(0);let out='';for(let i=0;i<n;i++){const ri=pattern[i];out+=rows[ri][ptrs[ri]++]}
+  showResult('railfence',out);
+}
+function a1z26Encode(){
+  const t=document.getElementById('a1z26Input').value.toUpperCase();
+  showResult('a1z26',t.split('').map(c=>{if(c>='A'&&c<='Z')return c.charCodeAt(0)-64;if(c===' ')return ' ';return c}).join('-').replace(/- -/g,' ').replace(/([^0-9])-([^0-9])/g,'$1$2'));
+}
+function a1z26Decode(){
+  const t=document.getElementById('a1z26Input').value.trim();
+  showResult('a1z26',t.split(' ').map(w=>w.split('-').map(n=>{const num=parseInt(n);return(num>=1&&num<=26)?String.fromCharCode(num+64):n}).join('')).join(' '));
+}
+function hexEncode(){showResult('hex',Array.from(document.getElementById('hexInput').value).map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' '))}
+function hexDecode(){try{const t=document.getElementById('hexInput').value.trim().replace(/\s+/g,' ');showResult('hex',t.split(' ').map(h=>String.fromCharCode(parseInt(h,16))).join(''))}catch(e){showResult('hex','⚠ Invalid hex string')}}
 
-/* ── DATA ── */
+/* ═══════════════════════════════════
+   GITHUB USER FINDER
+   Public API — no auth needed
+═══════════════════════════════════ */
+function clearGitHub(){
+  document.getElementById('ghUsername').value='';
+  document.getElementById('gh-result').style.display='none';
+  document.getElementById('gh-error').classList.remove('show');
+  document.getElementById('gh-loading').classList.remove('show');
+  document.getElementById('gh-repos-section').style.display='none';
+  document.getElementById('gh-repos-grid').innerHTML='';
+}
+
+async function findGitHubUser(){
+  const username=document.getElementById('ghUsername').value.trim();
+  if(!username){
+    document.getElementById('gh-error-msg').textContent='Please enter a GitHub username.';
+    document.getElementById('gh-error').classList.add('show');
+    return;
+  }
+
+  /* reset */
+  document.getElementById('gh-result').style.display='none';
+  document.getElementById('gh-error').classList.remove('show');
+  document.getElementById('gh-loading').classList.add('show');
+  document.getElementById('gh-repos-section').style.display='none';
+  document.getElementById('gh-repos-grid').innerHTML='';
+
+  try{
+    const res=await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`);
+    if(!res.ok) throw new Error(res.status===404?`User "${username}" not found on GitHub.`:`GitHub API error ${res.status}: ${res.statusText}`);
+    const u=await res.json();
+
+    /* avatar */
+    const img=document.getElementById('gh-avatar');
+    const fb=document.getElementById('gh-avatar-fb');
+    img.src=u.avatar_url||'';
+    img.style.display='block';
+    fb.style.display='none';
+
+    /* profile text */
+    document.getElementById('gh-display-name').textContent=u.name||u.login;
+    document.getElementById('gh-login-handle').textContent='@'+u.login;
+    document.getElementById('gh-bio').textContent=u.bio||'No bio provided.';
+
+    /* stats */
+    document.getElementById('gh-stat-repos').textContent=(u.public_repos||0).toLocaleString();
+    document.getElementById('gh-stat-followers').textContent=(u.followers||0).toLocaleString();
+    document.getElementById('gh-stat-following').textContent=(u.following||0).toLocaleString();
+    document.getElementById('gh-stat-gists').textContent=(u.public_gists||0).toLocaleString();
+
+    /* meta */
+    const meta=[];
+    if(u.location)         meta.push(`<span><i class="fas fa-location-dot"></i>${u.location}</span>`);
+    if(u.company)          meta.push(`<span><i class="fas fa-building"></i>${u.company.replace('@','')}</span>`);
+    if(u.blog)             meta.push(`<span><i class="fas fa-link"></i><a href="${u.blog.startsWith('http')?u.blog:'https://'+u.blog}" target="_blank" rel="noopener" style="color:var(--a4);text-decoration:none">${u.blog}</a></span>`);
+    if(u.twitter_username) meta.push(`<span><i class="fab fa-twitter"></i>@${u.twitter_username}</span>`);
+    if(u.created_at)       meta.push(`<span><i class="fas fa-calendar"></i>Joined ${new Date(u.created_at).getFullYear()}</span>`);
+    document.getElementById('gh-meta-row').innerHTML=meta.join('');
+
+    /* link */
+    document.getElementById('gh-profile-link').href=u.html_url;
+
+    document.getElementById('gh-loading').classList.remove('show');
+    document.getElementById('gh-result').style.display='block';
+
+    /* top repos */
+    try{
+      const rRes=await fetch(`https://api.github.com/users/${encodeURIComponent(username)}/repos?sort=stars&per_page=6&type=owner`);
+      if(rRes.ok){
+        const repos=await rRes.json();
+        if(repos.length){
+          const grid=document.getElementById('gh-repos-grid');
+          grid.innerHTML='';
+          repos.forEach(repo=>{
+            const a=document.createElement('a');
+            a.className='gh-repo-card';
+            a.href=repo.html_url;
+            a.target='_blank';
+            a.rel='noopener';
+            const lang=repo.language?`<span><i class="fas fa-circle" style="color:var(--a4);font-size:8px"></i>${repo.language}</span>`:'';
+            a.innerHTML=`
+              <div class="gh-repo-name"><i class="far fa-folder-open" style="margin-right:6px;color:var(--a4)"></i>${repo.name}</div>
+              <div class="gh-repo-desc">${repo.description||'No description.'}</div>
+              <div class="gh-repo-meta">
+                <span><i class="fas fa-star"></i>${(repo.stargazers_count||0).toLocaleString()}</span>
+                <span><i class="fas fa-code-fork"></i>${(repo.forks_count||0).toLocaleString()}</span>
+                ${lang}
+              </div>`;
+            grid.appendChild(a);
+          });
+          document.getElementById('gh-repos-section').style.display='block';
+        }
+      }
+    }catch(_){}
+
+  }catch(err){
+    document.getElementById('gh-loading').classList.remove('show');
+    document.getElementById('gh-error-msg').textContent=err.message;
+    document.getElementById('gh-error').classList.add('show');
+  }
+}
+
+/* DATA */
 const OSINT_TOOLS=[
   {name:'theHarvester',icon:'<i class="fas fa-seedling"></i>',cat:'recon',tags:['emails','subdomains'],desc:'Gather emails, subdomains, hosts and banners from public sources like search engines and PGP key servers.',url:'https://github.com/laramies/theHarvester'},
   {name:'Recon-ng',icon:'<i class="fas fa-binoculars"></i>',cat:'recon',tags:['modules','automation'],desc:'Full-featured web reconnaissance framework with independent modules and an interactive Metasploit-like console.',url:'https://github.com/lanmaster53/recon-ng'},
@@ -771,18 +691,10 @@ const OSINT_TOOLS=[
   {name:'Intelligence X',icon:'<i class="fas fa-database"></i>',cat:'framework',tags:['search','archives'],desc:'Search engine and data archive that searches Tor, I2P, data leaks, and the open web for intelligence.',url:'https://intelx.io'},
   {name:'Wireshark',icon:'<i class="fas fa-fish"></i>',cat:'network',tags:['packet','capture'],desc:"World's foremost network protocol analyzer. Capture and interactively browse network traffic.",url:'https://www.wireshark.org'},
   {name:'Social Mapper',icon:'<i class="fas fa-user-secret"></i>',cat:'social',tags:['facial recognition','correlation'],desc:'Correlate individuals across social networks using facial recognition for large-scale subject analysis.',url:'https://github.com/Greenwolf/social_mapper'},
-  {name:'Creepy',icon:'<i class="fas fa-magnet"></i>',cat:'geo',tags:['Twitter','flickr','geolocation'],desc:'Aggregates location data from Twitter and Flickr to plot a subject\'s real-world movements on a map.',url:'https://github.com/ilektrojohn/creepy'},
+  {name:'Creepy',icon:'<i class="fas fa-magnet"></i>',cat:'geo',tags:['Twitter','flickr','geolocation'],desc:"Aggregates location data from Twitter and Flickr to plot a subject's real-world movements on a map.",url:'https://github.com/ilektrojohn/creepy'},
 ];
 
-const CAT_STYLE={
-  recon:{bg:'rgba(232,184,75,.12)',c:'#e8b84b',b:'rgba(232,184,75,.25)'},
-  social:{bg:'rgba(232,75,107,.12)',c:'#e84b6b',b:'rgba(232,75,107,.25)'},
-  network:{bg:'rgba(75,139,232,.12)',c:'#4b8be8',b:'rgba(75,139,232,.25)'},
-  metadata:{bg:'rgba(160,75,232,.12)',c:'#a04be8',b:'rgba(160,75,232,.25)'},
-  email:{bg:'rgba(75,232,200,.12)',c:'#4be8c8',b:'rgba(75,232,200,.25)'},
-  geo:{bg:'rgba(232,140,75,.12)',c:'#e88c4b',b:'rgba(232,140,75,.25)'},
-  framework:{bg:'rgba(232,220,75,.12)',c:'#e8dc4b',b:'rgba(232,220,75,.25)'},
-};
+const CAT_STYLE={recon:{bg:'rgba(232,184,75,.12)',c:'#e8b84b',b:'rgba(232,184,75,.25)'},social:{bg:'rgba(232,75,107,.12)',c:'#e84b6b',b:'rgba(232,75,107,.25)'},network:{bg:'rgba(75,139,232,.12)',c:'#4b8be8',b:'rgba(75,139,232,.25)'},metadata:{bg:'rgba(160,75,232,.12)',c:'#a04be8',b:'rgba(160,75,232,.25)'},email:{bg:'rgba(75,232,200,.12)',c:'#4be8c8',b:'rgba(75,232,200,.25)'},geo:{bg:'rgba(232,140,75,.12)',c:'#e88c4b',b:'rgba(232,140,75,.25)'},framework:{bg:'rgba(232,220,75,.12)',c:'#e8dc4b',b:'rgba(232,220,75,.25)'}};
 
 const PRACTICE=[
   {title:'TraceLabs OSINT CTF',level:'intermediate',desc:'Crowdsourced CTFs focused on finding real missing persons — winners contribute actionable intelligence to police.',url:'https://www.tracelabs.org',type:'CTF',freq:'Monthly'},
@@ -810,176 +722,32 @@ const PROJECTS=[
   {name:'Creepy',repo:'ilektrojohn/creepy',av:'<i class="fas fa-location-dot"></i>',lang:'Python',lc:'#3572A5',stars:'1k',desc:'Geolocation OSINT tool aggregating location data from social networks and images.',url:'https://github.com/ilektrojohn/creepy',topics:['geolocation','twitter','flickr']},
 ];
 
-/* ── RENDER OSINT ── */
 function renderOSINT(list){
-  const g=document.getElementById('osintGrid');
-  const nr=document.getElementById('osintNone');
-  g.innerHTML='';
-  const vis=list.filter(t=>!t._h);
+  const g=document.getElementById('osintGrid'),nr=document.getElementById('osintNone');
+  g.innerHTML='';const vis=list.filter(t=>!t._h);
   nr.classList.toggle('visible',vis.length===0);
-  vis.forEach(t=>{
-    const s=CAT_STYLE[t.cat]||CAT_STYLE.recon;
-    const a=document.createElement('a');
-    a.className='osint-card';a.href=t.url;a.target='_blank';a.rel='noopener';a.dataset.cat=t.cat;
-    a.innerHTML=`<div class="oc-head"><div class="oc-icon" style="background:${s.bg};border-color:${s.b}">${t.icon}</div><div class="oc-tag" style="background:${s.bg};color:${s.c};border:1px solid ${s.b}">${t.cat}</div></div><div class="oc-name">${t.name}</div><div class="oc-desc">${t.desc}</div><div class="oc-footer">${t.tags.map(x=>`<span class="oc-pill">${x}</span>`).join('')}<span class="oc-link">Visit →</span></div>`;
-    g.appendChild(a);
-  });
+  vis.forEach(t=>{const s=CAT_STYLE[t.cat]||CAT_STYLE.recon;const a=document.createElement('a');a.className='osint-card';a.href=t.url;a.target='_blank';a.rel='noopener';a.dataset.cat=t.cat;a.innerHTML=`<div class="oc-head"><div class="oc-icon" style="background:${s.bg};border-color:${s.b}">${t.icon}</div><div class="oc-tag" style="background:${s.bg};color:${s.c};border:1px solid ${s.b}">${t.cat}</div></div><div class="oc-name">${t.name}</div><div class="oc-desc">${t.desc}</div><div class="oc-footer">${t.tags.map(x=>`<span class="oc-pill">${x}</span>`).join('')}<span class="oc-link">Visit →</span></div>`;g.appendChild(a);});
 }
 
-/* ── RENDER PRACTICE ── */
 function renderPractice(){
-  const g=document.getElementById('practiceGrid');
-  g.innerHTML='';
-  PRACTICE.forEach(p=>{
-    const cls={'beginner':'l-beg','intermediate':'l-int','advanced':'l-adv'}[p.level];
-    const a=document.createElement('a');
-    a.className='practice-card';a.href=p.url;a.target='_blank';a.rel='noopener';
-    a.innerHTML=`<span class="plevel ${cls}">${p.level}</span><div class="practice-title">${p.title}</div><div class="practice-desc">${p.desc}</div><div class="practice-meta"><span><i class="fas fa-clipboard-list"></i> ${p.type}</span><span><i class="fas fa-rotate"></i> ${p.freq}</span></div>`;
-    g.appendChild(a);
-  });
+  const g=document.getElementById('practiceGrid');g.innerHTML='';
+  PRACTICE.forEach(p=>{const cls={'beginner':'l-beg','intermediate':'l-int','advanced':'l-adv'}[p.level];const a=document.createElement('a');a.className='practice-card';a.href=p.url;a.target='_blank';a.rel='noopener';a.innerHTML=`<span class="plevel ${cls}">${p.level}</span><div class="practice-title">${p.title}</div><div class="practice-desc">${p.desc}</div><div class="practice-meta"><span><i class="fas fa-clipboard-list"></i> ${p.type}</span><span><i class="fas fa-rotate"></i> ${p.freq}</span></div>`;g.appendChild(a);});
 }
 
-/* ── RENDER GITHUB ── */
 function renderGitHub(){
-  const g=document.getElementById('githubGrid');
-  g.innerHTML='';
-  PROJECTS.forEach(p=>{
-    const a=document.createElement('a');
-    a.className='github-card';a.href=p.url;a.target='_blank';a.rel='noopener';
-    a.innerHTML=`<div class="gh-head"><div class="gh-av">${p.av}</div><div><div class="gh-repo">${p.repo}</div><div class="gh-name">${p.name}</div></div></div><div class="gh-desc">${p.desc}</div><div class="gh-meta"><span><span class="ldot" style="background:${p.lc}"></span>${p.lang}</span><span>⭐ ${p.stars}</span>${p.topics.map(t=>`<span class="gh-topic">${t}</span>`).join('')}</div>`;
-    g.appendChild(a);
-  });
+  const g=document.getElementById('githubGrid');g.innerHTML='';
+  PROJECTS.forEach(p=>{const a=document.createElement('a');a.className='github-card';a.href=p.url;a.target='_blank';a.rel='noopener';a.innerHTML=`<div class="gh-head"><div class="gh-av">${p.av}</div><div><div class="gh-repo">${p.repo}</div><div class="gh-name">${p.name}</div></div></div><div class="gh-desc">${p.desc}</div><div class="gh-meta"><span><span class="ldot" style="background:${p.lc}"></span>${p.lang}</span><span>⭐ ${p.stars}</span>${p.topics.map(t=>`<span class="gh-topic">${t}</span>`).join('')}</div>`;g.appendChild(a);});
 }
 
-/* ── OSINT FILTERS ── */
 let activeF='all';
 document.querySelectorAll('.filter-btn').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    activeF=b.dataset.filter;
-    applyOSINTFilter();
+    b.classList.add('active');activeF=b.dataset.filter;
+    renderOSINT(OSINT_TOOLS.map(t=>({...t,_h:activeF!=='all'&&t.cat!==activeF})));
   });
 });
 
-function applyOSINTFilter(){
-  renderOSINT(OSINT_TOOLS.map(t=>({...t,_h:activeF!=='all'&&t.cat!==activeF})));
-}
-
-/* ── VIGENÈRE ── */
-function vigenereEncrypt(){
-  const t=document.getElementById('vigenereInput').value;
-  const k=document.getElementById('vigenereKey').value.toUpperCase().replace(/[^A-Z]/g,'');
-  if(!k){showResult('vigenere','⚠ Please enter a keyword (letters only)');return}
-  let out='',ki=0;
-  for(let i=0;i<t.length;i++){
-    const c=t[i];
-    if(/[a-zA-Z]/.test(c)){
-      const b=c<='Z'?65:97;
-      out+=String.fromCharCode((c.charCodeAt(0)-b+k.charCodeAt(ki%k.length)-65+26)%26+b);
-      ki++;
-    }else{out+=c}
-  }
-  showResult('vigenere',out);
-}
-function vigenereDecrypt(){
-  const t=document.getElementById('vigenereInput').value;
-  const k=document.getElementById('vigenereKey').value.toUpperCase().replace(/[^A-Z]/g,'');
-  if(!k){showResult('vigenere','⚠ Please enter a keyword (letters only)');return}
-  let out='',ki=0;
-  for(let i=0;i<t.length;i++){
-    const c=t[i];
-    if(/[a-zA-Z]/.test(c)){
-      const b=c<='Z'?65:97;
-      out+=String.fromCharCode((c.charCodeAt(0)-b-(k.charCodeAt(ki%k.length)-65)+26)%26+b);
-      ki++;
-    }else{out+=c}
-  }
-  showResult('vigenere',out);
-}
-
-/* ── ATBASH ── */
-function atbashConvert(){
-  const t=document.getElementById('atbashInput').value;
-  const out=t.replace(/[a-zA-Z]/g,c=>{
-    const b=c<='Z'?65:97;
-    return String.fromCharCode(b+25-(c.charCodeAt(0)-b));
-  });
-  showResult('atbash',out);
-}
-
-/* ── RAIL FENCE ── */
-function railFenceEncrypt(){
-  const t=document.getElementById('railfenceInput').value;
-  const rails=parseInt(document.getElementById('railfenceRails').value)||3;
-  if(rails<2){showResult('railfence','⚠ Minimum 2 rails');return}
-  const fence=Array.from({length:rails},()=>[]);
-  let r=0,dir=1;
-  for(const c of t){
-    fence[r].push(c);
-    if(r===0)dir=1;
-    else if(r===rails-1)dir=-1;
-    r+=dir;
-  }
-  showResult('railfence',fence.map(row=>row.join('')).join(''));
-}
-function railFenceDecrypt(){
-  const t=document.getElementById('railfenceInput').value;
-  const rails=parseInt(document.getElementById('railfenceRails').value)||3;
-  if(rails<2){showResult('railfence','⚠ Minimum 2 rails');return}
-  const n=t.length;
-  const pattern=[];
-  let r=0,dir=1;
-  for(let i=0;i<n;i++){
-    pattern.push(r);
-    if(r===0)dir=1;
-    else if(r===rails-1)dir=-1;
-    r+=dir;
-  }
-  const lengths=Array(rails).fill(0);
-  pattern.forEach(r=>lengths[r]++);
-  const rows=[];let pos=0;
-  for(let i=0;i<rails;i++){rows.push(t.slice(pos,pos+lengths[i]).split(''));pos+=lengths[i]}
-  const ptrs=Array(rails).fill(0);
-  let out='';
-  for(let i=0;i<n;i++){const ri=pattern[i];out+=rows[ri][ptrs[ri]++]}
-  showResult('railfence',out);
-}
-
-/* ── A1Z26 ── */
-function a1z26Encode(){
-  const t=document.getElementById('a1z26Input').value.toUpperCase();
-  const out=t.split('').map(c=>{
-    if(c>='A'&&c<='Z')return c.charCodeAt(0)-64;
-    if(c===' ')return ' ';
-    return c;
-  }).join('-').replace(/- -/g,' ').replace(/([^0-9])-([^0-9])/g,'$1$2');
-  showResult('a1z26',out);
-}
-function a1z26Decode(){
-  const t=document.getElementById('a1z26Input').value.trim();
-  const out=t.split(' ').map(word=>
-    word.split('-').map(n=>{
-      const num=parseInt(n);
-      return(num>=1&&num<=26)?String.fromCharCode(num+64):n;
-    }).join('')
-  ).join(' ');
-  showResult('a1z26',out);
-}
-
-/* ── HEX ── */
-function hexEncode(){
-  const t=document.getElementById('hexInput').value;
-  showResult('hex',Array.from(t).map(c=>c.charCodeAt(0).toString(16).padStart(2,'0')).join(' '));
-}
-function hexDecode(){
-  try{
-    const t=document.getElementById('hexInput').value.trim().replace(/\s+/g,' ');
-    showResult('hex',t.split(' ').map(h=>String.fromCharCode(parseInt(h,16))).join(''));
-  }catch(e){showResult('hex','⚠ Invalid hex string')}
-}
-
-/* ── INIT ── */
 renderOSINT(OSINT_TOOLS);
 renderPractice();
 renderGitHub();
