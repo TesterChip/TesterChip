@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Miss You Come Here — TesterChip</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--bg2:#0c1218;--bg3:#101820;--border:#1a2535;
+  --amber:#f59e0b;--amber2:#fbbf24;--teal:#2dd4bf;--red:#ef4444;
+  --blue:#38bdf8;--green:#4ade80;--pink:#f472b6;--purple:#a78bfa;
+  --text:#94a3b8;--text2:#cbd5e1;--muted:#334155;
+  --lcd-bg:#060f06;--lcd-green:#39ff14;--lcd-dim:#1a3a1a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:50px;background:rgba(8,12,16,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:100}
+.logo{color:var(--amber);font-size:1.05rem;font-weight:700;text-decoration:none;letter-spacing:.05em}
+.logo span{color:var(--teal)}
+.nav-links{display:flex;gap:18px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;transition:color .2s}
+.nav-links a:hover{color:var(--amber)}
+
+/* HERO */
+.hero{margin-top:50px;padding:52px 32px 44px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero-grid{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(45,212,191,.035) 39px,rgba(45,212,191,.035) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(45,212,191,.035) 39px,rgba(45,212,191,.035) 40px);pointer-events:none}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 50% 110%,rgba(245,158,11,.07) 0%,transparent 70%);pointer-events:none}
+.hero-tag{font-size:.72rem;color:var(--teal);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.hero-tag::before{content:'';display:inline-block;width:24px;height:1px;background:var(--teal)}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:700;color:#fff;line-height:1;letter-spacing:.02em;margin-bottom:14px}
+h1 em{color:var(--amber);font-style:italic}
+.hero-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.chip{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);color:var(--amber);padding:3px 10px;border-radius:2px;font-size:.72rem;letter-spacing:.1em}
+.chip.t{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.25);color:var(--teal)}
+.chip.r{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.25);color:var(--red)}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start}
+
+/* PANELS */
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.ph{background:var(--bg3);border-bottom:1px solid var(--border);padding:9px 16px;display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:var(--muted)}
+.ph .pt{color:var(--text2)}
+.ph i{color:var(--amber);margin-right:6px}
+
+/* LCD */
+.lcd-wrap{display:flex;justify-content:center;padding:22px 16px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.lcd-bezel{background:linear-gradient(145deg,#1e3a1e,#0e200e);border:3px solid #0a150a;border-radius:7px;padding:13px 15px 11px;box-shadow:inset 0 2px 6px rgba(0,0,0,.7),0 6px 24px rgba(0,0,0,.9),0 0 0 1px rgba(57,255,20,.04)}
+.lcd-screen{background:var(--lcd-bg);border:1px solid #050d05;border-radius:2px;padding:10px 14px;box-shadow:inset 0 0 16px rgba(0,0,0,.9),0 0 30px rgba(57,255,20,.06);position:relative;overflow:hidden;min-width:270px}
+.lcd-screen::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.15) 2px,rgba(0,0,0,.15) 4px);pointer-events:none;z-index:2}
+.lcd-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(57,255,20,.04) 0%,transparent 70%);pointer-events:none;z-index:1}
+.lcd-row{font-family:'Share Tech Mono',monospace;font-size:1.22rem;color:var(--lcd-green);text-shadow:0 0 5px var(--lcd-green),0 0 10px rgba(57,255,20,.45);letter-spacing:.1em;min-height:1.85em;display:flex;align-items:center;white-space:pre;position:relative;z-index:3}
+.lcd-row.top{border-bottom:1px solid rgba(57,255,20,.06);margin-bottom:4px}
+.cur{display:inline-block;width:.55em;height:1em;background:var(--lcd-green);box-shadow:0 0 5px var(--lcd-green);vertical-align:middle;animation:blink 1s step-end infinite;margin-left:1px}
+@keyframes blink{50%{opacity:0}}
+
+/* STATUS */
+.sbar{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:.72rem;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg3)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:all .3s}
+.dot.on{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.2s ease-in-out infinite}
+.dot.pause{background:var(--amber)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* CONTROLS */
+.ctrls{padding:14px 16px;border-bottom:1px solid var(--border)}
+.ctrl-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.btn-play{background:var(--amber);color:#000;border:none;border-radius:3px;width:46px;height:46px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.btn-play:hover{background:var(--amber2);transform:scale(1.06)}
+.btn-play:active{transform:scale(.96)}
+.btn-sm{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:3px;width:36px;height:36px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.btn-sm:hover{border-color:var(--amber);color:var(--amber)}
+.spacer{flex:1}
+.note-ct{font-size:.7rem;color:var(--muted)}
+.vol-row{display:flex;align-items:center;gap:9px;font-size:.72rem;color:var(--muted)}
+.vol-row i{color:var(--amber);font-size:.8rem}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:3px;background:var(--bg3);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--amber);box-shadow:0 0 5px rgba(245,158,11,.5);cursor:pointer}
+
+/* PROGRESS */
+.prog-wrap{padding:10px 16px 14px}
+.prog-labels{display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:5px}
+.prog-outer{background:var(--bg3);border:1px solid var(--border);border-radius:2px;height:6px;overflow:hidden;cursor:pointer}
+.prog-inner{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--amber));transition:width .25s linear;box-shadow:0 0 8px rgba(45,212,191,.35)}
+
+/* WAVEFORM */
+canvas{display:block;width:100%;height:72px;background:var(--bg);border-top:1px solid var(--border)}
+
+/* LYRIC LOG */
+.log{padding:10px 14px;max-height:118px;overflow-y:auto;border-top:1px solid var(--border);scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.log-item{font-size:.73rem;color:var(--muted);padding:2px 0;display:flex;align-items:center;gap:6px;transition:color .3s}
+.log-item.now{color:var(--amber2)}
+.log-item::before{content:'>';color:var(--teal);flex-shrink:0}
+
+/* CODE */
+.code-scroll{max-height:610px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.code-scroll::-webkit-scrollbar{width:5px}
+.code-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+pre.code{font-family:'Share Tech Mono',monospace;font-size:.77rem;line-height:1.75;padding:14px;color:var(--text);tab-size:2;white-space:pre}
+.cs{display:block;padding:1px 6px;border-left:2px solid transparent;border-radius:0 2px 2px 0;transition:all .35s;margin:-1px 0}
+.cs.active{border-left-color:var(--amber);background:rgba(245,158,11,.065)}
+
+/* syntax */
+.cm{color:#2e4055}.ck{color:var(--blue)}.cd{color:var(--amber)}.str{color:var(--green)}
+.num{color:#fb923c}.fn{color:var(--teal)}.nc{color:var(--purple)}.cp{color:#64748b}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;font-size:.73rem;color:var(--muted);flex-wrap:wrap;gap:8px;margin-top:8px}
+footer a{color:var(--amber);text-decoration:none}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  .wrap{grid-template-columns:1fr}
+  .hero{padding:36px 18px 30px}
+  h1{font-size:2.4rem}
+  nav{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#"><span>>_</span> TesterChip</a>
+  <div class="nav-links">
+    <a href="https://github.com" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://scratch.mit.edu" target="_blank"><i class="fas fa-cat"></i></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag"><i class="fas fa-microchip"></i> Arduino Song Project</div>
+  <h1><em>I Miss You</em><br>Come Here</h1>
+  <div class="hero-meta">
+    <span class="chip">SONG</span>
+    <span class="chip t"><i class="fas fa-display"></i> LCD I2C</span>
+    <span class="chip r"><i class="fas fa-music"></i> Passive Buzzer</span>
+    <span style="font-size:.78rem;color:var(--muted)">Arduino UNO · 16×2 LCD · Pin 8</span>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="wrap">
+
+  <!-- LEFT COLUMN -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <!-- LCD PANEL -->
+    <div class="panel">
+      <div class="ph">
+        <span><i class="fas fa-tv"></i><span class="pt">LCD Simulation</span></span>
+        <span>I2C · 0x27 · 16×2</span>
+      </div>
+
+      <div class="lcd-wrap">
+        <div class="lcd-bezel">
+          <div class="lcd-screen">
+            <div class="lcd-row top" id="r0">&nbsp;* I Miss You *&nbsp;</div>
+            <div class="lcd-row"     id="r1">&nbsp;&nbsp;Come Here&nbsp;&nbsp;&nbsp;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sbar">
+        <div class="dot" id="dot"></div>
+        <span id="stext">Ready — hit Play</span>
+      </div>
+
+      <div class="ctrls">
+        <div class="ctrl-row">
+          <button class="btn-play" id="btnPlay" title="Play / Pause">
+            <i class="fas fa-play" id="pico"></i>
+          </button>
+          <button class="btn-sm" id="btnStop" title="Stop"><i class="fas fa-stop"></i></button>
+          <button class="btn-sm" id="btnReset" title="Restart"><i class="fas fa-rotate-left"></i></button>
+          <div class="spacer"></div>
+          <span class="note-ct" id="nct">— / —</span>
+        </div>
+        <div class="vol-row">
+          <i class="fas fa-volume-low"></i>
+          <input type="range" id="vol" min="0" max="1" step="0.05" value="0.5">
+          <i class="fas fa-volume-high"></i>
+        </div>
+      </div>
+
+      <div class="prog-wrap">
+        <div class="prog-labels">
+          <span id="tEl">0:00</span>
+          <span id="tTo">—:——</span>
+        </div>
+        <div class="prog-outer" id="progOuter">
+          <div class="prog-inner" id="prog"></div>
+        </div>
+      </div>
+
+      <canvas id="wave"></canvas>
+    </div>
+
+    <!-- LYRIC LOG -->
+    <div class="panel">
+      <div class="ph"><span><i class="fas fa-terminal"></i><span class="pt">Lyric Log</span></span><span>serial output</span></div>
+      <div class="log" id="log">
+        <div class="log-item" style="color:var(--muted);font-style:italic">// waiting for playback...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: CODE PANEL -->
+  <div class="panel">
+    <div class="ph">
+      <span><i class="fas fa-microchip"></i><span class="pt">IMissYou_Song.ino</span></span>
+      <span style="color:var(--teal)">Arduino UNO</span>
+    </div>
+    <div class="code-scroll" id="codeScroll">
+<pre class="code">
+<span class="cm">// ════════════════════════════════════════════</span>
+<span class="cm">//   "I Miss You Come Here" — TesterChip</span>
+<span class="cm">//   Arduino Uno · LCD I2C · Passive Buzzer</span>
+<span class="cm">// ════════════════════════════════════════════</span>
+
+<span class="cp">#include</span> <span class="str">&lt;Wire.h&gt;</span>
+<span class="cp">#include</span> <span class="str">&lt;LiquidCrystal_I2C.h&gt;</span>
+
+<span class="ck">LiquidCrystal_I2C</span> <span class="fn">lcd</span>(<span class="num">0x27</span>, <span class="num">16</span>, <span class="num">2</span>);
+<span class="cp">#define</span> <span class="cd">BUZZER_PIN</span>  <span class="num">8</span>
+<span class="cp">#define</span> <span class="cd">BPM</span>         <span class="num">70</span>
+<span class="cp">#define</span> <span class="cd">BEAT</span>        <span class="num">(60000/BPM)</span>
+<span class="cp">#define</span> <span class="cd">W</span>  <span class="num">(BEAT*4)</span>   <span class="cp">#define</span> <span class="cd">H</span>  <span class="num">(BEAT*2)</span>
+<span class="cp">#define</span> <span class="cd">DQ</span> <span class="num">(BEAT*3/2)</span> <span class="cp">#define</span> <span class="cd">Q</span>  <span class="num">(BEAT)</span>
+<span class="cp">#define</span> <span class="cd">E</span>  <span class="num">(BEAT/2)</span>
+
+<span class="cm">// ── Frequencies ──────────────────────────</span>
+<span class="cp">#define</span> <span class="nc">REST</span> <span class="num">0</span>    <span class="cp">#define</span> <span class="nc">E4</span> <span class="num">330</span>   <span class="cp">#define</span> <span class="nc">G4</span> <span class="num">392</span>
+<span class="cp">#define</span> <span class="nc">A4</span>  <span class="num">440</span>   <span class="cp">#define</span> <span class="nc">B4</span> <span class="num">494</span>   <span class="cp">#define</span> <span class="nc">C5</span> <span class="num">523</span>
+<span class="cp">#define</span> <span class="nc">D5</span>  <span class="num">587</span>   <span class="cp">#define</span> <span class="nc">E5</span> <span class="num">659</span>
+
+<span class="ck">struct</span> Note { <span class="ck">int</span> freq, dur; };
+
+Note melody[] = {
+<span class="cs" id="s0" data-s="0">  <span class="cm">// "I miss you, come here"</span>
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">G4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">H</span>},</span>
+<span class="cs" id="s1" data-s="1">  <span class="cm">// "And oh"</span>
+  {<span class="nc">REST</span>,<span class="cd">E</span>},{<span class="nc">E4</span>,<span class="cd">Q</span>},{<span class="nc">G4</span>,<span class="cd">DQ</span>},{<span class="nc">REST</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s2" data-s="2">  <span class="cm">// "It's hard to see you"</span>
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">H</span>},</span>
+<span class="cs" id="s3" data-s="3">  <span class="cm">// "But I wish you"</span>
+  {<span class="nc">G4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s4" data-s="4">  <span class="cm">// "Were right here"</span>
+  {<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},{<span class="nc">G4</span>,<span class="cd">H</span>},{<span class="nc">REST</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s5" data-s="5">  <span class="cm">// "Oh! It's hard to leave you"</span>
+  {<span class="nc">E4</span>,<span class="cd">E</span>},{<span class="nc">G4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},
+  {<span class="nc">C5</span>,<span class="cd">E</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">H</span>},</span>
+<span class="cs" id="s6" data-s="6">  <span class="cm">// "When I get you everywhere"</span>
+  {<span class="nc">G4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">C5</span>,<span class="cd">E</span>},
+  {<span class="nc">D5</span>,<span class="cd">E</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">H</span>},{<span class="nc">REST</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s7" data-s="7">  <span class="cm">// "All this time I'm thinking"</span>
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">G4</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s8" data-s="8">  <span class="cm">// "I'm strong enough"</span>
+  {<span class="nc">E4</span>,<span class="cd">Q</span>},{<span class="nc">G4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s9" data-s="9">  <span class="cm">// "To sink in"</span>
+  {<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">H</span>},{<span class="nc">REST</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s10" data-s="10">  <span class="cm">// "Oh no!"</span>
+  {<span class="nc">E5</span>,<span class="cd">E</span>},{<span class="nc">E5</span>,<span class="cd">E</span>},{<span class="nc">D5</span>,<span class="cd">H</span>},{<span class="nc">REST</span>,<span class="cd">E</span>},</span>
+<span class="cs" id="s11" data-s="11">  <span class="cm">// "I don't need you"</span>
+  {<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">Q</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},{<span class="nc">G4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">Q</span>},</span>
+<span class="cs" id="s12" data-s="12">  <span class="cm">// "But I miss you come here :("</span>
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">C5</span>,<span class="cd">Q</span>},{<span class="nc">B4</span>,<span class="cd">E</span>},
+  {<span class="nc">A4</span>,<span class="cd">E</span>},{<span class="nc">G4</span>,<span class="cd">Q</span>},{<span class="nc">E4</span>,<span class="cd">DQ</span>},{<span class="nc">REST</span>,<span class="cd">E</span>},</span>
+<span class="cs" id="s13" data-s="13">  <span class="cm">// Outro</span>
+  {<span class="nc">A4</span>,<span class="cd">H</span>},{<span class="nc">G4</span>,<span class="cd">H</span>},{<span class="nc">E4</span>,<span class="cd">W</span>},{<span class="nc">REST</span>,<span class="cd">W</span>},</span>
+};
+
+<span class="ck">struct</span> Lyric { <span class="ck">int</span> idx; <span class="ck">const char</span>* r0; <span class="ck">const char</span>* r1; };
+Lyric lyrics[] = {
+  {<span class="num"> 0</span>, <span class="str">"I miss you"</span>,     <span class="str">"come here..."</span>  },
+  {<span class="num"> 7</span>, <span class="str">"And oh~"</span>,         <span class="str">""</span>              },
+  {<span class="num">11</span>, <span class="str">"It's hard to"</span>,   <span class="str">"see you..."</span>    },
+  {<span class="num">16</span>, <span class="str">"But I wish you"</span>, <span class="str">""</span>              },
+  {<span class="num">20</span>, <span class="str">"Were right here"</span>,<span class="str">""</span>              },
+  {<span class="num">24</span>, <span class="str">"Oh! It's hard"</span>,  <span class="str">"to leave you"</span>  },
+  {<span class="num">31</span>, <span class="str">"When I get you"</span>, <span class="str">"everywhere"</span>    },
+  {<span class="num">39</span>, <span class="str">"All this time"</span>,  <span class="str">"I'm thinking.."</span>},
+  {<span class="num">45</span>, <span class="str">"I'm strong"</span>,      <span class="str">"enough"</span>        },
+  {<span class="num">49</span>, <span class="str">"To sink in~"</span>,    <span class="str">""</span>              },
+  {<span class="num">53</span>, <span class="str">"Oh no!"</span>,          <span class="str">""</span>              },
+  {<span class="num">57</span>, <span class="str">"I don't need u"</span>, <span class="str">""</span>              },
+  {<span class="num">62</span>, <span class="str">"But I miss you"</span>, <span class="str">"come here :("</span>  },
+  {<span class="num">70</span>, <span class="str">"~ ~ ~ ~ ~ ~"</span>,    <span class="str">""</span>              },
+};
+
+<span class="ck">void</span> <span class="fn">lcdPrint</span>(<span class="ck">const char</span>* top, <span class="ck">const char</span>* bot){
+  lcd.<span class="fn">clear</span>();
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">0</span>); lcd.<span class="fn">print</span>(top);
+  lcd.<span class="fn">setCursor</span>(<span class="num">0</span>,<span class="num">1</span>); lcd.<span class="fn">print</span>(bot);
+}
+
+<span class="ck">void</span> <span class="fn">playSong</span>() {
+  <span class="ck">int</span> N = <span class="ck">sizeof</span>(melody)/<span class="ck">sizeof</span>(melody[<span class="num">0</span>]);
+  <span class="ck">int</span> L = <span class="ck">sizeof</span>(lyrics)/<span class="ck">sizeof</span>(lyrics[<span class="num">0</span>]);
+  <span class="ck">int</span> li = <span class="num">0</span>;
+  <span class="ck">for</span>(<span class="ck">int</span> i=<span class="num">0</span>; i&lt;N; i++){
+    <span class="ck">if</span>(li&lt;L &amp;&amp; lyrics[li].idx==i)
+      <span class="fn">lcdPrint</span>(lyrics[li].r0, lyrics[li++].r1);
+    <span class="ck">if</span>(melody[i].freq != <span class="nc">REST</span>)
+      <span class="fn">tone</span>(<span class="cd">BUZZER_PIN</span>, melody[i].freq,
+           melody[i].dur*<span class="num">0.88</span>);
+    <span class="fn">delay</span>(melody[i].dur);
+    <span class="fn">noTone</span>(<span class="cd">BUZZER_PIN</span>);
+  }
+}
+
+<span class="ck">void</span> <span class="fn">setup</span>(){
+  lcd.<span class="fn">init</span>(); lcd.<span class="fn">backlight</span>();
+  <span class="fn">pinMode</span>(<span class="cd">BUZZER_PIN</span>, <span class="cd">OUTPUT</span>);
+  <span class="fn">playSong</span>();
+}
+<span class="ck">void</span> <span class="fn">loop</span>(){} <span class="cm">// press RESET to replay</span>
+</pre>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>&gt;_ <a href="#">TesterChip</a> · Arduino Song Project</div>
+  <div style="color:var(--muted)">Built with <i class="fas fa-heart" style="color:var(--red)"></i> &amp; too many semicolons</div>
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+//  SONG DATA
+// ══════════════════════════════════════════
+const BPM=70, BEAT=60000/BPM;
+const W=BEAT*4, H=BEAT*2, DQ=BEAT*1.5, Q=BEAT, E=BEAT/2;
+const REST=0,E4=330,G4=392,A4=440,B4=494,C5=523,D5=587,E5=659;
+
+const MEL=[
+  [A4,E],[A4,E],[C5,Q],[B4,E],[A4,E],[G4,Q],[A4,H],     // 0-6
+  [REST,E],[E4,Q],[G4,DQ],[REST,Q],                       // 7-10
+  [A4,E],[A4,E],[C5,Q],[B4,E],[A4,H],                    // 11-15
+  [G4,Q],[A4,Q],[B4,Q],[C5,Q],                            // 16-19
+  [B4,Q],[A4,Q],[G4,H],[REST,Q],                          // 20-23
+  [E4,E],[G4,E],[A4,Q],[B4,E],[C5,E],[B4,Q],[A4,H],      // 24-30
+  [G4,E],[A4,E],[B4,Q],[C5,E],[D5,E],[C5,Q],[B4,H],[REST,Q], // 31-38
+  [A4,E],[B4,E],[C5,Q],[B4,E],[A4,E],[G4,Q],             // 39-44
+  [E4,Q],[G4,Q],[A4,Q],[B4,Q],                            // 45-48
+  [C5,Q],[B4,Q],[A4,H],[REST,Q],                          // 49-52
+  [E5,E],[E5,E],[D5,H],[REST,E],                          // 53-56
+  [C5,Q],[B4,Q],[A4,Q],[G4,E],[A4,Q],                    // 57-61
+  [A4,E],[A4,E],[C5,Q],[B4,E],[A4,E],[G4,Q],[E4,DQ],[REST,E], // 62-69
+  [A4,H],[G4,H],[E4,W],[REST,W]                           // 70-73
+];
+
+const LYR=[
+  {si:0,  r0:"I miss you",     r1:"come here..."},
+  {si:7,  r0:"And oh~",        r1:""},
+  {si:11, r0:"It's hard to",   r1:"see you..."},
+  {si:16, r0:"But I wish you", r1:""},
+  {si:20, r0:"Were right here",r1:""},
+  {si:24, r0:"Oh! It's hard",  r1:"to leave you"},
+  {si:31, r0:"When I get you", r1:"everywhere"},
+  {si:39, r0:"All this time",  r1:"I'm thinking.."},
+  {si:45, r0:"I'm strong",     r1:"enough"},
+  {si:49, r0:"To sink in~",    r1:""},
+  {si:53, r0:"Oh no!",         r1:""},
+  {si:57, r0:"I don't need u", r1:""},
+  {si:62, r0:"But I miss you", r1:"come here :("},
+  {si:70, r0:"~ ~ ~ ~ ~ ~",   r1:""}
+];
+
+// ══════════════════════════════════════════
+//  DOM
+// ══════════════════════════════════════════
+const $=id=>document.getElementById(id);
+const r0=$('r0'),r1=$('r1'),dot=$('dot'),stext=$('stext'),
+      btnPlay=$('btnPlay'),pico=$('pico'),
+      btnStop=$('btnStop'),btnReset=$('btnReset'),
+      vol=$('vol'),prog=$('prog'),progOuter=$('progOuter'),
+      tEl=$('tEl'),tTo=$('tTo'),nct=$('nct'),
+      logEl=$('log'),codeScroll=$('codeScroll');
+
+const wCvs=$('wave'), wCtx=wCvs.getContext('2d');
+
+// ══════════════════════════════════════════
+//  AUDIO
+// ══════════════════════════════════════════
+let actx=null,gain=null,anl=null;
+let schedule=[],endT=0,startT=0,totalSec=0;
+let raf=null,playing=false,paused=false;
+let lastLi=-1,lastSi=-1;
+
+function initAudio(){
+  actx=new(window.AudioContext||window.webkitAudioContext)();
+  anl=actx.createAnalyser(); anl.fftSize=512;
+  gain=actx.createGain(); gain.gain.value=parseFloat(vol.value);
+  gain.connect(anl); anl.connect(actx.destination);
+}
+
+function scheduleAll(){
+  schedule=[];
+  const t0=actx.currentTime+0.08;
+  let t=t0;
+  for(let i=0;i<MEL.length;i++){
+    const[f,d]=MEL[i],ds=d/1000;
+    schedule.push({t,ni:i});
+    if(f>0){
+      const o=actx.createOscillator(),ng=actx.createGain();
+      o.connect(ng); ng.connect(gain);
+      o.type='triangle'; o.frequency.value=f;
+      ng.gain.setValueAtTime(.001,t);
+      ng.gain.linearRampToValueAtTime(.65,t+.016);
+      ng.gain.setValueAtTime(.65,t+ds*.72);
+      ng.gain.exponentialRampToValueAtTime(.001,t+ds*.87);
+      o.start(t); o.stop(t+ds);
+    }
+    t+=ds;
+  }
+  startT=t0; totalSec=t-t0; endT=t;
+  tTo.textContent=fmtT(totalSec);
+}
+
+function getNoteIdx(){
+  if(!actx||!schedule.length)return -1;
+  const now=actx.currentTime;
+  let idx=-1;
+  for(let i=0;i<schedule.length;i++){
+    if(now>=schedule[i].t)idx=schedule[i].ni; else break;
+  }
+  return idx;
+}
+
+function getLyricIdx(ni){
+  let li=0;
+  for(let i=0;i<LYR.length;i++){if(ni>=LYR[i].si)li=i;else break;}
+  return li;
+}
+
+// ══════════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════════
+function setLCD(a,b){
+  r0.textContent=a.padEnd(16,' ');
+  r1.textContent=b.padEnd(16,' ');
+}
+function setStatus(s){
+  dot.className='dot'+(s?' '+s:'');
+  stext.textContent=s==='on'?'Playing...'
+    :s==='pause'?'Paused':'Ready — hit Play';
+}
+function fmtT(s){
+  const m=Math.floor(s/60),ss=Math.floor(s%60);
+  return`${m}:${String(ss).padStart(2,'0')}`;
+}
+function addLog(ly){
+  const ph=logEl.querySelector('[style*="italic"]');
+  if(ph)ph.remove();
+  logEl.querySelectorAll('.now').forEach(e=>e.classList.remove('now'));
+  const d=document.createElement('div');
+  d.className='log-item now';
+  d.textContent=ly.r1?`${ly.r0} / ${ly.r1}`:ly.r0;
+  logEl.appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function highlightSec(idx){
+  document.querySelectorAll('.cs').forEach(e=>e.classList.remove('active'));
+  const el=document.getElementById('s'+idx);
+  if(el){
+    el.classList.add('active');
+    el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+
+// ══════════════════════════════════════════
+//  WAVEFORM
+// ══════════════════════════════════════════
+function resizeWave(){wCvs.width=wCvs.offsetWidth;wCvs.height=wCvs.offsetHeight}
+window.addEventListener('resize',resizeWave);resizeWave();
+
+function drawWave(){
+  const W=wCvs.width,H=wCvs.height;
+  wCtx.fillStyle='#080c10'; wCtx.fillRect(0,0,W,H);
+  if(!anl||!playing){
+    wCtx.strokeStyle='rgba(57,255,20,.18)';wCtx.lineWidth=1.5;
+    wCtx.beginPath();wCtx.moveTo(0,H/2);wCtx.lineTo(W,H/2);wCtx.stroke();
+    return;
+  }
+  const buf=new Uint8Array(anl.frequencyBinCount);
+  anl.getByteTimeDomainData(buf);
+  wCtx.strokeStyle='#39ff14';wCtx.shadowColor='#39ff14';
+  wCtx.shadowBlur=5;wCtx.lineWidth=1.8;
+  wCtx.beginPath();
+  const step=W/buf.length;
+  buf.forEach((v,i)=>{
+    const y=(v/128)*H/2;
+    i===0?wCtx.moveTo(0,y):wCtx.lineTo(i*step,y);
+  });
+  wCtx.stroke();wCtx.shadowBlur=0;
+}
+
+// ══════════════════════════════════════════
+//  ANIMATION LOOP
+// ══════════════════════════════════════════
+function animate(){
+  if(!playing)return;
+  const ni=getNoteIdx();
+  const li=ni>=0?getLyricIdx(ni):0;
+  if(li!==lastLi&&ni>=0){
+    const ly=LYR[li];
+    setLCD(ly.r0,ly.r1);
+    addLog(ly);
+    highlightSec(li);
+    lastLi=li;
+  }
+  nct.textContent=`${ni>=0?ni+1:'—'} / ${MEL.length}`;
+  const el=actx.currentTime-startT;
+  const pct=Math.min(el/totalSec*100,100);
+  prog.style.width=pct+'%';
+  tEl.textContent=fmtT(Math.max(0,el));
+  drawWave();
+  if(actx.currentTime>=endT){onEnd();return;}
+  raf=requestAnimationFrame(animate);
+}
+
+function onEnd(){
+  playing=paused=false;
+  setStatus('');
+  pico.className='fas fa-play';
+  setLCD('   The End ~.~  ','Press Play again');
+  prog.style.width='100%';
+  cancelAnimationFrame(raf);
+  drawWave();
+}
+
+// ══════════════════════════════════════════
+//  CONTROLS
+// ══════════════════════════════════════════
+function startSong(){
+  if(actx){actx.close();actx=null;}
+  initAudio();
+  lastLi=-1;lastSi=-1;paused=false;
+  logEl.innerHTML='';
+  document.querySelectorAll('.cs').forEach(e=>e.classList.remove('active'));
+  scheduleAll();
+  playing=true;
+  setStatus('on');
+  pico.className='fas fa-pause';
+  setLCD('  ♪ Loading...  ','~~~~~~~~~~~~~~~~');
+  prog.style.width='0%';
+  cancelAnimationFrame(raf);
+  raf=requestAnimationFrame(animate);
+}
+
+btnPlay.addEventListener('click',()=>{
+  if(paused){
+    actx.resume();playing=true;paused=false;
+    setStatus('on');pico.className='fas fa-pause';
+    raf=requestAnimationFrame(animate);
+  } else if(playing){
+    actx.suspend();playing=false;paused=true;
+    setStatus('pause');pico.className='fas fa-play';
+    cancelAnimationFrame(raf);drawWave();
+  } else {
+    startSong();
+  }
+});
+
+btnStop.addEventListener('click',()=>{
+  if(actx){actx.close();actx=null;}
+  playing=paused=false;
+  cancelAnimationFrame(raf);
+  setStatus('');pico.className='fas fa-play';
+  setLCD(' * I Miss You * ','  - Come Here - ');
+  prog.style.width='0%';
+  tEl.textContent='0:00';tTo.textContent='—:——';
+  nct.textContent='— / —';
+  document.querySelectorAll('.cs').forEach(e=>e.classList.remove('active'));
+  drawWave();
+});
+
+btnReset.addEventListener('click',()=>startSong());
+
+vol.addEventListener('input',()=>{if(gain)gain.gain.value=parseFloat(vol.value);});
+
+// init idle waveform
+drawWave();
+</script>
+</body>
+</html>
